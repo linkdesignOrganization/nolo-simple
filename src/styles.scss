@@ -1,0 +1,178 @@
+:root {
+  --surface: #f6f6f6;
+  --ink: #111111;
+  --muted: #6a6a6a;
+  --accent: #3d51ff;
+  --line: rgba(17, 17, 17, 0.14);
+  --line-strong: rgba(17, 17, 17, 0.42);
+  --grid-line: rgba(17, 17, 17, 0.05);
+  --technical-grid-line: rgba(17, 17, 17, 0.07);
+  --technical-grid-dot-rgb: 17, 17, 17;
+  --font-mono: "Space Mono", monospace;
+  /* Ritmo vertical de las secciones: espaciado consistente y generoso entre bloques. */
+  --section-py: clamp(4rem, 7vw, 7rem);
+  /* Título principal (los "que mandan"): hero de /software, hero de /web y arms del home.
+     Una sola fuente de verdad para que tamaño y grosor queden unificados en todos. */
+  --hero-title-size: clamp(3rem, 5.35vw, 5rem);
+  --hero-title-weight: 600;
+  --hero-title-tracking: -0.075em;
+  --hero-title-leading: 0.95;
+  /* Lead/intro de los heros: mismo tamaño en /software y /web. */
+  --hero-lead-size: clamp(1.22rem, 1.85vw, 1.56rem);
+  --hero-lead-leading: 1.38;
+  color-scheme: light;
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--ink);
+  background-color: var(--surface);
+}
+
+/* Tema oscuro de página: lo activa FeatureShowcaseComponent (clase en <html>) al entrar
+   en el scroll a la sección showcase. Solo el FONDO de todo el sitio pasa a negro; el
+   texto (--ink) se deja oscuro a propósito para que las secciones anteriores "se pierdan"
+   en el negro y la showcase quede sola. */
+:root.app-dark {
+  --surface: #0c0c0c;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Aire al saltar a una ancla del nav para que la sección no quede pegada al borde. */
+  scroll-padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: var(--surface);
+  overflow-x: clip;
+  transition: background-color 450ms ease;
+}
+
+::selection {
+  background: rgba(17, 17, 17, 0.14);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Cursor de mano en todo lo interactivo. Los <button> nativos no lo traen por defecto,
+   así que lo forzamos para botones, enlaces y elementos con rol de botón/tab. */
+a[href],
+button,
+[role='button'],
+[role='tab'] {
+  cursor: pointer;
+}
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.18rem;
+  min-height: 3.44rem;
+  padding: 0.18rem;
+  border: 1px solid rgba(17, 17, 17, 0.05);
+  border-radius: 1.02rem;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 520ms linear(0, 0.58 48%, 0.58 66%, 1);
+}
+
+.button > span {
+  position: relative;
+  z-index: 1;
+}
+
+.button > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.button-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.06rem;
+  height: 3.06rem;
+  margin-left: 0;
+  opacity: 1;
+  overflow: visible;
+  transform: translateX(0);
+  border-radius: 0.82rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 1.28rem;
+  font-weight: 400;
+  line-height: 1;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 220ms ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  color: #ffffff;
+  opacity: 1;
+  transform: translateY(-0.5px);
+  outline: none;
+}
+
+.button:hover::before,
+.button:focus-visible::before {
+  transform: scaleY(1);
+}
+
+.button:hover .button-arrow,
+.button:focus-visible .button-arrow {
+  background: #ffffff;
+  color: var(--ink);
+  transform: translateX(1px);
+}
+
+@media (max-width: 760px) {
+  .button > span:first-child {
+    padding: 0 0.88rem;
+  }
+
+  .button-arrow {
+    width: 2.84rem;
+    height: 2.84rem;
+    border-radius: 0.72rem;
+  }
+}
