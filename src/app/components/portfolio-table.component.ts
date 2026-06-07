@@ -1,21 +1,23 @@
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   NgZone,
   OnDestroy,
+  afterNextRender,
   computed,
   inject,
-  input
+  input,
+  signal
 } from '@angular/core';
-import { LucideArrowUpRight } from '@lucide/angular';
+import { LucideArrowUpRight, LucideArrowDown } from '@lucide/angular';
 
 import { LanguageService } from '../services/language.service';
 
 export type PortfolioRow = {
   client: string;
+  logo: string;
   industry: string;
   projectType: string;
   link: string;
@@ -27,7 +29,7 @@ export type PortfolioRow = {
   selector: 'app-portfolio-table',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LucideArrowUpRight],
+  imports: [LucideArrowUpRight, LucideArrowDown],
   host: {
     'class': 'portfolio-table'
   },
@@ -42,9 +44,11 @@ export type PortfolioRow = {
       </div>
 
       <div class="pt-rows" (mouseleave)="onTableLeave()">
-        @for (row of rows(); track row.client; let i = $index) {
+        @for (row of visibleRows(); track row.client; let i = $index) {
           <a
             class="pt-row"
+            [class.pt-row--enter]="i >= initialVisible"
+            [style.animation-delay.ms]="enterDelay(i)"
             [href]="row.link"
             target="_blank"
             rel="noopener noreferrer"
@@ -52,7 +56,13 @@ export type PortfolioRow = {
             (mouseleave)="onRowLeave(i)"
           >
             <span class="pt-cell pt-num">{{ pad(i + 1) }}/{{ pad(rows().length) }}</span>
-            <span class="pt-cell pt-client">{{ row.client }}</span>
+            <span class="pt-cell pt-client">
+              @if (row.logo) {
+                <img class="pt-logo" [src]="row.logo" [alt]="row.client" loading="lazy" />
+              } @else {
+                {{ row.client }}
+              }
+            </span>
             <span class="pt-cell pt-industry">{{ row.industry }}</span>
             <span class="pt-cell pt-type">{{ row.projectType }}</span>
             <span class="pt-cell pt-arrow" aria-hidden="true">
@@ -61,6 +71,13 @@ export type PortfolioRow = {
 
             <img class="pt-thumb" [src]="row.poster" [alt]="row.client" loading="lazy" />
           </a>
+        }
+
+        @if (hasMore()) {
+          <button type="button" class="pt-more" (click)="showMore()">
+            <span class="pt-more__label">{{ t().more }}</span>
+            <svg class="pt-more__icon" lucideArrowDown [size]="20" [strokeWidth]="1" aria-hidden="true"></svg>
+          </button>
         }
       </div>
     </div>
@@ -143,6 +160,18 @@ export type PortfolioRow = {
       line-height: 1.1;
     }
 
+    /* Logo del cliente en su color de marca. max-height/width + contain para que aspectos
+       dispares (wordmarks anchos, isotipos cuadrados) quepan sin deformarse, alineados a la izq. */
+    .pt-logo {
+      display: block;
+      max-height: clamp(1.5rem, 2.2vw, 2rem);
+      max-width: min(100%, 11rem);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      object-position: left center;
+    }
+
     .pt-num {
       color: var(--muted);
       font-family: var(--font-mono);
@@ -169,7 +198,7 @@ export type PortfolioRow = {
     }
 
     .pt-row:hover .pt-arrow {
-      color: var(--ink);
+      color: var(--accent);
       transform: translate(2px, -2px);
     }
 
@@ -269,19 +298,110 @@ export type PortfolioRow = {
       }
     }
 
+    /* Entrada de las filas nuevas al "Ver más". */
+    .pt-row--enter {
+      animation: ptRowEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes ptRowEnter {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* Row "Ver más trabajos": botón ancho completo, texto centrado con la flecha al lado. */
+    .pt-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      width: 100%;
+      padding: clamp(1.2rem, 2.2vw, 1.7rem) clamp(1rem, 3vw, 2.5rem);
+      border: 0;
+      border-bottom: 1px solid var(--line-strong);
+      background: transparent;
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+      transition: background-color 200ms ease;
+    }
+
+    .pt-more:hover {
+      background: rgba(17, 17, 17, 0.035);
+    }
+
+    .pt-more:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .pt-more__label {
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      transition: color 200ms ease;
+    }
+
+    .pt-more__icon {
+      display: inline-flex;
+      color: var(--muted);
+      transition:
+        color 200ms ease,
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Texto: gris → negro al hover. Icono: gris → azul (sí cambia a color). */
+    .pt-more:hover .pt-more__label {
+      color: var(--ink);
+    }
+
+    .pt-more:hover .pt-more__icon {
+      color: var(--accent);
+      transform: translateY(2px);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .pt-float {
         transition: opacity 120ms ease;
         scale: 1;
       }
+
+      .pt-row--enter {
+        animation: none;
+      }
     }
   `
 })
-export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
+export class PortfolioTableComponent implements OnDestroy {
   readonly rows = input.required<PortfolioRow[]>();
 
   private readonly i18n = inject(LanguageService);
   protected readonly t = computed(() => PORTFOLIO_HEAD[this.i18n.lang()]);
+
+  // Paginación: arranca en 10 y crece de 5 en 5 hasta mostrar todos.
+  private static readonly INITIAL_VISIBLE = 10;
+  private static readonly STEP = 5;
+  protected readonly initialVisible = PortfolioTableComponent.INITIAL_VISIBLE;
+  protected readonly visibleCount = signal(PortfolioTableComponent.INITIAL_VISIBLE);
+  protected readonly visibleRows = computed(() => this.rows().slice(0, this.visibleCount()));
+  protected readonly remaining = computed(() => Math.max(0, this.rows().length - this.visibleCount()));
+  protected readonly hasMore = computed(() => this.remaining() > 0);
+
+  protected showMore(): void {
+    this.visibleCount.update((c) => Math.min(c + PortfolioTableComponent.STEP, this.rows().length));
+  }
+
+  // Stagger de entrada: dentro de cada tanda de 5, cada fila cae con un pequeño retraso.
+  protected enterDelay(index: number): number {
+    const rel = (index - PortfolioTableComponent.INITIAL_VISIBLE) % PortfolioTableComponent.STEP;
+    return rel <= 0 ? 0 : rel * 60;
+  }
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
@@ -290,9 +410,27 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
   private static readonly ENTER_DELAY = 150;
   private static readonly OFFSET = 24;
 
-  private rowsEl: HTMLElement | null = null;
-  private floatEl: HTMLElement | null = null;
-  private floatVideo: HTMLVideoElement | null = null;
+  // .pt-float/.pt-float__video se recrean durante la hidratación SSR (el nodo del prerender queda
+  // desconectado). Por eso NO se cachean a ciegas: se validan con isConnected y se re-leen del DOM
+  // si quedaron huérfanos. El host del componente sí es estable.
+  private _floatEl: HTMLElement | null = null;
+  private _floatVideo: HTMLVideoElement | null = null;
+
+  private get host(): HTMLElement {
+    return this.hostRef.nativeElement as HTMLElement;
+  }
+  private get floatEl(): HTMLElement | null {
+    if (!this._floatEl?.isConnected) {
+      this._floatEl = this.host.querySelector<HTMLElement>('.pt-float');
+    }
+    return this._floatEl;
+  }
+  private get floatVideo(): HTMLVideoElement | null {
+    if (!this._floatVideo?.isConnected) {
+      this._floatVideo = this.host.querySelector<HTMLVideoElement>('.pt-float__video');
+    }
+    return this._floatVideo;
+  }
 
   private pointerX = 0;
   private pointerY = 0;
@@ -301,6 +439,8 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
   private rafId: number | null = null;
   private enterTimer: ReturnType<typeof setTimeout> | null = null;
   private activeSrc = '';
+  private activePoster = '';
+  private readonly aspectCache = new Map<string, number>();
   private isMobileOrReduced = false;
 
   private readonly onPointerMove = (event: PointerEvent): void => {
@@ -318,44 +458,68 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
     }
   };
 
-  ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => {
-      const host = this.hostRef.nativeElement as HTMLElement;
-      this.rowsEl = host.querySelector<HTMLElement>('.pt-rows');
-      this.floatEl = host.querySelector<HTMLElement>('.pt-float');
-      this.floatVideo = host.querySelector<HTMLVideoElement>('.pt-float__video');
-
-      const win = this.document.defaultView;
-      const reduced =
-        typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const mobile =
-        !!win &&
-        typeof win.matchMedia === 'function' &&
-        (win.matchMedia('(max-width: 760px)').matches ||
-          win.matchMedia('(pointer: coarse)').matches);
-      this.isMobileOrReduced = reduced || mobile;
-
-      if (this.isMobileOrReduced) {
-        return;
-      }
-
-      // Precarga el primer video para que el primer hover arranque sin espera.
-      const first = this.rows()[0];
-      if (this.floatVideo && first) {
-        this.floatVideo.src = first.videoSrc;
-        this.activeSrc = first.videoSrc;
-      }
-
-      this.cacheFloatSize();
-      this.rowsEl?.addEventListener('pointermove', this.onPointerMove, { passive: true });
-      win?.addEventListener('resize', this.onResize, { passive: true });
-      this.document.addEventListener('visibilitychange', this.onVisibility);
+  constructor() {
+    // afterNextRender corre solo en el browser y tras el primer render, así que el DOM hidratado
+    // (incluido .pt-float) ya existe para querySelector. ngAfterViewInit corría demasiado pronto en
+    // la hidratación SSR y devolvía null, dejando el viewer sin video.
+    afterNextRender(() => {
+      this.zone.runOutsideAngular(() => this.setupViewer());
     });
+  }
+
+  private setupViewer(): void {
+    const win = this.document.defaultView;
+    const reduced =
+      typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile =
+      !!win &&
+      typeof win.matchMedia === 'function' &&
+      (win.matchMedia('(max-width: 760px)').matches ||
+        win.matchMedia('(pointer: coarse)').matches);
+    this.isMobileOrReduced = reduced || mobile;
+
+    if (this.isMobileOrReduced) {
+      return;
+    }
+
+    this.cacheFloatSize();
+    // pointermove en el host (estable); .pt-rows puede recrearse en la hidratación.
+    this.host.addEventListener('pointermove', this.onPointerMove, { passive: true });
+    win?.addEventListener('resize', this.onResize, { passive: true });
+    this.document.addEventListener('visibilitychange', this.onVisibility);
+
+    this.preloadVideos();
+  }
+
+  // Precarga (prefetch) todos los videos del portafolio cuando el navegador está ocioso, para que al
+  // llegar a la tabla el hover muestre el clip al instante. Solo desktop (mobile usa el poster).
+  private preloadVideos(): void {
+    const win = this.document.defaultView;
+    const run = (): void => {
+      for (const row of this.rows()) {
+        if (!row.videoSrc) {
+          continue;
+        }
+        const link = this.document.createElement('link');
+        link.rel = 'prefetch';
+        link.as = 'video';
+        link.href = row.videoSrc;
+        this.document.head.appendChild(link);
+      }
+    };
+    const idle = (win as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
+    })?.requestIdleCallback;
+    if (typeof idle === 'function') {
+      idle(run, { timeout: 2000 });
+    } else {
+      win?.setTimeout(run, 1200);
+    }
   }
 
   ngOnDestroy(): void {
     const win = this.document.defaultView;
-    this.rowsEl?.removeEventListener('pointermove', this.onPointerMove);
+    this.host.removeEventListener('pointermove', this.onPointerMove);
     win?.removeEventListener('resize', this.onResize);
     this.document.removeEventListener('visibilitychange', this.onVisibility);
     if (this.rafId !== null) {
@@ -366,7 +530,8 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
       clearTimeout(this.enterTimer);
       this.enterTimer = null;
     }
-    this.floatVideo?.pause();
+    // Campo directo (no el getter): ngOnDestroy corre también en SSR, donde no debe tocar el DOM.
+    this._floatVideo?.pause();
   }
 
   protected pad(n: number): string {
@@ -416,8 +581,44 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
     video.poster = row.poster;
     video.currentTime = 0;
     video.play().catch(() => {});
+    this.activePoster = row.poster;
+    this.applyMediaAspect(row);
     this.positionFloat();
     this.floatEl.classList.add('is-visible');
+  }
+
+  // Ajusta el flotante al aspect ratio real del media. Lo lee del poster (para video es un frame
+  // del mismo clip; para asembis es la portada), así el viewer respeta la proporción y no recorta.
+  // Cachea por poster para no re-medir en hovers siguientes.
+  private applyMediaAspect(row: PortfolioRow): void {
+    if (!this.floatEl || !row.poster) {
+      return;
+    }
+    const cached = this.aspectCache.get(row.poster);
+    if (cached) {
+      this.setFloatAspect(cached);
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+        const ratio = img.naturalWidth / img.naturalHeight;
+        this.aspectCache.set(row.poster, ratio);
+        if (this.activePoster === row.poster) {
+          this.setFloatAspect(ratio);
+        }
+      }
+    };
+    img.src = row.poster;
+  }
+
+  private setFloatAspect(ratio: number): void {
+    if (!this.floatEl) {
+      return;
+    }
+    this.floatEl.style.aspectRatio = String(ratio);
+    this.cacheFloatSize();
+    this.positionFloat();
   }
 
   private deactivate(): void {
@@ -471,6 +672,6 @@ export class PortfolioTableComponent implements AfterViewInit, OnDestroy {
 }
 
 const PORTFOLIO_HEAD = {
-  es: { client: 'Cliente', industry: 'Industria', projectType: 'Tipo de proyecto' },
-  en: { client: 'Client', industry: 'Industry', projectType: 'Project type' }
+  es: { client: 'Cliente', industry: 'Industria', projectType: 'Tipo de proyecto', more: 'Ver más trabajos' },
+  en: { client: 'Client', industry: 'Industry', projectType: 'Project type', more: 'See more work' }
 } as const;
