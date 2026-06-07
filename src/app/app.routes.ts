@@ -530,7 +530,7 @@ const webPageEs: LandingData = {
   theme: 'website',
   webHero: {
     title: 'Sitios web hechos en serio.',
-    lead: 'Sin plantillas, sin atajos, sin constructores visuales. Cada sitio se construye desde el código.',
+    lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye desde el código.',
     actions: [
       { label: 'Agendar reunión', link: '/contacto' },
       { label: 'Mandar mensaje', link: '/contacto' }
@@ -547,7 +547,7 @@ const webPageEs: LandingData = {
       {
         index: '01',
         title: 'Construido con tecnología seria.',
-        body: 'Cada sitio se desarrolla con el mismo stack que usamos en sistemas empresariales en producción. Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita.',
+        body: 'Desarrollamos con el mismo stack que usamos en sistemas empresariales en producción: Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita.',
         payload: {
           kind: 'logos',
           logos: [
@@ -749,7 +749,7 @@ const webPageEs: LandingData = {
       {
         question: '¿Pueden integrar el sitio con sistemas que ya usamos?',
         answer:
-          'Sí. Conectamos el sitio con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Como los sitios se construyen con código propio y no con plugins de plataformas cerradas, las integraciones se diseñan para funcionar estables a largo plazo.'
+          'Sí. Conectamos el sitio con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Cuando el sitio se construye a medida, corre sobre código propio (sin plugins de plataformas cerradas), así las integraciones quedan estables a largo plazo.'
       }
     ]
   },
@@ -764,7 +764,7 @@ const webPageEn: LandingData = {
   theme: 'website',
   webHero: {
     title: 'Real websites. Real code.',
-    lead: 'No templates. No shortcuts. No page builders. Every site is built from code.',
+    lead: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
     actions: [
       { label: 'Book a meeting', link: '/contacto' },
       { label: 'Send a message', link: '/contacto' }
@@ -781,7 +781,7 @@ const webPageEn: LandingData = {
       {
         index: '01',
         title: 'Built on a serious stack.',
-        body: 'Every site runs on the same stack we use for enterprise systems in production. Angular on the front end, Node on the back end, Azure for infrastructure. The final stack flexes to fit the integrations your company needs.',
+        body: 'We build on the same stack we use for enterprise systems in production: Angular on the front end, Node on the back end, Azure for infrastructure. The final stack flexes to fit the integrations your company needs.',
         payload: {
           kind: 'logos',
           logos: [
@@ -983,7 +983,7 @@ const webPageEn: LandingData = {
       {
         question: 'Can you integrate the site with systems we already use?',
         answer:
-          "Yes. We connect the site to your CRM, ERP, email marketing platforms, analytics tools and other systems, depending on what you need. Because sites are built on our own code and not plugins from closed platforms, integrations are designed to run stably for the long haul."
+          "Yes. We connect the site to your CRM, ERP, email marketing platforms, analytics tools and other systems, depending on what you need. When a site is custom-built, it runs on our own code (no plugins from closed platforms), so integrations stay stable for the long haul."
       }
     ]
   },
