@@ -5,11 +5,13 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   computed,
   inject,
   input,
   signal
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideCircleOff } from '@lucide/angular';
 
@@ -25,7 +27,9 @@ export type HeroMarquee = {
   label: string;
 };
 
-type Slide = { label: string; src: string };
+export type HeroSlide = { src: string; poster: string };
+
+type Slide = { label: string; src: string; poster: string };
 
 @Component({
   selector: 'app-web-hero',
@@ -67,7 +71,7 @@ type Slide = { label: string; src: string };
 
         <!-- Carrusel: cada recuadro entra y sale de la página por la derecha, uno a uno.
              En reposo se ve ~90% (el resto sangra fuera del borde derecho). -->
-        <div class="wh-media" aria-hidden="true">
+        <div class="wh-media" aria-hidden="true" [style.aspect-ratio]="mediaAspect()">
           @for (slide of stageSlides(); track $index) {
             <div class="wh-slide" [class.is-active]="$index === activeIndex()">
               @if (slide.src) {
@@ -79,6 +83,8 @@ type Slide = { label: string; src: string };
                   playsinline
                   preload="metadata"
                 ></video>
+              } @else if (slide.poster) {
+                <img class="wh-video" [src]="slide.poster" alt="" />
               } @else {
                 <span class="wh-slide__num">{{ slide.label }}</span>
               }
@@ -372,19 +378,19 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   readonly title = input.required<string>();
   readonly lead = input.required<string>();
   readonly actions = input<HeroAction[]>([]);
-  readonly slides = input<string[]>([]);
+  readonly slides = input<HeroSlide[]>([]);
   readonly marquee = input<HeroMarquee | null>(null);
 
   // Con videos, los usa; sin videos, muestra placeholders numerados para ver la animación.
   protected readonly stageSlides = computed<Slide[]>(() => {
     const sources = this.slides();
     if (sources.length) {
-      return sources.map((src) => ({ src, label: '' }));
+      return sources.map((s) => ({ src: s.src, poster: s.poster, label: '' }));
     }
     return [
-      { src: '', label: '01' },
-      { src: '', label: '02' },
-      { src: '', label: '03' }
+      { src: '', poster: '', label: '01' },
+      { src: '', poster: '', label: '02' },
+      { src: '', poster: '', label: '03' }
     ];
   });
 
@@ -395,11 +401,15 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   });
 
   protected readonly activeIndex = signal(0);
+  // Proporción real del video activo (como el viewer del portafolio): el carrusel se ajusta a ella
+  // para no recortar. null = usa el aspect-ratio por defecto del CSS hasta que carga el primer video.
+  protected readonly mediaAspect = signal<number | null>(null);
 
-  private static readonly rotateMs = 3500;
+  private static readonly rotateMs = 5200;
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   protected isHref(link: string): boolean {
@@ -407,6 +417,10 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    // Video/animaciones son browser-only: no correr en prerender (SSR).
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const count = this.stageSlides().length;
     const reduced =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -435,19 +449,50 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   }
 
   // Solo el recuadro activo reproduce su video (cuando haya videos); los demás se pausan.
+  // Reproduce solo el slide activo, reiniciado desde 0; pausa y resetea los demás, así al volver en
+  // el loop el video arranca de nuevo en vez de continuar desde donde quedó mientras estaba oculto.
   private playActive(): void {
     const host = this.hostRef.nativeElement as HTMLElement;
     const active = this.activeIndex();
-    host.querySelectorAll('video').forEach((video: HTMLVideoElement, index: number) => {
+    host.querySelectorAll<HTMLElement>('.wh-slide').forEach((slide, index) => {
+      const video = slide.querySelector('video');
       if (index === active) {
-        video.muted = true;
-        const playback = video.play();
-        if (playback && typeof playback.catch === 'function') {
-          playback.catch(() => {});
+        const media = video ?? slide.querySelector('img');
+        if (media) {
+          this.applyAspect(media);
         }
-      } else {
+        if (video) {
+          video.muted = true;
+          video.currentTime = 0;
+          const playback = video.play();
+          if (playback && typeof playback.catch === 'function') {
+            playback.catch(() => {});
+          }
+        }
+      } else if (video) {
         video.pause();
+        video.currentTime = 0;
       }
     });
+  }
+
+  // Ajusta el carrusel a la proporción real del media activo (video o imagen) para que no se recorte.
+  // Si aún no cargó, espera al evento de carga. zone.run asegura el refresh con OnPush.
+  private applyAspect(media: HTMLVideoElement | HTMLImageElement): void {
+    const set = (): void => {
+      const w = media instanceof HTMLVideoElement ? media.videoWidth : media.naturalWidth;
+      const h = media instanceof HTMLVideoElement ? media.videoHeight : media.naturalHeight;
+      if (w > 0 && h > 0) {
+        this.zone.run(() => this.mediaAspect.set(w / h));
+      }
+    };
+    const ready = media instanceof HTMLVideoElement ? media.readyState >= 1 : media.complete;
+    if (ready) {
+      set();
+    } else {
+      media.addEventListener(media instanceof HTMLVideoElement ? 'loadedmetadata' : 'load', set, {
+        once: true
+      });
+    }
   }
 }

@@ -530,7 +530,7 @@ const webPageEs: LandingData = {
   theme: 'website',
   webHero: {
     title: 'Sitios web hechos en serio.',
-    lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye desde el código.',
+    lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye a medida de verdad.',
     actions: [
       { label: 'Agendar reunión', link: '/contacto' },
       { label: 'Mandar mensaje', link: '/contacto' }

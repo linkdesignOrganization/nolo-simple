@@ -13,7 +13,7 @@ import { ServiceItem, ServicesStackComponent } from '../components/services-stac
 import { TechnicalGridSurfaceComponent } from '../components/technical-grid-surface.component';
 import { Viewcase, ViewcasesComponent } from '../components/viewcases.component';
 import { CapabilityCard, WebCapabilitiesComponent } from '../components/web-capabilities.component';
-import { HeroAction, HeroMarquee, WebHeroComponent } from '../components/web-hero.component';
+import { HeroAction, HeroMarquee, HeroSlide, WebHeroComponent } from '../components/web-hero.component';
 import { Principle, WorkPrinciplesComponent } from '../components/work-principles.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
@@ -161,7 +161,7 @@ export type LandingData = {
             [title]="wh.title"
             [lead]="wh.lead"
             [actions]="wh.actions"
-            [slides]="wh.slides"
+            [slides]="heroSlides()"
             [marquee]="wh.marquee ?? null"
           />
         }
@@ -1384,6 +1384,16 @@ export class LandingPageComponent {
   protected readonly page = computed(
     () => (this.routeData() as { es: LandingData; en: LandingData })[this.i18n.lang()]
   );
+
+  // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente: usa el video
+  // web grande (/media/hero/<slug>.mp4) si la fila tiene video, o el poster como imagen (ej. Asembis).
+  protected readonly heroSlides = computed<HeroSlide[]>(() => {
+    const rows = this.page().portfolio?.rows ?? [];
+    return rows.slice(0, 10).map((row) => {
+      const slug = (row.videoSrc || row.poster).split('/').pop()!.replace(/\.\w+$/, '');
+      return { src: row.videoSrc ? `/media/hero/${slug}.mp4` : '', poster: row.poster };
+    });
+  });
 
   protected isHrefLink(link?: string): boolean {
     return !!link && /^(#|mailto:|https?:)/.test(link);
