@@ -5,10 +5,12 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input,
   signal
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export type FeatureTab = {
   body: string;
@@ -24,7 +26,7 @@ export type FeatureTab = {
     'class': 'feature-tabs-host'
   },
   template: `
-    <div class="feature-stage">
+    <div class="feature-stage" [style.aspect-ratio]="mediaAspect()">
       @for (tab of tabs(); track $index) {
         <video
           class="feature-video"
@@ -64,7 +66,10 @@ export type FeatureTab = {
     .feature-stage {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;
+      /* Fallback = ancho del video con 20% menos de alto (1280×682 → 1280×546). Lo sobreescribe
+         [style.aspect-ratio] con el aspect real del media (también recortado 20%) apenas carga:
+         respetamos el ancho y cortamos el alto desde el top. */
+      aspect-ratio: 1280 / 546;
       max-height: 60rem;
       overflow: hidden;
       border: 1px solid var(--line-strong);
@@ -198,15 +203,22 @@ export type FeatureTab = {
 })
 export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
   private static readonly autoAdvanceMs = 6000;
+  // Mostramos el 80% del alto que el video tendría a ancho completo: respetamos el ancho y
+  // recortamos el 20% inferior (con object-fit: cover + object-position: top).
+  private static readonly heightCrop = 0.8;
 
   readonly tabs = input.required<FeatureTab[]>();
 
   protected readonly activeIndex = signal(0);
   // Refleja si el auto-avance está corriendo (para la barra de progreso de la línea).
   protected readonly autoplaying = signal(false);
+  // Aspect del stage derivado del video activo y ensanchado por heightCrop: respeta el ancho del
+  // video y recorta el 20% inferior del alto. null hasta que carga el primer video (manda el fallback CSS).
+  protected readonly mediaAspect = signal<number | null>(null);
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private observer: IntersectionObserver | null = null;
@@ -214,6 +226,10 @@ export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
   private userStopped = false;
 
   ngAfterViewInit(): void {
+    // Video/animaciones son browser-only: no correr en prerender (SSR).
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const host = this.hostRef.nativeElement as HTMLElement;
 
     // Reproducir los videos (y avanzar) solo cuando el hero está en pantalla. Fuera de
@@ -303,6 +319,7 @@ export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
     const active = this.activeIndex();
     host.querySelectorAll('video').forEach((video: HTMLVideoElement, index: number) => {
       if (index === active) {
+        this.applyAspect(video);
         video.muted = true;
         const playback = video.play();
         if (playback && typeof playback.catch === 'function') {
@@ -312,6 +329,25 @@ export class FeatureTabsComponent implements AfterViewInit, OnDestroy {
         video.pause();
       }
     });
+  }
+
+  // Ajusta el stage a la proporción real del video activo para no recortarlo. Si aún no cargó
+  // la metadata, espera el evento. zone.run asegura el refresh con OnPush.
+  private applyAspect(video: HTMLVideoElement): void {
+    const set = (): void => {
+      const w = video.videoWidth;
+      const h = video.videoHeight;
+      if (w > 0 && h > 0) {
+        // Ensanchamos el aspect para que, a ancho completo, el alto sea 20% menor que el natural;
+        // con object-fit: cover + top eso recorta el 20% inferior del video.
+        this.zone.run(() => this.mediaAspect.set(w / h / FeatureTabsComponent.heightCrop));
+      }
+    };
+    if (video.readyState >= 1) {
+      set();
+    } else {
+      video.addEventListener('loadedmetadata', set, { once: true });
+    }
   }
 
   private pauseVideos(): void {

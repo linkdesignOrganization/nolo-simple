@@ -98,19 +98,19 @@ const softwarePageEs: LandingData = {
       lead: 'Ordená',
       body:
         'la operación que ya tenés sin cambiar cómo trabaja el equipo. Visibilidad, control de costos y alertas reales.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/ordena.mp4'
     },
     {
       lead: 'Centralizá',
       body:
         'las fichas, los flujos y los datos en un solo sistema. Información clara para vos y tu equipo.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/centraliza.mp4'
     },
     {
       lead: 'Automatizá',
       body:
         'las tareas que se repiten y las decisiones basadas en datos. IA con criterio operativo, no decoración tecnológica.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/automatiza.mp4'
     }
   ],
   systems: {
@@ -315,19 +315,19 @@ const softwarePageEn: LandingData = {
       lead: 'Organize',
       body:
         'the operation you already have without changing how your team works. Visibility, cost control and real alerts.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/ordena.mp4'
     },
     {
       lead: 'Centralize',
       body:
         'records, flows and data in one system. Clear information for you and your team.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/centraliza.mp4'
     },
     {
       lead: 'Automate',
       body:
         'repetitive tasks and data-driven decisions. AI with operational judgment, not tech decoration.',
-      videoSrc: '/media/software-demo.mp4'
+      videoSrc: '/media/software/automatiza.mp4'
     }
   ],
   systems: {
