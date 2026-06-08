@@ -12,10 +12,10 @@ import {
 } from '@angular/core';
 import {
   LucideCheck,
-  LucideChevronsRight,
   LucideMonitorCog,
   LucideMonitorDot,
   LucideMonitorStop,
+  LucideMoveHorizontal,
   LucideShoppingCart
 } from '@lucide/angular';
 
@@ -36,7 +36,7 @@ export type DevTypeBlock = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LucideCheck,
-    LucideChevronsRight,
+    LucideMoveHorizontal,
     LucideMonitorStop,
     LucideMonitorDot,
     LucideShoppingCart,
@@ -48,6 +48,10 @@ export type DevTypeBlock = {
   template: `
     <div class="dt-frame">
       <div class="dt-grid">
+        <span class="dt-swipe" aria-hidden="true">
+          <svg lucideMoveHorizontal [size]="18" [strokeWidth]="1"></svg>
+        </span>
+
         <aside class="dt-tabs" role="tablist" aria-label="Tipos de desarrollo">
           @for (block of blocks(); track block.tab; let i = $index) {
             <button
@@ -77,10 +81,6 @@ export type DevTypeBlock = {
               <span class="dt-tab__label">{{ block.tab }}</span>
             </button>
           }
-
-          <span class="dt-swipe" aria-hidden="true">
-            <svg lucideChevronsRight [size]="18" [strokeWidth]="1"></svg>
-          </span>
         </aside>
 
         <div class="dt-panels">
@@ -329,11 +329,11 @@ export type DevTypeBlock = {
     @keyframes dt-swipe-hint {
       0%,
       100% {
-        transform: translateX(0);
-        opacity: 0.55;
+        transform: translateX(-3px);
+        opacity: 0.6;
       }
       50% {
-        transform: translateX(5px);
+        transform: translateX(3px);
         opacity: 1;
       }
     }
@@ -368,25 +368,18 @@ export type DevTypeBlock = {
         padding: 0.5rem 0.7rem;
       }
 
-      /* Doble flecha anclada al borde derecho del scroller de tabs: indica que se deslizan. */
+      /* Hint centrado ARRIBA de los tabs: icono move-horizontal que se mueve de lado a lado. */
       .dt-swipe {
-        position: sticky;
-        right: 0;
-        z-index: 1;
-        flex-shrink: 0;
-        display: inline-flex;
+        display: flex;
+        justify-content: center;
         align-items: center;
-        align-self: stretch;
-        margin-left: -0.4rem;
-        padding-left: 1.1rem;
         color: var(--dt-faint);
-        background: linear-gradient(to right, transparent, var(--surface) 45%);
         pointer-events: none;
       }
 
       .dt-swipe svg {
         display: block;
-        animation: dt-swipe-hint 1.5s ease-in-out infinite;
+        animation: dt-swipe-hint 1.4s ease-in-out infinite;
       }
     }
 
