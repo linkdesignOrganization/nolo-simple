@@ -234,16 +234,14 @@ const softwarePageEs: LandingData = {
     ]
   },
   viewcases: {
-    title: 'Así se ve un sistema hecho a medida.',
+    title: 'Esto no es portfolio. Son demos para que probés.',
     intro:
-      'No son capturas. Son sistemas funcionando que podés recorrer pantalla por pantalla. Cada uno representa una industria distinta.',
+      'Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
     items: [
-      { label: 'CRM a la medida', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'ERP de operación', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'E-commerce', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Reservas y ticketing', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Dashboards y reporting', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Automatización con IA', videoSrc: '/media/software-demo.mp4', link: '#' }
+      { label: 'Estudio Dental Mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: '#' },
+      { label: 'Tornos del Sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: '#' },
+      { label: 'Punto Cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: '#' },
+      { label: 'Vértice Seguridad Industrial', category: 'ERP para empresa de servicios', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: '#' }
     ]
   },
   faq: {
@@ -451,16 +449,14 @@ const softwarePageEn: LandingData = {
     ]
   },
   viewcases: {
-    title: 'This is what a custom system looks like.',
+    title: "This isn't a portfolio. These are demos for you to try.",
     intro:
-      "These aren't screenshots. They're working systems you can walk through screen by screen. Each one represents a different industry.",
+      "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
     items: [
-      { label: 'Custom CRM', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Operations ERP', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'E-commerce', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Booking & ticketing', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'Dashboards & reporting', videoSrc: '/media/software-demo.mp4', link: '#' },
-      { label: 'AI automation', videoSrc: '/media/software-demo.mp4', link: '#' }
+      { label: 'Estudio Dental Mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: '#' },
+      { label: 'Tornos del Sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: '#' },
+      { label: 'Punto Cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: '#' },
+      { label: 'Vértice Seguridad Industrial', category: 'ERP for a services company', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: '#' }
     ]
   },
   faq: {

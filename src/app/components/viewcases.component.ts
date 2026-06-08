@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
@@ -15,7 +16,9 @@ import { TechnicalGridBackgroundComponent } from './technical-grid-background.co
 
 export type Viewcase = {
   label: string;
+  category: string;
   videoSrc: string;
+  poster: string;
   link: string;
 };
 
@@ -57,10 +60,13 @@ export type Viewcase = {
                 loop
                 playsinline
                 preload="none"
-                poster="/media/software-demo-poster.jpg"
+                [poster]="item.poster"
                 aria-hidden="true"
               ></video>
-              <span class="vc-panel">{{ item.label }}</span>
+              <span class="vc-panel">
+                <strong class="vc-panel__name">{{ item.label }}</strong>
+                <span class="vc-panel__kind">{{ item.category }}</span>
+              </span>
             </a>
           }
         </div>
@@ -189,14 +195,15 @@ export type Viewcase = {
 
     .vc-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: clamp(1rem, 2vw, 1.75rem);
     }
 
     .vc-tile {
       position: relative;
       display: block;
-      aspect-ratio: 16 / 9;
+      /* Respeta la proporción del media (1280×682) en lugar de forzar 16/9: no recorta el video. */
+      aspect-ratio: 1280 / 682;
       overflow: clip;
       border: 1px solid var(--line);
       border-radius: 0.9rem;
@@ -214,28 +221,41 @@ export type Viewcase = {
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      object-fit: contain;
     }
 
-    /* Panel que se despliega hacia arriba al hover con el tipo de desarrollo. */
+    /* Panel que se despliega hacia arriba al hover con el nombre del caso y su categoría. */
     .vc-panel {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
       padding: 0.85rem 1.1rem;
       background: var(--surface);
       border-top: 1px solid var(--line);
       /* Esquinas inferiores redondeadas: si no, el panel tapa el redondeo del tile. */
       border-bottom-left-radius: 0.9rem;
       border-bottom-right-radius: 0.9rem;
+      transform: translateY(110%);
+      transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .vc-panel__name {
       color: var(--ink);
       font-size: 0.95rem;
       font-weight: 500;
       letter-spacing: -0.01em;
-      transform: translateY(110%);
-      transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Categoría del sistema como metadato secundario, en mono. */
+    .vc-panel__kind {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.3;
     }
 
     .vc-tile:hover .vc-panel {
@@ -279,6 +299,7 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly document = inject(DOCUMENT);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
 
   // Efecto de seguimiento del ícono al mouse. Reactivado tras aliviar la carga de video
@@ -370,6 +391,10 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const win = this.document.defaultView;
     const mobile =
       !!win &&
