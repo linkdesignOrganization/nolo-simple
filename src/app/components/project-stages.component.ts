@@ -121,17 +121,13 @@ export type ProjectStage = {
       flex-direction: column;
       padding-top: 1.15rem;
       border-top: 1px solid var(--ps-line);
-      /* Estado inicial del reveal (.is-in en el host lo dispara). */
-      opacity: 0;
-      transform: translateY(32px);
-      transition:
-        opacity 600ms ease,
-        transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
-      will-change: transform, opacity;
+      /* Reveal: solo desplazamiento hacia arriba, más marcado y SIN fade de opacidad (.is-in lo dispara). */
+      transform: translateY(64px);
+      transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
     }
 
     :host(.is-in) .ps-stage {
-      opacity: 1;
       transform: none;
     }
 
@@ -180,7 +176,6 @@ export type ProjectStage = {
 
     @media (prefers-reduced-motion: reduce) {
       .ps-stage {
-        opacity: 1;
         transform: none;
         transition: none;
       }

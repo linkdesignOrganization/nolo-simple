@@ -185,7 +185,12 @@ export type LandingData = {
                 <div class="actions">
                   @if (page().ctaPrimary) {
                     @if (isHrefLink(page().ctaPrimaryLink)) {
-                      <a class="button" [attr.href]="page().ctaPrimaryLink">
+                      <a
+                        class="button"
+                        [attr.href]="page().ctaPrimaryLink"
+                        [attr.target]="isExternalLink(page().ctaPrimaryLink) ? '_blank' : null"
+                        [attr.rel]="isExternalLink(page().ctaPrimaryLink) ? 'noopener noreferrer' : null"
+                      >
                         <span>{{ page().ctaPrimary }}</span>
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
@@ -199,7 +204,12 @@ export type LandingData = {
 
                   @if (page().ctaSecondary) {
                     @if (isHrefLink(page().ctaSecondaryLink)) {
-                      <a class="button" [attr.href]="page().ctaSecondaryLink">
+                      <a
+                        class="button"
+                        [attr.href]="page().ctaSecondaryLink"
+                        [attr.target]="isExternalLink(page().ctaSecondaryLink) ? '_blank' : null"
+                        [attr.rel]="isExternalLink(page().ctaSecondaryLink) ? 'noopener noreferrer' : null"
+                      >
                         <span>{{ page().ctaSecondary }}</span>
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
@@ -1397,6 +1407,11 @@ export class LandingPageComponent {
 
   protected isHrefLink(link?: string): boolean {
     return !!link && /^(#|mailto:|https?:)/.test(link);
+  }
+
+  // Externo (http/https, p.ej. el calendario) → abre en pestaña nueva; un ancla (#hablemos) no.
+  protected isExternalLink(link?: string): boolean {
+    return !!link && /^https?:/.test(link);
   }
 
   protected setActiveArm(arm: 'software' | 'web' | null): void {

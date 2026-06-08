@@ -90,9 +90,9 @@ const softwarePageEs: LandingData = {
   description:
     'No adaptás tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.',
   ctaPrimary: 'Agendar reunión',
-  ctaPrimaryLink: '/contacto',
+  ctaPrimaryLink: contactInfo.calendarLink,
   ctaSecondary: 'Mandar mensaje',
-  ctaSecondaryLink: '/contacto',
+  ctaSecondaryLink: '#hablemos',
   featureTabs: [
     {
       lead: 'Ordená',
@@ -305,9 +305,9 @@ const softwarePageEn: LandingData = {
   description:
     "You don't adapt your company to the software. We build the software around how your operation already works.",
   ctaPrimary: 'Book a meeting',
-  ctaPrimaryLink: '/contacto',
+  ctaPrimaryLink: contactInfo.calendarLink,
   ctaSecondary: 'Send a message',
-  ctaSecondaryLink: '/contacto',
+  ctaSecondaryLink: '#hablemos',
   featureTabs: [
     {
       lead: 'Organize',
@@ -528,8 +528,8 @@ const webPageEs: LandingData = {
     title: 'Sitios web hechos en serio.',
     lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye a medida de verdad.',
     actions: [
-      { label: 'Agendar reunión', link: '/contacto' },
-      { label: 'Mandar mensaje', link: '/contacto' }
+      { label: 'Agendar reunión', link: contactInfo.calendarLink },
+      { label: 'Mandar mensaje', link: '#hablemos' }
     ],
     slides: [],
     marquee: {
@@ -777,8 +777,8 @@ const webPageEn: LandingData = {
     title: 'Real websites. Real code.',
     lead: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
     actions: [
-      { label: 'Book a meeting', link: '/contacto' },
-      { label: 'Send a message', link: '/contacto' }
+      { label: 'Book a meeting', link: contactInfo.calendarLink },
+      { label: 'Send a message', link: '#hablemos' }
     ],
     slides: [],
     marquee: {

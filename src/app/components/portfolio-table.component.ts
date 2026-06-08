@@ -58,7 +58,7 @@ export type PortfolioRow = {
             <span class="pt-cell pt-num">{{ pad(i + 1) }}/{{ pad(rows().length) }}</span>
             <span class="pt-cell pt-client">
               @if (row.logo) {
-                <img class="pt-logo" [src]="row.logo" [alt]="row.client" loading="lazy" />
+                <img class="pt-logo" [src]="row.logo" [alt]="row.client" fetchpriority="high" />
               } @else {
                 {{ row.client }}
               }
@@ -497,6 +497,7 @@ export class PortfolioTableComponent implements OnDestroy {
   // llegar a la tabla el hover muestre el clip al instante. Solo desktop (mobile usa el poster).
   private preloadVideos(): void {
     const win = this.document.defaultView;
+    // Prefetch de los videos con prioridad BAJA: no deben competir con los logos (que llenan la fila).
     const run = (): void => {
       for (const row of this.rows()) {
         if (!row.videoSrc) {
@@ -506,17 +507,33 @@ export class PortfolioTableComponent implements OnDestroy {
         link.rel = 'prefetch';
         link.as = 'video';
         link.href = row.videoSrc;
+        link.setAttribute('fetchpriority', 'low');
         this.document.head.appendChild(link);
       }
     };
-    const idle = (win as Window & {
-      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
-    })?.requestIdleCallback;
-    if (typeof idle === 'function') {
-      idle(run, { timeout: 2000 });
-    } else {
-      win?.setTimeout(run, 1200);
-    }
+    const schedule = (): void => {
+      const idle = (win as Window & {
+        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
+      })?.requestIdleCallback;
+      if (typeof idle === 'function') {
+        idle(run, { timeout: 2000 });
+      } else {
+        win?.setTimeout(run, 1200);
+      }
+    };
+    // Primero los logos: esperamos a que TODOS carguen antes de prefetchar los videos, para que la
+    // fila nunca quede vacía esperando un video. Los logos van con fetchpriority="high" en el template.
+    const logos = [...this.host.querySelectorAll<HTMLImageElement>('img.pt-logo')];
+    Promise.all(
+      logos.map((img) =>
+        img.complete
+          ? Promise.resolve()
+          : new Promise<void>((resolve) => {
+              img.addEventListener('load', () => resolve(), { once: true });
+              img.addEventListener('error', () => resolve(), { once: true });
+            })
+      )
+    ).then(schedule);
   }
 
   ngOnDestroy(): void {

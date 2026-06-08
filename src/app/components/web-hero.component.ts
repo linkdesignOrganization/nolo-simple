@@ -53,7 +53,12 @@ type Slide = { label: string; src: string; poster: string };
               <div class="wh-actions">
                 @for (action of actions(); track action.label) {
                   @if (isHref(action.link)) {
-                    <a class="button" [attr.href]="action.link">
+                    <a
+                      class="button"
+                      [attr.href]="action.link"
+                      [attr.target]="isExternal(action.link) ? '_blank' : null"
+                      [attr.rel]="isExternal(action.link) ? 'noopener noreferrer' : null"
+                    >
                       <span>{{ action.label }}</span>
                       <span class="button-arrow" aria-hidden="true">→</span>
                     </a>
@@ -415,6 +420,11 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
 
   protected isHref(link: string): boolean {
     return /^(#|mailto:|tel:|https?:)/.test(link);
+  }
+
+  // Externo (http/https, p.ej. el calendario) → abre en pestaña nueva; un ancla (#hablemos) no.
+  protected isExternal(link: string): boolean {
+    return /^https?:/.test(link);
   }
 
   ngAfterViewInit(): void {
