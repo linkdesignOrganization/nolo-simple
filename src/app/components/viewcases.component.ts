@@ -50,6 +50,8 @@ export type Viewcase = {
             <a
               class="vc-tile"
               [href]="item.link"
+              target="_blank"
+              rel="noopener noreferrer"
               (mouseenter)="play($event)"
               (mouseleave)="stop($event)"
             >

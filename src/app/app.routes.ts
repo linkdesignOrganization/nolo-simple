@@ -238,10 +238,10 @@ const softwarePageEs: LandingData = {
     intro:
       'Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
     items: [
-      { label: 'Estudio Dental Mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: '#' },
-      { label: 'Tornos del Sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: '#' },
-      { label: 'Punto Cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: '#' },
-      { label: 'Vértice Seguridad Industrial', category: 'ERP para empresa de servicios', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: '#' }
+      { label: 'Estudio Dental Mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
+      { label: 'Vértice Seguridad Industrial', category: 'ERP para empresa de servicios', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {
@@ -453,10 +453,10 @@ const softwarePageEn: LandingData = {
     intro:
       "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
     items: [
-      { label: 'Estudio Dental Mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: '#' },
-      { label: 'Tornos del Sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: '#' },
-      { label: 'Punto Cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: '#' },
-      { label: 'Vértice Seguridad Industrial', category: 'ERP for a services company', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: '#' }
+      { label: 'Estudio Dental Mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
+      { label: 'Vértice Seguridad Industrial', category: 'ERP for a services company', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {
