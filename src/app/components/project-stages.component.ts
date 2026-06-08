@@ -183,6 +183,11 @@ export type ProjectStage = {
 
     /* Mobile: apilados en una columna, con aire generoso. */
     @media (max-width: 760px) {
+      /* En la variante oscura el cuerpo gris cuesta leerlo en celular → casi-blanco. */
+      :host(:not(.ps--light)) {
+        --ps-muted: #f4f4f4;
+      }
+
       .ps-stages {
         grid-template-columns: 1fr;
         gap: clamp(2.5rem, 9vw, 3.5rem);

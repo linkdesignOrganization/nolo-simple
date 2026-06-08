@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import {
   LucideCheck,
+  LucideChevronsRight,
   LucideMonitorCog,
   LucideMonitorDot,
   LucideMonitorStop,
@@ -35,6 +36,7 @@ export type DevTypeBlock = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     LucideCheck,
+    LucideChevronsRight,
     LucideMonitorStop,
     LucideMonitorDot,
     LucideShoppingCart,
@@ -75,6 +77,10 @@ export type DevTypeBlock = {
               <span class="dt-tab__label">{{ block.tab }}</span>
             </button>
           }
+
+          <span class="dt-swipe" aria-hidden="true">
+            <svg lucideChevronsRight [size]="18" [strokeWidth]="1"></svg>
+          </span>
         </aside>
 
         <div class="dt-panels">
@@ -315,6 +321,23 @@ export type DevTypeBlock = {
       border-top: 1px solid var(--dt-line);
     }
 
+    /* Hint de swipe de los tabs: oculto en desktop, se muestra y anima en el @media de abajo. */
+    .dt-swipe {
+      display: none;
+    }
+
+    @keyframes dt-swipe-hint {
+      0%,
+      100% {
+        transform: translateX(0);
+        opacity: 0.55;
+      }
+      50% {
+        transform: translateX(5px);
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 860px) {
       .dt-grid {
         grid-template-columns: 1fr;
@@ -344,12 +367,45 @@ export type DevTypeBlock = {
         white-space: nowrap;
         padding: 0.5rem 0.7rem;
       }
+
+      /* Doble flecha anclada al borde derecho del scroller de tabs: indica que se deslizan. */
+      .dt-swipe {
+        position: sticky;
+        right: 0;
+        z-index: 1;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        align-self: stretch;
+        margin-left: -0.4rem;
+        padding-left: 1.1rem;
+        color: var(--dt-faint);
+        background: linear-gradient(to right, transparent, var(--surface) 45%);
+        pointer-events: none;
+      }
+
+      .dt-swipe svg {
+        display: block;
+        animation: dt-swipe-hint 1.5s ease-in-out infinite;
+      }
+    }
+
+    /* Mobile: el cuerpo gris de los paneles → casi-blanco para legibilidad (desktop tiene texto mayor). */
+    @media (max-width: 760px) {
+      .dt-panel__desc,
+      .dt-cases__item {
+        color: #f4f4f4;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .dt-frame,
       .dt-tab {
         transition: none;
+      }
+
+      .dt-swipe svg {
+        animation: none;
       }
     }
   `

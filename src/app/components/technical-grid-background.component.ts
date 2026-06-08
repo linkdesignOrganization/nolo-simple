@@ -290,10 +290,17 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
       context.stroke();
     }
 
+    // En ambient (mobile/touch) los puntos crecen un poco más y brillan algo más fuerte, para que la
+    // onda automática se note al pasar. En pointer (desktop) se mantiene el tamaño sutil del hover.
+    const ambient = this.resolvedMode === 'ambient';
+    const radiusBase = ambient ? 0.6 : 0.55;
+    const radiusGain = ambient ? 2.2 : 1.55;
+    const alphaGain = ambient ? 0.48 : 0.38;
+
     for (const point of this.points) {
       const intensity = point.intensity;
-      const alpha = 0.075 + intensity * 0.38;
-      const radius = 0.55 + intensity * 1.55;
+      const alpha = 0.075 + intensity * alphaGain;
+      const radius = radiusBase + intensity * radiusGain;
 
       context.fillStyle = `rgba(${this.dotRgb}, ${alpha})`;
       context.beginPath();
@@ -303,7 +310,10 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
   }
 
   private getAmbientEmitters(timestamp: number): AmbientEmitter[] {
-    const time = timestamp * 0.00009 + this.seed() * 0.73;
+    // Factor de tiempo un poco mayor (era 0.00009): la onda automática de mobile se mueve algo más
+    // rápido. Los weights más altos (+cap en resolveAmbientTarget) suben el pico de intensidad para
+    // que los puntos crezcan al pasar el frente y el efecto se note.
+    const time = timestamp * 0.00013 + this.seed() * 0.73;
     const travelA = (Math.sin(time) + 1) / 2;
     const travelB = (Math.sin(time * 0.68 + 1.8) + 1) / 2;
     const travelC = (Math.cos(time * 0.42 + 0.4) + 1) / 2;
@@ -311,19 +321,19 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
     return [
       {
         radius: Math.max(72, Math.min(140, this.width * 0.2)),
-        weight: 0.46,
+        weight: 0.56,
         x: this.width * (0.12 + 0.76 * travelA),
         y: this.height * (0.3 + 0.12 * Math.sin(time * 1.08 + this.seed()))
       },
       {
         radius: Math.max(82, Math.min(156, this.width * 0.24)),
-        weight: 0.34,
+        weight: 0.42,
         x: this.width * (0.18 + 0.64 * travelB),
         y: this.height * (0.68 + 0.1 * Math.cos(time * 0.84 + this.seed() * 0.4))
       },
       {
         radius: Math.max(64, Math.min(118, this.width * 0.16)),
-        weight: 0.22,
+        weight: 0.3,
         x: this.width * (0.22 + 0.56 * travelC),
         y: this.height * (0.5 + 0.08 * Math.sin(time * 0.62 + 2.4))
       }
@@ -408,7 +418,7 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
       influence += this.getDistanceFalloff(distance, emitter.radius) * emitter.weight;
     }
 
-    return Math.min(0.72, influence);
+    return Math.min(0.85, influence);
   }
 
   private resolveCellSize(): number {

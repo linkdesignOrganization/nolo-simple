@@ -234,7 +234,7 @@ const softwarePageEs: LandingData = {
     ]
   },
   viewcases: {
-    title: 'Esto no es portfolio. Son demos para que probés.',
+    title: 'Probá un sistema hecho a medida.',
     intro:
       'Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
     items: [
@@ -449,7 +449,7 @@ const softwarePageEn: LandingData = {
     ]
   },
   viewcases: {
-    title: "This isn't a portfolio. These are demos for you to try.",
+    title: 'Try a custom-built system.',
     intro:
       "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
     items: [

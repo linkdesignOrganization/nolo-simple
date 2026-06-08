@@ -387,11 +387,35 @@
     justify-self: center;
   }
 
+  /* El nav (3 opciones + toggle) debe quedar en UNA sola línea en mobile: nowrap + se ocultan los
+     separadores de puntos y se compactan paddings/tipografía/toggle para que entre hasta ~320px.
+     Los nav-link conservan min-height (área táctil); solo encogen en horizontal. */
   .topbar:not(.topbar--home) .nav {
     grid-area: nav;
     justify-self: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
+    gap: 0.18rem;
+    padding: 0.18rem 0.45rem 0.18rem 0.25rem;
+  }
+
+  .topbar:not(.topbar--home) .nav .nav-dot {
+    display: none;
+  }
+
+  .topbar:not(.topbar--home) .nav .nav-link {
+    padding: 0.5rem 0.42rem;
+    font-size: 0.8rem;
+  }
+
+  .topbar:not(.topbar--home) .nav .lang-toggle {
+    margin-left: 0.08rem;
+  }
+
+  .topbar:not(.topbar--home) .nav .lang-toggle__opt {
+    min-width: 1.35rem;
+    padding: 0.24rem 0.22rem;
+    font-size: 0.68rem;
   }
 
   .topbar:not(.topbar--home) .wa-button {

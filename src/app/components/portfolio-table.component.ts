@@ -284,13 +284,13 @@ export type PortfolioRow = {
         align-self: start;
       }
 
+      /* Sin aspect-ratio fijo: el poster (img) toma su proporción real, no se recorta. */
       .pt-thumb {
         grid-area: thumb;
         display: block;
         width: 100%;
-        aspect-ratio: 16 / 10;
+        height: auto;
         margin-top: 1rem;
-        object-fit: cover;
         border-radius: 0.5rem;
         background: rgba(17, 17, 17, 0.05);
       }

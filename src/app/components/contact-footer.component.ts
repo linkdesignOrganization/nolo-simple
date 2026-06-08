@@ -595,10 +595,36 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
       }
     }
 
+    /* Mobile: subir el cuerpo gris a casi-blanco para que se lea bien (en desktop el texto es mayor). */
+    @media (max-width: 760px) {
+      .cf-sub,
+      .cf-sent p {
+        color: #f4f4f4;
+      }
+    }
+
     @media (max-width: 560px) {
       .cf-grid,
       .cf-chips-row {
         grid-template-columns: 1fr;
+      }
+
+      /* Apilado a 1 columna: más aire vertical entre campos (los gap pensados para 2 columnas colapsaban). */
+      .cf-grid {
+        gap: 1.6rem;
+      }
+
+      .cf-field {
+        gap: 0.5rem;
+      }
+
+      .cf-chips-row {
+        gap: 1.5rem;
+        margin-top: 1.7rem;
+      }
+
+      .cf-chips-row + .cf-field {
+        margin-top: 1.7rem;
       }
 
       .cf-submit {

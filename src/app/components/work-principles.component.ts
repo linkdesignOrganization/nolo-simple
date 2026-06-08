@@ -168,18 +168,19 @@ export type Principle = {
         padding: clamp(3rem, 12vw, 5rem) 0;
       }
 
+      /* Apiladas: más aire entre tarjetas para que se distingan como bloques prolijos. */
       .wp-cards {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: clamp(2.25rem, 8vw, 3rem);
       }
 
       .wp-card {
-        gap: 1rem;
+        gap: 1.15rem;
         transform: translateY(28px);
       }
 
       .wp-card__panel {
-        padding: 1.15rem 0;
+        padding: 1.15rem 0 1.5rem;
       }
     }
   `
