@@ -2,6 +2,7 @@
   class="shell"
   appTechnicalGridSurface
   [appTechnicalGridDisabled]="!isSoftware() && !isContact()"
+  [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
   [appTechnicalGridCellSize]="isSoftware() || isContact() ? 18 : null"
   [class.shell--plain]="isHome()"

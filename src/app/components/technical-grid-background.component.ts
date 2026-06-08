@@ -54,7 +54,8 @@ export function selectTechnicalGridMode({
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'aria-hidden': 'true',
-    'class': 'technical-grid-background'
+    'class': 'technical-grid-background',
+    '[class.technical-grid-background--viewport]': 'viewport()'
   },
   template: ` <canvas #canvas class="technical-grid-background__canvas"></canvas> `,
   styles: `
@@ -64,6 +65,12 @@ export function selectTechnicalGridMode({
       display: block;
       pointer-events: none;
       overflow: hidden;
+    }
+
+    /* Modo viewport: el canvas se fija al viewport (no a toda la página), así solo renderiza el
+       área visible. Para el fondo full-page del shell en /software → ~9× menos trabajo por frame. */
+    :host(.technical-grid-background--viewport) {
+      position: fixed;
     }
 
     .technical-grid-background__canvas {
@@ -83,6 +90,9 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
   readonly cellSize = input<number | null>(null);
   readonly influenceRadius = input<number | null>(null);
   readonly seed = input<number>(0);
+  // Cuando true, el canvas se dimensiona y posiciona al VIEWPORT (position: fixed), no al contenedor.
+  // Para fondos full-page (el shell de /software): evita un canvas de miles de px de alto.
+  readonly viewport = input<boolean>(false);
 
   @ViewChild('canvas', { static: true })
   private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -173,7 +183,10 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
       return;
     }
 
-    const bounds = this.containerElement.getBoundingClientRect();
+    // En modo viewport el canvas está fijo al viewport (0,0): el puntero ya viene en esas coordenadas.
+    const bounds = this.viewport()
+      ? { left: 0, top: 0 }
+      : this.containerElement.getBoundingClientRect();
 
     this.pointer.active = true;
     this.pointer.x = event.clientX - bounds.left;
@@ -508,7 +521,10 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
       return false;
     }
 
-    const bounds = this.containerElement.getBoundingClientRect();
+    // En modo viewport el canvas cubre solo el área visible (no toda la página → no miles de px de alto).
+    const bounds = this.viewport()
+      ? { width: this.win?.innerWidth ?? 0, height: this.win?.innerHeight ?? 0 }
+      : this.containerElement.getBoundingClientRect();
     const nextWidth = Math.max(1, Math.round(bounds.width));
     const nextHeight = Math.max(1, Math.round(bounds.height));
     const nextDpr = Math.min(this.win?.devicePixelRatio ?? 1, 2);
@@ -550,6 +566,17 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
   }
 
   private setupResizeHandling(): void {
+    // En modo viewport el tamaño depende del viewport, no del contenedor: escuchamos al window.
+    if (this.viewport() && this.win) {
+      this.win.addEventListener('resize', this.handleWindowResize, { passive: true });
+      this.win.addEventListener('orientationchange', this.handleWindowResize, { passive: true });
+      this.cleanupFns.push(() => {
+        this.win?.removeEventListener('resize', this.handleWindowResize);
+        this.win?.removeEventListener('orientationchange', this.handleWindowResize);
+      });
+      return;
+    }
+
     if (typeof ResizeObserver !== 'undefined') {
       this.resizeObserver = new ResizeObserver(() => {
         this.handleGeometryChange();

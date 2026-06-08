@@ -21,6 +21,7 @@ import {
         [cellSize]="gridCellSize()"
         [influenceRadius]="gridInfluenceRadius()"
         [seed]="gridSeed()"
+        [viewport]="gridViewport()"
       />
     }
     <ng-content />
@@ -58,5 +59,9 @@ export class TechnicalGridSurfaceComponent {
   });
   readonly gridSeed = input<number>(0, {
     alias: 'appTechnicalGridSeed'
+  });
+  // Limita el render del artefacto al viewport (no a toda la página). Para el shell full-page.
+  readonly gridViewport = input(false, {
+    alias: 'appTechnicalGridViewport'
   });
 }
