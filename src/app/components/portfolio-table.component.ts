@@ -74,7 +74,9 @@ export type PortfolioRow = {
         }
 
         @if (hasMore()) {
-          <button type="button" class="pt-more" (click)="showMore()">
+          <!-- El botón está dentro de la tabla: al entrar, ocultar el viewer flotante para que no
+               quede mostrando el último proyecto activado. -->
+          <button type="button" class="pt-more" (click)="showMore()" (mouseenter)="onTableLeave()">
             <span class="pt-more__label">{{ t().more }}</span>
             <svg class="pt-more__icon" lucideArrowDown [size]="20" [strokeWidth]="1" aria-hidden="true"></svg>
           </button>

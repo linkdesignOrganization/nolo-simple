@@ -78,6 +78,7 @@ type Slide = { label: string; src: string; poster: string };
                 <video
                   class="wh-video"
                   [src]="slide.src"
+                  [poster]="slide.poster"
                   [muted]="true"
                   loop
                   playsinline
