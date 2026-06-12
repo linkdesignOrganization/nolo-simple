@@ -262,11 +262,12 @@
   display: inline-flex;
   align-items: center;
   justify-self: end;
-  gap: clamp(0.5rem, 1vw, 0.75rem);
+  gap: clamp(0.35rem, 0.7vw, 0.5rem);
 }
 
 /* Botones icon-only del topbar (WhatsApp + headset): cajas cuadradas hermanas del CTA
-   "Hablemos", mismo alto y redondeo. Blanco/negro en reposo. */
+   "Hablemos", mismo alto y redondeo. El headset queda blanco/negro en reposo; el de
+   WhatsApp es verde de marca (ver más abajo). */
 .wa-button,
 .hs-button {
   display: inline-flex;
@@ -294,13 +295,44 @@
   height: 1.5rem;
 }
 
-/* WhatsApp: verde de marca al hover/focus. */
-.wa-button:hover,
-.wa-button:focus-visible {
+/* WhatsApp: verde de marca en reposo con el ícono en blanco. */
+.wa-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: #25d366;
   color: #ffffff;
+}
+
+/* Relleno blanco que sube desde abajo en el hover (mismo gesto que .button). */
+.wa-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #ffffff;
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 520ms linear(0, 0.58 48%, 0.58 66%, 1);
+}
+
+/* El ícono va por encima del relleno. */
+.wa-button svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Al hover/focus el relleno blanco cubre el botón y el ícono queda verde. */
+.wa-button:hover,
+.wa-button:focus-visible {
+  color: #25d366;
   transform: translateY(-0.5px);
   outline: none;
+}
+
+.wa-button:hover::before,
+.wa-button:focus-visible::before {
+  transform: scaleY(1);
 }
 
 /* Headset = "Hablemos" en ícono. Oculto por defecto: en desktop/tablet internas se usa el
