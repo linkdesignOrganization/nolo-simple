@@ -28,7 +28,7 @@ describe('ContactPageComponent', () => {
     const el = fixture.nativeElement as HTMLElement;
 
     const mailto = el.querySelector('a.ct-row[href^="mailto:"]');
-    expect(mailto?.getAttribute('href')).toBe('mailto:hola@linkdesign.cr');
+    expect(mailto?.getAttribute('href')).toBe('mailto:hola@sowe.ar');
 
     const areas = [...el.querySelectorAll('a.ct-area')].map((a) => a.getAttribute('href'));
     expect(areas).toEqual(['/software', '/web']);

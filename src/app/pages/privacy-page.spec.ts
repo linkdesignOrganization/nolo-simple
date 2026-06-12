@@ -18,7 +18,7 @@ describe('PrivacyPageComponent', () => {
     expect(el.querySelectorAll('.pp-section').length).toBe(8);
 
     const mailto = el.querySelector('a.pp-link[href^="mailto:"]');
-    expect(mailto?.getAttribute('href')).toBe('mailto:hola@linkdesign.cr');
+    expect(mailto?.getAttribute('href')).toBe('mailto:hola@sowe.ar');
   });
 
   it('closes with a simple legal bar mentioning Sowe (no contact footer)', () => {

@@ -135,7 +135,7 @@ export class PrivacyPageComponent {
   protected readonly t = computed(() => PRIVACY_TEXT[this.lang()]);
 
   protected readonly year = new Date().getFullYear();
-  protected readonly email = 'hola@linkdesign.cr';
+  protected readonly email = 'hola@sowe.ar';
 }
 
 type PrivacyText = {
@@ -211,7 +211,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           'Podés solicitar el acceso a tus datos, la corrección de información inexacta, su ' +
             'eliminación, la limitación de su uso o el retiro de tu consentimiento en cualquier ' +
-            'momento. Para ejercerlos, escribinos a hola@linkdesign.cr.'
+            'momento. Para ejercerlos, escribinos a hola@sowe.ar.'
         ]
       },
       {
@@ -285,7 +285,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           'You can request access to your data, the correction of inaccurate information, its ' +
             'deletion, the restriction of its use or the withdrawal of your consent at any time. To ' +
-            'exercise them, write to us at hola@linkdesign.cr.'
+            'exercise them, write to us at hola@sowe.ar.'
         ]
       },
       {

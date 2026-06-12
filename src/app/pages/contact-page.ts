@@ -348,7 +348,7 @@ export class ContactPageComponent {
   protected readonly t = computed(() => CONTACT_TEXT[this.lang()]);
 
   protected readonly info: ContactInfo = {
-    email: 'hola@linkdesign.cr',
+    email: 'hola@sowe.ar',
     whatsappLink: '#',
     calendarLink: '#',
     location: 'Buenos Aires, Argentina'

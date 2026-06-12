@@ -5,7 +5,7 @@ import { LandingData, LandingPageComponent } from './pages/landing-page';
 import { PrivacyPageComponent } from './pages/privacy-page';
 
 const contactInfo = {
-  email: 'hola@linkdesign.cr',
+  email: 'hola@sowe.ar',
   whatsappLink: '#',
   calendarLink: '#'
 };
