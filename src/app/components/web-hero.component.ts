@@ -302,7 +302,8 @@ type Slide = { label: string; src: string; poster: string };
     }
 
     .wh-marquee__item svg {
-      color: var(--muted);
+      /* Rojo nítido para reforzar el "no" de cada plataforma que NO usamos. */
+      color: #ef4444;
     }
 
     /* Etiqueta fija: tapa el marquee a la izquierda; el gradiente lo desvanece al meterse detrás. */
