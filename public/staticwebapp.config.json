@@ -1,0 +1,13 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/media/*",
+      "/logostools/*",
+      "/*.{js,css,ico,png,jpg,jpeg,gif,svg,webp,avif,woff,woff2,ttf,eot,mp4,webm,txt,json,xml,webmanifest}"
+    ]
+  },
+  "mimeTypes": {
+    ".mp4": "video/mp4"
+  }
+}
