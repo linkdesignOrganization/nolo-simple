@@ -87,7 +87,7 @@ type Slide = { label: string; src: string; poster: string };
                   [muted]="true"
                   loop
                   playsinline
-                  preload="metadata"
+                  preload="none"
                 ></video>
               } @else if (slide.poster) {
                 <img class="wh-video" [src]="slide.poster" alt="" />
@@ -418,6 +418,11 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
   private intervalId: ReturnType<typeof setInterval> | null = null;
+  private observer: IntersectionObserver | null = null;
+  // El carrusel solo rota/reproduce con el hero en pantalla (IntersectionObserver): fuera de
+  // vista no tiene sentido decodificar video ni avanzar, carga la máquina al pedo.
+  private sectionVisible = false;
+  private reducedMotion = false;
 
   protected isHref(link: string): boolean {
     return /^(#|mailto:|tel:|https?:)/.test(link);
@@ -433,16 +438,55 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-    const count = this.stageSlides().length;
-    const reduced =
+    this.reducedMotion =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const host = this.hostRef.nativeElement as HTMLElement;
 
-    this.playActive();
-
-    if (count <= 1 || reduced) {
+    // Sin IntersectionObserver: tratamos el hero como siempre visible.
+    if (typeof IntersectionObserver === 'undefined') {
+      this.sectionVisible = true;
+      this.playActive();
+      this.startRotation();
       return;
     }
 
+    // Reproducir y rotar solo con el hero en pantalla: al salir de vista pausamos el video y
+    // frenamos el auto-avance para no seguir decodificando al pedo.
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some((entry) => entry.isIntersecting);
+        if (visible === this.sectionVisible) {
+          return;
+        }
+        this.sectionVisible = visible;
+        if (visible) {
+          this.playActive();
+          this.startRotation();
+        } else {
+          this.pauseVideos();
+          this.stopRotation();
+        }
+      },
+      { threshold: 0 }
+    );
+    this.observer.observe(host);
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+    this.observer = null;
+    this.stopRotation();
+  }
+
+  // Auto-avance del carrusel; solo corre con el hero visible, >1 slide y sin reduced-motion.
+  private startRotation(): void {
+    if (this.intervalId !== null || this.reducedMotion) {
+      return;
+    }
+    const count = this.stageSlides().length;
+    if (count <= 1) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       this.intervalId = setInterval(() => {
         this.zone.run(() => {
@@ -453,11 +497,16 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  private stopRotation(): void {
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;
     }
+  }
+
+  private pauseVideos(): void {
+    const host = this.hostRef.nativeElement as HTMLElement;
+    host.querySelectorAll('video').forEach((video: HTMLVideoElement) => video.pause());
   }
 
   // Solo el recuadro activo reproduce su video (cuando haya videos); los demás se pausan.
