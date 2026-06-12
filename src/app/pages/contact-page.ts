@@ -336,7 +336,7 @@ import { AdsService } from '../services/ads.service';
       }
 
       .ct-title {
-        font-size: clamp(4rem, 22vw, 9rem);
+        font-size: clamp(5rem, 36vw, 13rem);
       }
     }
   `

@@ -362,12 +362,39 @@ type Slide = { label: string; src: string; poster: string };
         padding-top: clamp(1.5rem, 3vw, 2.25rem);
       }
 
+      /* Fade superior más corto en mobile: el de /web arranca dentro del hero (tras el topbar de 2
+         filas), así que con el alto de desktop se ve más alto que el de /software. Lo acortamos. */
+      .wh-bg::before {
+        height: clamp(3rem, 9vw, 5rem);
+      }
+
       .wh-inner {
         min-height: 0;
       }
 
       .wh-left {
         max-width: none;
+        align-items: center;
+        text-align: center;
+      }
+
+      /* Botones uno al lado del otro: no envuelven, cada uno toma la mitad del ancho. */
+      .wh-actions {
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
+      }
+
+      .wh-actions .button {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      /* Una sola línea por botón: nowrap + tipografía/padding algo menores para que entre sin partirse. */
+      .wh-actions .button > span:first-child {
+        padding: 0 0.5rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
       }
 
       .wh-media {

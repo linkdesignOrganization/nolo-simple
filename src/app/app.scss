@@ -394,7 +394,7 @@
       'wa brand hs'
       'nav nav nav';
     column-gap: clamp(0.6rem, 2vw, 1rem);
-    row-gap: clamp(0.9rem, 3.5vw, 1.25rem);
+    row-gap: clamp(0.4rem, 1.8vw, 0.65rem);
     min-height: auto;
     padding-bottom: 1rem;
   }
@@ -412,31 +412,33 @@
     grid-area: hs;
     justify-self: end;
     display: inline-flex;
+    /* Botón de contacto en negro (solo mobile). */
+    background: var(--ink);
+    color: #ffffff;
   }
 
   .topbar:not(.topbar--home) .brand {
     grid-area: brand;
     justify-self: center;
+    /* Logo más grande en celulares ("sowe" es corto, hay aire entre los dos botones). */
+    font-size: clamp(2.3rem, 9vw, 3rem);
   }
 
-  /* El nav (3 opciones + toggle) debe quedar en UNA sola línea en mobile: nowrap + se ocultan los
-     separadores de puntos y se compactan paddings/tipografía/toggle para que entre hasta ~320px.
-     Los nav-link conservan min-height (área táctil); solo encogen en horizontal. */
+  /* El nav (3 opciones + separadores + toggle) en UNA sola línea, estirado a todo el ancho de la
+     fila (space-between, alineado con la fila de botones de arriba) y compacto para que entre hasta
+     ~320px. Los nav-link conservan min-height (área táctil); solo encogen en horizontal. */
   .topbar:not(.topbar--home) .nav {
     grid-area: nav;
-    justify-self: center;
+    display: flex;
+    justify-self: stretch;
     flex-wrap: nowrap;
-    justify-content: center;
-    gap: 0.18rem;
-    padding: 0.18rem 0.45rem 0.18rem 0.25rem;
-  }
-
-  .topbar:not(.topbar--home) .nav .nav-dot {
-    display: none;
+    justify-content: space-between;
+    gap: 0.12rem;
+    padding: 0.18rem 0.7rem;
   }
 
   .topbar:not(.topbar--home) .nav .nav-link {
-    padding: 0.5rem 0.42rem;
+    padding: 0.5rem 0.3rem;
     font-size: 0.8rem;
   }
 

@@ -1339,21 +1339,36 @@ export type LandingData = {
         grid-column: auto;
         padding-top: 0.6rem;
         padding-bottom: 1rem;
+        text-align: center;
       }
 
       .hero--software .hero-copy {
         grid-column: auto;
         gap: 1.25rem;
         padding-top: 1.25rem;
+        text-align: center;
+        justify-items: center;
       }
 
+      /* Botones uno al lado del otro: no envuelven, cada uno toma la mitad del ancho. */
       .hero--software .actions {
-        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
       }
 
       .hero--software .button {
-        width: 100%;
+        flex: 1 1 0;
+        width: auto;
         min-width: 0;
+      }
+
+      /* Botón en una línea: nowrap + tipografía/padding algo menores. */
+      .hero--software .button > span:first-child {
+        padding: 0 0.5rem;
+        font-size: 0.82rem;
+        white-space: nowrap;
       }
 
       .hero-feature {

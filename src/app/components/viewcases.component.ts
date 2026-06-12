@@ -303,6 +303,8 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
+  // Mobile: solo un video reproduce a la vez (el que cruza el centro); pausa el anterior.
+  private inlineActive: HTMLVideoElement | null = null;
 
   // Efecto de seguimiento del ícono al mouse. Reactivado tras aliviar la carga de video
   // (hero a 1 decoder, viewcases con poster + preload="none").
@@ -419,15 +421,19 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
         (entries) => {
           for (const entry of entries) {
             const video = entry.target as HTMLVideoElement;
-            // Solo los videos visibles se reproducen; los que salen de pantalla se pausan.
-            if (entry.isIntersecting) {
-              video.play().catch(() => {});
-            } else {
-              video.pause();
+            if (!entry.isIntersecting) {
+              continue;
             }
+            // Solo UN video a la vez: pausamos el anterior antes de reproducir el que cruza el centro.
+            if (this.inlineActive && this.inlineActive !== video) {
+              this.inlineActive.pause();
+            }
+            this.inlineActive = video;
+            video.muted = true;
+            video.play().catch(() => {});
           }
         },
-        { threshold: 0.25 }
+        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
       );
       host.querySelectorAll('video').forEach((v) => this.observer?.observe(v));
       return;
