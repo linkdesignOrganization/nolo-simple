@@ -10,6 +10,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 import { LanguageService } from '../services/language.service';
+import { AdsService } from '../services/ads.service';
 import {
   LucideCalendar,
   LucideCheck,
@@ -73,7 +74,7 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
           </li>
 
           <li class="cf-contact">
-            <a class="cf-contact__link" [href]="info().whatsappLink">
+            <a class="cf-contact__link" [href]="info().whatsappLink" (click)="onWhatsapp()">
               <span class="cf-contact__icon" aria-hidden="true">
                 <svg lucideMessageCircle [size]="20" [strokeWidth]="1"></svg>
               </span>
@@ -82,7 +83,7 @@ type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: stri
           </li>
 
           <li class="cf-contact">
-            <a class="cf-contact__link" [href]="info().calendarLink">
+            <a class="cf-contact__link" [href]="info().calendarLink" (click)="onSchedule()">
               <span class="cf-contact__icon" aria-hidden="true">
                 <svg lucideCalendar [size]="20" [strokeWidth]="1"></svg>
               </span>
@@ -638,6 +639,7 @@ export class ContactFooterComponent {
   readonly info = input.required<ContactInfo>();
 
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => FOOTER_TEXT[this.lang()]);
 
@@ -708,6 +710,7 @@ export class ContactFooterComponent {
   }
 
   protected copyEmail(): void {
+    this.ads.emailCopy();
     const email = this.info().email;
     const clip = typeof navigator !== 'undefined' ? navigator.clipboard : undefined;
     if (!clip) {
@@ -720,6 +723,14 @@ export class ContactFooterComponent {
         setTimeout(() => this.copied.set(false), 1800);
       })
       .catch(() => {});
+  }
+
+  protected onWhatsapp(): void {
+    this.ads.whatsapp();
+  }
+
+  protected onSchedule(): void {
+    this.ads.scheduleMeeting();
   }
 }
 

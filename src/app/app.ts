@@ -7,6 +7,7 @@ import { filter, map, startWith } from 'rxjs';
 
 import { TechnicalGridSurfaceComponent } from './components/technical-grid-surface.component';
 import { LanguageService } from './services/language.service';
+import { AdsService } from './services/ads.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class App {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -49,6 +51,11 @@ export class App {
 
   protected toggleLang(): void {
     this.i18n.toggle();
+  }
+
+  // Click en el botón de WhatsApp del topbar → conversión de Google Ads.
+  protected onWhatsapp(): void {
+    this.ads.whatsapp();
   }
 
   // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o al inicio si se
