@@ -71,7 +71,7 @@ describe('App', () => {
       link.getAttribute('href')
     );
 
-    expect(links).toEqual(['Capacidades', 'Servicios', 'Portfolio']);
+    expect(links).toEqual(['Capacidades', 'Servicios', 'Portafolio']);
     expect(hrefs).toEqual(['/web#capacidades', '/web#servicios', '/web#portfolio']);
   });
 

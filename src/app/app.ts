@@ -81,7 +81,7 @@ const SOFTWARE_NAV: NavLink[] = [
 const WEB_NAV: NavLink[] = [
   { label: { es: 'Capacidades', en: 'Capabilities' }, href: '/web#capacidades' },
   { label: { es: 'Servicios', en: 'Services' }, href: '/web#servicios' },
-  { label: { es: 'Portfolio', en: 'Portfolio' }, href: '/web#portfolio' }
+  { label: { es: 'Portafolio', en: 'Portfolio' }, href: '/web#portfolio' }
 ];
 
 const TOPBAR_TEXT = {

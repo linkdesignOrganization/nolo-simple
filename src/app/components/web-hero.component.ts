@@ -80,14 +80,19 @@ type Slide = { label: string; src: string; poster: string };
           @for (slide of stageSlides(); track $index) {
             <div class="wh-slide" [class.is-active]="$index === activeIndex()">
               @if (slide.src) {
+                <!-- Poster de base, siempre visible: con net lento se ve el poster (nunca un
+                     frame en blanco) hasta que el video puede reproducirse y se revela encima. -->
+                <img class="wh-video wh-video--poster" [src]="slide.poster" alt="" aria-hidden="true" />
                 <video
-                  class="wh-video"
+                  class="wh-video wh-video--media"
+                  [class.is-ready]="readyIndices().has($index)"
                   [src]="slide.src"
                   [poster]="slide.poster"
                   [muted]="true"
                   loop
                   playsinline
-                  preload="none"
+                  [attr.preload]="preloadIndices().has($index) ? 'auto' : 'none'"
+                  (canplay)="onVideoReady($index)"
                 ></video>
               } @else if (slide.poster) {
                 <img class="wh-video" [src]="slide.poster" alt="" />
@@ -262,6 +267,22 @@ type Slide = { label: string; src: string; poster: string };
       object-position: top center;
     }
 
+    /* Poster de base (siempre visible) + video encima que se revela al estar listo (canplay).
+       Evita frames en blanco con net lento: si el video no cargó, se sigue viendo el poster. */
+    .wh-video--poster {
+      z-index: 0;
+    }
+
+    .wh-video--media {
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 320ms ease;
+    }
+
+    .wh-video--media.is-ready {
+      opacity: 1;
+    }
+
     .wh-slide__num {
       color: var(--muted);
       font-family: var(--font-mono);
@@ -349,6 +370,10 @@ type Slide = { label: string; src: string; poster: string };
 
       .wh-marquee__track {
         animation: none;
+      }
+
+      .wh-video--media {
+        transition: none;
       }
     }
 
@@ -455,6 +480,20 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   // para no recortar. null = usa el aspect-ratio por defecto del CSS hasta que carga el primer video.
   protected readonly mediaAspect = signal<number | null>(null);
 
+  // Índices de videos que ya pueden reproducirse (canplay): se revelan encima del poster.
+  protected readonly readyIndices = signal<ReadonlySet<number>>(new Set());
+
+  // Precarga solo el activo + el siguiente (no los 3): así el próximo llega listo a su turno.
+  protected readonly preloadIndices = computed<ReadonlySet<number>>(() => {
+    const count = this.stageSlides().length;
+    const a = this.activeIndex();
+    const set = new Set<number>([a]);
+    if (count > 1) {
+      set.add((a + 1) % count);
+    }
+    return set;
+  });
+
   private static readonly rotateMs = 5200;
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
@@ -474,6 +513,16 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   // Externo (http/https, p.ej. el calendario) → abre en pestaña nueva; un ancla (#hablemos) no.
   protected isExternal(link: string): boolean {
     return /^https?:/.test(link);
+  }
+
+  // Un video disparó canplay → se revela encima del poster (fade). Una vez listo, queda revelado.
+  protected onVideoReady(index: number): void {
+    if (this.readyIndices().has(index)) {
+      return;
+    }
+    const next = new Set(this.readyIndices());
+    next.add(index);
+    this.readyIndices.set(next);
   }
 
   ngAfterViewInit(): void {
@@ -561,23 +610,41 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
     host.querySelectorAll<HTMLElement>('.wh-slide').forEach((slide, index) => {
       const video = slide.querySelector('video');
       if (index === active) {
-        const media = video ?? slide.querySelector('img');
+        // Aspecto desde el poster (carga más rápido que el metadata del video) → sin salto de tamaño.
+        const media =
+          slide.querySelector<HTMLImageElement>('.wh-video--poster') ??
+          slide.querySelector('img') ??
+          video;
         if (media) {
           this.applyAspect(media);
         }
         if (video) {
           video.muted = true;
-          video.currentTime = 0;
-          const playback = video.play();
-          if (playback && typeof playback.catch === 'function') {
-            playback.catch(() => {});
-          }
+          this.restartAndPlay(video);
         }
       } else if (video) {
+        // Solo pausar: NO resetear acá. El saliente se reiniciaría visiblemente mientras se
+        // desliza afuera (~420ms). La rama activa ya reinicia a 0 cuando un slide ENTRA.
         video.pause();
-        video.currentTime = 0;
       }
     });
+  }
+
+  // Reproduce el video activo desde el inicio. El seek a 0 solo si ya hay datos: hacerlo sobre un
+  // video sin buffer borra el poster y muestra un frame en blanco. Sin datos, play() arranca desde
+  // el principio igual y el poster cubre la carga.
+  private restartAndPlay(video: HTMLVideoElement): void {
+    if (video.readyState >= 2 /* HAVE_CURRENT_DATA */) {
+      try {
+        video.currentTime = 0;
+      } catch {
+        /* aún no seekable */
+      }
+    }
+    const playback = video.play();
+    if (playback && typeof playback.catch === 'function') {
+      playback.catch(() => {});
+    }
   }
 
   // Ajusta el carrusel a la proporción real del media activo (video o imagen) para que no se recorte.
