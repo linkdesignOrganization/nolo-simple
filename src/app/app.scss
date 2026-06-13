@@ -337,17 +337,46 @@
 
 /* Headset = "Hablemos" en ícono. Oculto por defecto: en desktop/tablet internas se usa el
    botón con texto; se muestra en home (todos los dispositivos) y en mobile internas.
-   Hover oscuro, coherente con el CTA "Hablemos" invertido. */
+   Negro de base (como en mobile) con el MISMO gesto de "llenado" que WhatsApp: relleno blanco
+   que sube desde abajo en el hover y el ícono se vuelve negro. */
 .hs-button {
   display: none;
-}
-
-.hs-button:hover,
-.hs-button:focus-visible {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: var(--ink);
   color: #ffffff;
+}
+
+/* Relleno blanco que sube desde abajo en el hover (mismo gesto que .wa-button). */
+.hs-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #ffffff;
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform 520ms linear(0, 0.58 48%, 0.58 66%, 1);
+}
+
+/* El ícono va por encima del relleno. */
+.hs-button svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Al hover/focus el relleno blanco cubre el botón y el ícono queda negro. */
+.hs-button:hover,
+.hs-button:focus-visible {
+  color: var(--ink);
   transform: translateY(-0.5px);
   outline: none;
+}
+
+.hs-button:hover::before,
+.hs-button:focus-visible::before {
+  transform: scaleY(1);
 }
 
 .content {
