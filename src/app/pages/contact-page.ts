@@ -349,7 +349,7 @@ export class ContactPageComponent {
 
   protected readonly info: ContactInfo = {
     email: 'hola@sowe.ar',
-    whatsappLink: '#',
+    whatsappLink: 'https://wa.me/5491133337180',
     calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
     calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe',
     location: 'Buenos Aires, Argentina'

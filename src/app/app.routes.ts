@@ -6,7 +6,7 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 
 const contactInfo = {
   email: 'hola@sowe.ar',
-  whatsappLink: '#',
+  whatsappLink: 'https://wa.me/5491133337180',
   // Reunión en cal.com por idioma: ES (reunion-con-sowe) / EN (meeting-with-sowe), para que el
   // user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
   calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
