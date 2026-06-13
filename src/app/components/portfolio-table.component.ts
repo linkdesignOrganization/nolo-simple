@@ -69,7 +69,26 @@ export type PortfolioRow = {
               <svg lucideArrowUpRight [size]="22" [strokeWidth]="1"></svg>
             </span>
 
-            <img class="pt-thumb" [src]="row.poster" [alt]="row.client" loading="lazy" />
+            @if (row.videoSrc) {
+              <video
+                class="pt-media"
+                [src]="row.videoSrc"
+                [poster]="row.poster"
+                [style.aspect-ratio]="aspectFor(row.poster)"
+                [muted]="true"
+                loop
+                playsinline
+                preload="none"
+              ></video>
+            } @else {
+              <img
+                class="pt-media"
+                [src]="row.poster"
+                [style.aspect-ratio]="aspectFor(row.poster)"
+                [alt]="row.client"
+                loading="lazy"
+              />
+            }
           </a>
         }
 
@@ -204,8 +223,9 @@ export type PortfolioRow = {
       transform: translate(2px, -2px);
     }
 
-    /* Thumb (poster) solo en mobile. */
-    .pt-thumb {
+    /* Media inline (video/poster) del proyecto: oculto en desktop (ahí se usa el flotante),
+       visible en tablet y mobile. */
+    .pt-media {
       display: none;
     }
 
@@ -284,14 +304,66 @@ export type PortfolioRow = {
         align-self: start;
       }
 
-      /* Sin aspect-ratio fijo: el poster (img) toma su proporción real, no se recorta. */
-      .pt-thumb {
+      .pt-media {
         grid-area: thumb;
         display: block;
         width: 100%;
-        height: auto;
         margin-top: 1rem;
+        object-fit: cover;
         border-radius: 0.5rem;
+        background: rgba(17, 17, 17, 0.05);
+      }
+
+      .pt-float {
+        display: none;
+      }
+    }
+
+    /* Tablet: tarjeta con la info a la izquierda y el media (video) a la derecha — no la tabla. */
+    @media (min-width: 761px) and (max-width: 1024px) {
+      .pt-colhead {
+        display: none;
+      }
+
+      .pt-row {
+        grid-template-columns: minmax(0, 1fr) clamp(15rem, 34vw, 22rem);
+        grid-template-areas:
+          'num      media'
+          'client   media'
+          'industry media'
+          'type     media'
+          'arrow    media';
+        column-gap: clamp(1.5rem, 4vw, 2.5rem);
+        row-gap: 0.45rem;
+        align-items: start;
+        padding: clamp(1.4rem, 3vw, 2rem) clamp(1rem, 3vw, 2.5rem);
+      }
+
+      .pt-num {
+        grid-area: num;
+      }
+      .pt-client {
+        grid-area: client;
+      }
+      .pt-industry {
+        grid-area: industry;
+      }
+      .pt-type {
+        grid-area: type;
+      }
+      .pt-arrow {
+        grid-area: arrow;
+        justify-self: start;
+        align-self: end;
+      }
+
+      .pt-media {
+        grid-area: media;
+        display: block;
+        width: 100%;
+        align-self: center;
+        object-fit: cover;
+        border-radius: 0.6rem;
         background: rgba(17, 17, 17, 0.05);
       }
 
@@ -405,6 +477,15 @@ export class PortfolioTableComponent implements OnDestroy {
     return rel <= 0 ? 0 : rel * 60;
   }
 
+  // Proporción real del poster por fila (mobile/tablet): el media inline respeta su ratio en vez del
+  // 16/10 fijo que recortaba. posterAspects se llena al medir cada poster (measureInlineAspects).
+  private readonly posterAspects = signal<Record<string, number>>({});
+
+  protected aspectFor(poster: string): string {
+    const ratio = this.posterAspects()[poster];
+    return ratio ? String(ratio) : '16 / 10';
+  }
+
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
@@ -445,6 +526,12 @@ export class PortfolioTableComponent implements OnDestroy {
   private readonly aspectCache = new Map<string, number>();
   private isMobileOrReduced = false;
 
+  // Modo inline (tablet/mobile): el video va dentro de cada fila y se reproduce solo cuando cruza el
+  // centro de la pantalla; el observer/mutation gestionan eso (en vez del flotante de desktop).
+  private inlineObserver: IntersectionObserver | null = null;
+  private inlineMutation: MutationObserver | null = null;
+  private inlineActive: HTMLVideoElement | null = null;
+
   private readonly onPointerMove = (event: PointerEvent): void => {
     this.pointerX = event.clientX;
     this.pointerY = event.clientY;
@@ -473,14 +560,26 @@ export class PortfolioTableComponent implements OnDestroy {
     const win = this.document.defaultView;
     const reduced =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const mobile =
+    // Tablet/mobile/touch (≤1024px o puntero grueso): los videos van inline en cada fila con autoplay
+    // por scroll, no el flotante que sigue al cursor.
+    const inline =
       !!win &&
       typeof win.matchMedia === 'function' &&
-      (win.matchMedia('(max-width: 760px)').matches ||
+      (win.matchMedia('(max-width: 1024px)').matches ||
         win.matchMedia('(pointer: coarse)').matches);
-    this.isMobileOrReduced = reduced || mobile;
+    this.isMobileOrReduced = reduced || inline;
 
-    if (this.isMobileOrReduced) {
+    if (inline) {
+      this.measureInlineAspects();
+      if (!reduced) {
+        this.setupInlineAutoplay();
+        // Precarga los clips (chicos) también en mobile/tablet → reproducen al instante al scrollear.
+        this.preloadVideos();
+      }
+      return;
+    }
+
+    if (reduced) {
       return;
     }
 
@@ -494,7 +593,7 @@ export class PortfolioTableComponent implements OnDestroy {
   }
 
   // Precarga (prefetch) todos los videos del portafolio cuando el navegador está ocioso, para que al
-  // llegar a la tabla el hover muestre el clip al instante. Solo desktop (mobile usa el poster).
+  // interactuar (hover en desktop, autoplay por scroll en mobile/tablet) el clip esté listo al instante.
   private preloadVideos(): void {
     const win = this.document.defaultView;
     // Prefetch de los videos con prioridad BAJA: no deben competir con los logos (que llenan la fila).
@@ -536,6 +635,78 @@ export class PortfolioTableComponent implements OnDestroy {
     ).then(schedule);
   }
 
+  // Reproduce solo el video que cruza el centro de la pantalla y pausa el anterior. El MutationObserver
+  // re-observa los videos que aparecen al "Ver más trabajos".
+  private setupInlineAutoplay(): void {
+    if (typeof IntersectionObserver !== 'function') {
+      return;
+    }
+    this.inlineObserver = new IntersectionObserver(this.onInlineIntersect, {
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0
+    });
+    this.observeInlineVideos();
+
+    const rows = this.host.querySelector('.pt-rows');
+    if (rows && typeof MutationObserver === 'function') {
+      this.inlineMutation = new MutationObserver(() => this.observeInlineVideos());
+      this.inlineMutation.observe(rows, { childList: true });
+    }
+  }
+
+  private observeInlineVideos(): void {
+    this.host.querySelectorAll<HTMLVideoElement>('video.pt-media').forEach((video) => {
+      this.inlineObserver?.observe(video);
+    });
+  }
+
+  private readonly onInlineIntersect = (entries: IntersectionObserverEntry[]): void => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) {
+        continue;
+      }
+      const video = entry.target as HTMLVideoElement;
+      if (this.inlineActive && this.inlineActive !== video) {
+        this.inlineActive.pause();
+      }
+      this.inlineActive = video;
+      video.muted = true;
+      const playback = video.play();
+      if (playback && typeof playback.catch === 'function') {
+        playback.catch(() => {});
+      }
+    }
+  };
+
+  private measureInlineAspects(): void {
+    for (const row of this.rows()) {
+      if (!row.poster) {
+        continue;
+      }
+      const cached = this.aspectCache.get(row.poster);
+      if (cached) {
+        this.setInlineAspect(row.poster, cached);
+        continue;
+      }
+      const img = new Image();
+      img.onload = () => {
+        if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+          const ratio = img.naturalWidth / img.naturalHeight;
+          this.aspectCache.set(row.poster, ratio);
+          this.setInlineAspect(row.poster, ratio);
+        }
+      };
+      img.src = row.poster;
+    }
+  }
+
+  private setInlineAspect(poster: string, ratio: number): void {
+    // setupViewer corre runOutsideAngular; volvemos a la zona para que el signal refresque el binding (OnPush).
+    this.zone.run(() =>
+      this.posterAspects.update((m) => (m[poster] === ratio ? m : { ...m, [poster]: ratio }))
+    );
+  }
+
   ngOnDestroy(): void {
     const win = this.document.defaultView;
     this.host.removeEventListener('pointermove', this.onPointerMove);
@@ -551,6 +722,9 @@ export class PortfolioTableComponent implements OnDestroy {
     }
     // Campo directo (no el getter): ngOnDestroy corre también en SSR, donde no debe tocar el DOM.
     this._floatVideo?.pause();
+    this.inlineObserver?.disconnect();
+    this.inlineMutation?.disconnect();
+    this.inlineActive?.pause();
   }
 
   protected pad(n: number): string {
@@ -598,7 +772,11 @@ export class PortfolioTableComponent implements OnDestroy {
       this.activeSrc = row.videoSrc;
     }
     video.poster = row.poster;
-    video.currentTime = 0;
+    // Solo reiniciar a 0 si ya hay datos: hacerlo sobre un video sin buffer borra el poster y muestra
+    // un frame en blanco. Sin datos, play() arranca desde el inicio y el poster cubre la carga.
+    if (video.readyState >= 2) {
+      video.currentTime = 0;
+    }
     video.play().catch(() => {});
     this.activePoster = row.poster;
     this.applyMediaAspect(row);
