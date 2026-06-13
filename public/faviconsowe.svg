@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262.81 262.81">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: SpaceGrotesk-Bold, 'Space Grotesk';
+        font-size: 77.13px;
+        font-weight: 700;
+      }
+
+      .cls-2 {
+        fill: #f6f6f6;
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: 8px;
+      }
+
+      .cls-3 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <circle class="cls-2" cx="131.41" cy="131.41" r="127.41"/>
+      <text class="cls-1" transform="translate(35.27 152.92)"><tspan x="0" y="0">s</tspan><tspan class="cls-3" x="40.41" y="0">ow</tspan><tspan x="147.77" y="0">e</tspan></text>
+    </g>
+  </g>
+</svg>
