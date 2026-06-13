@@ -115,6 +115,9 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       <form class="cf-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
         @if (sent()) {
           <div class="cf-sent" role="status">
+            <span class="cf-sent__icon" aria-hidden="true">
+              <svg lucideCheck [size]="30" [strokeWidth]="1.5"></svg>
+            </span>
             <h3>{{ t().sentTitle }}</h3>
             <p>{{ t().sentBody }}</p>
           </div>
@@ -545,8 +548,85 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       font-size: 0.95rem;
     }
 
+    /* Estado enviado: centrado en su columna, con un check de acento animado
+       (pop-in + el trazo que se dibuja + un anillo que late) que acompaña al mensaje. */
     .cf-sent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: clamp(14rem, 30vh, 20rem);
       padding: clamp(2rem, 5vw, 4rem) 0;
+    }
+
+    .cf-sent__icon {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: rgba(61, 81, 255, 0.14);
+      color: var(--accent);
+      animation: cf-sent-pop 520ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+
+    /* Anillo que emana del check (latido sutil, en bucle). */
+    .cf-sent__icon::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      opacity: 0;
+      animation: cf-sent-ring 2.4s ease-out 360ms infinite;
+    }
+
+    /* El check se dibuja solo al aparecer. */
+    .cf-sent__icon svg {
+      position: relative;
+    }
+
+    .cf-sent__icon svg path {
+      stroke-dasharray: 28;
+      stroke-dashoffset: 28;
+      animation: cf-sent-check 460ms ease 300ms forwards;
+    }
+
+    @keyframes cf-sent-pop {
+      0% {
+        transform: scale(0.4);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes cf-sent-ring {
+      0% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      80% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    @keyframes cf-sent-check {
+      to {
+        stroke-dashoffset: 0;
+      }
     }
 
     .cf-sent h3 {
@@ -606,6 +686,16 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
       .cf-submit:hover {
         transform: none;
+      }
+
+      .cf-sent__icon,
+      .cf-sent__icon::after,
+      .cf-sent__icon svg path {
+        animation: none;
+      }
+
+      .cf-sent__icon svg path {
+        stroke-dashoffset: 0;
       }
     }
 

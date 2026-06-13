@@ -406,6 +406,22 @@ type Slide = { label: string; src: string; poster: string };
         transform: none;
       }
     }
+
+    /* Phones (topbar de 2 filas, ~9.2rem): igual que /software, la grilla + el gradiente se
+       extienden DETRÁS del topbar arrancando en y=0 (margin-top negativo = alto del topbar de 2
+       filas + el gap del wrapper). Así el fade superior queda detrás del topbar y el contenido sobre
+       grilla limpia, en vez de una banda de fade dentro del contenido. El padding-top recupera el
+       offset para que el contenido no quede tapado. El gradiente vuelve al alto completo de /software. */
+    @media (max-width: 760px) {
+      .wh-bg {
+        margin-top: calc(-9.2rem - 1.5rem);
+        padding-top: calc(9.2rem + 3rem);
+      }
+
+      .wh-bg::before {
+        height: clamp(8rem, 18vw, 13rem);
+      }
+    }
   `
 })
 export class WebHeroComponent implements AfterViewInit, OnDestroy {
