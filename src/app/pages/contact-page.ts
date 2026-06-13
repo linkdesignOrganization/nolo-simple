@@ -69,7 +69,7 @@ import { AdsService } from '../services/ads.service';
                 </a>
               </li>
               <li>
-                <a class="ct-row" [href]="info.calendarLink" target="_blank" rel="noopener noreferrer" (click)="onSchedule()">
+                <a class="ct-row" [href]="lang() === 'en' && info.calendarLinkEn ? info.calendarLinkEn : info.calendarLink" target="_blank" rel="noopener noreferrer" (click)="onSchedule()">
                   <span class="ct-row__icon" aria-hidden="true">
                     <svg lucideCalendar [size]="20" [strokeWidth]="1"></svg>
                   </span>
@@ -351,6 +351,7 @@ export class ContactPageComponent {
     email: 'hola@sowe.ar',
     whatsappLink: '#',
     calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
+    calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe',
     location: 'Buenos Aires, Argentina'
   };
 

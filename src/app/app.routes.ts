@@ -7,7 +7,10 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 const contactInfo = {
   email: 'hola@sowe.ar',
   whatsappLink: '#',
-  calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe'
+  // Reunión en cal.com por idioma: ES (reunion-con-sowe) / EN (meeting-with-sowe), para que el
+  // user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
+  calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
+  calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -305,7 +308,7 @@ const softwarePageEn: LandingData = {
   description:
     "You don't adapt your company to the software. We build the software around how your operation already works.",
   ctaPrimary: 'Book a meeting',
-  ctaPrimaryLink: contactInfo.calendarLink,
+  ctaPrimaryLink: contactInfo.calendarLinkEn,
   ctaSecondary: 'Send a message',
   ctaSecondaryLink: '#hablemos',
   featureTabs: [
@@ -777,7 +780,7 @@ const webPageEn: LandingData = {
     title: 'Real websites. Real code.',
     lead: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
     actions: [
-      { label: 'Book a meeting', link: contactInfo.calendarLink },
+      { label: 'Book a meeting', link: contactInfo.calendarLinkEn },
       { label: 'Send a message', link: '#hablemos' }
     ],
     slides: [],

@@ -26,6 +26,8 @@ import {
 
 export type ContactInfo = {
   calendarLink: string;
+  // Link de reunión en inglés (cal.com). Opcional: si falta, se usa calendarLink.
+  calendarLinkEn?: string;
   email: string;
   location: string;
   whatsappLink: string;
@@ -100,7 +102,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
           </li>
 
           <li class="cf-contact">
-            <a class="cf-contact__link" [href]="info().calendarLink" (click)="onSchedule()">
+            <a class="cf-contact__link" [href]="lang() === 'en' && info().calendarLinkEn ? info().calendarLinkEn : info().calendarLink" target="_blank" rel="noopener noreferrer" (click)="onSchedule()">
               <span class="cf-contact__icon" aria-hidden="true">
                 <svg lucideCalendar [size]="20" [strokeWidth]="1"></svg>
               </span>
