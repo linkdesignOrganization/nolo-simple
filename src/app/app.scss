@@ -456,4 +456,15 @@
     grid-area: wa;
     justify-self: start;
   }
+
+  /* Home: igualar el primer row al de las internas en mobile (mismo tamaño de logo y botón de
+     contacto negro), para que el topbar de home y el de los landings se vean iguales. */
+  .topbar--home .brand {
+    font-size: clamp(2.3rem, 9vw, 3rem);
+  }
+
+  .topbar--home .hs-button {
+    background: var(--ink);
+    color: #ffffff;
+  }
 }
