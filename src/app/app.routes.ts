@@ -7,7 +7,7 @@ import { PrivacyPageComponent } from './pages/privacy-page';
 const contactInfo = {
   email: 'hola@sowe.ar',
   whatsappLink: '#',
-  calendarLink: '#'
+  calendarLink: 'https://calendar.app.google/CzndcwcjsL4CWSPj8'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
