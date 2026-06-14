@@ -49,7 +49,7 @@ export type DevTypeBlock = {
     <div class="dt-frame">
       <div class="dt-grid">
         <span class="dt-swipe" aria-hidden="true">
-          <svg lucideMoveHorizontal [size]="18" [strokeWidth]="1"></svg>
+          <svg lucideMoveHorizontal [size]="26" [strokeWidth]="1"></svg>
         </span>
 
         <aside class="dt-tabs" role="tablist" aria-label="Tipos de desarrollo">
@@ -375,6 +375,8 @@ export type DevTypeBlock = {
         align-items: center;
         color: var(--dt-faint);
         pointer-events: none;
+        margin-top: calc(-1 * clamp(0.45rem, 1.8vw, 0.9rem));
+        margin-bottom: calc(-1 * clamp(0.25rem, 1vw, 0.55rem));
       }
 
       .dt-swipe svg {
