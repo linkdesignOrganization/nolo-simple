@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, HostListener, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LucideArrowLeft, LucideHeadset } from '@lucide/angular';
@@ -37,6 +37,7 @@ export class App {
   protected readonly isSoftware = computed(() => this.currentUrl().startsWith('/software'));
   protected readonly isContact = computed(() => this.currentUrl().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.currentUrl().startsWith('/politicas-de-privacidad'));
+  protected readonly isNotFound = computed(() => this.currentUrl().startsWith('/404'));
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto + privacidad).
   protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy());
@@ -49,6 +50,17 @@ export class App {
     this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
   );
 
+  // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
+  private scrollConversionSent = false;
+
+  constructor() {
+    // Rearma la conversión de scroll en cada navegación → una conversión por página (igual que el legacy).
+    effect(() => {
+      this.currentUrl();
+      this.scrollConversionSent = false;
+    });
+  }
+
   protected toggleLang(): void {
     this.i18n.toggle();
   }
@@ -56,6 +68,20 @@ export class App {
   // Click en el botón de WhatsApp del topbar → conversión de Google Ads.
   protected onWhatsapp(): void {
     this.ads.whatsapp();
+  }
+
+  // Scroll al 50% de la página → conversión "Scroll" de Ads, una sola vez por página.
+  // Excluye privacidad y 404 (igual que el sitio legacy); se desactiva con el flag hasta navegar.
+  @HostListener('window:scroll')
+  protected onWindowScroll(): void {
+    if (this.scrollConversionSent) return;
+    if (this.isPrivacy() || this.isNotFound()) return;
+    const scrolled = window.scrollY || document.documentElement.scrollTop;
+    const reached = (scrolled + window.innerHeight) / document.documentElement.scrollHeight;
+    if (reached >= 0.5) {
+      this.ads.scroll();
+      this.scrollConversionSent = true;
+    }
   }
 
   // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o al inicio si se

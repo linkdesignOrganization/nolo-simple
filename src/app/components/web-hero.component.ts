@@ -16,6 +16,7 @@ import { RouterLink } from '@angular/router';
 import { LucideCircleOff } from '@lucide/angular';
 
 import { TechnicalGridBackgroundComponent } from './technical-grid-background.component';
+import { AdsService } from '../services/ads.service';
 
 export type HeroAction = {
   label: string;
@@ -56,6 +57,7 @@ type Slide = { label: string; src: string; poster: string };
                     <a
                       class="button"
                       [attr.href]="action.link"
+                      (click)="onActionClick(action.link)"
                       [attr.target]="isExternal(action.link) ? '_blank' : null"
                       [attr.rel]="isExternal(action.link) ? 'noopener noreferrer' : null"
                     >
@@ -499,6 +501,7 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly ads = inject(AdsService);
   private intervalId: ReturnType<typeof setInterval> | null = null;
   private observer: IntersectionObserver | null = null;
   // El carrusel solo rota/reproduce con el hero en pantalla (IntersectionObserver): fuera de
@@ -513,6 +516,13 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   // Externo (http/https, p.ej. el calendario) → abre en pestaña nueva; un ancla (#hablemos) no.
   protected isExternal(link: string): boolean {
     return /^https?:/.test(link);
+  }
+
+  // Click en un action que apunta al calendario (cal.com) → conversión "agendar reunión".
+  protected onActionClick(link: string): void {
+    if (link.includes('cal.com')) {
+      this.ads.scheduleMeeting();
+    }
   }
 
   // Un video disparó canplay → se revela encima del poster (fade). Una vez listo, queda revelado.

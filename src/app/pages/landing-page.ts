@@ -17,6 +17,7 @@ import { HeroAction, HeroMarquee, HeroSlide, WebHeroComponent } from '../compone
 import { Principle, WorkPrinciplesComponent } from '../components/work-principles.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
+import { AdsService } from '../services/ads.service';
 
 export type LandingModuleFigure =
   | 'arrows'
@@ -188,6 +189,7 @@ export type LandingData = {
                       <a
                         class="button"
                         [attr.href]="page().ctaPrimaryLink"
+                        (click)="onCtaClick(page().ctaPrimaryLink)"
                         [attr.target]="isExternalLink(page().ctaPrimaryLink) ? '_blank' : null"
                         [attr.rel]="isExternalLink(page().ctaPrimaryLink) ? 'noopener noreferrer' : null"
                       >
@@ -207,6 +209,7 @@ export type LandingData = {
                       <a
                         class="button"
                         [attr.href]="page().ctaSecondaryLink"
+                        (click)="onCtaClick(page().ctaSecondaryLink)"
                         [attr.target]="isExternalLink(page().ctaSecondaryLink) ? '_blank' : null"
                         [attr.rel]="isExternalLink(page().ctaSecondaryLink) ? 'noopener noreferrer' : null"
                       >
@@ -1399,6 +1402,7 @@ export type LandingData = {
 export class LandingPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly i18n = inject(LanguageService);
+  private readonly ads = inject(AdsService);
   private readonly routeData = toSignal(this.route.data, {
     initialValue: this.route.snapshot.data
   });
@@ -1427,6 +1431,13 @@ export class LandingPageComponent {
   // Externo (http/https, p.ej. el calendario) → abre en pestaña nueva; un ancla (#hablemos) no.
   protected isExternalLink(link?: string): boolean {
     return !!link && /^https?:/.test(link);
+  }
+
+  // Dispara la conversión "agendar reunión" cuando un CTA del hero apunta al calendario (cal.com).
+  protected onCtaClick(link?: string): void {
+    if (link && link.includes('cal.com')) {
+      this.ads.scheduleMeeting();
+    }
   }
 
   protected setActiveArm(arm: 'software' | 'web' | null): void {

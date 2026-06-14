@@ -163,7 +163,7 @@ export const PAYLOAD_SCHEMA_VERSION = '1.0.0' as const;
  * ── TODO PARA EL EQUIPO DE ADS ────────────────────────────────────────────
  * Recomendación: crear una conversion action DEDICADA en Google Ads para
  * "Form Submit" (categoría: "Submit lead form" o "Sign-up") y reemplazar
- * SEND_TO con el nuevo ID. Hoy reutilizamos el send_to genérico de engagement.
+ * SEND_TO con el nuevo ID. Hoy reutilizamos el send_to de contacto (CONTACTO).
  *
  * Beneficios de una conversion action dedicada:
  *   1. Smart Bidding puede optimizar específicamente por form-submits.
@@ -171,7 +171,7 @@ export const PAYLOAD_SCHEMA_VERSION = '1.0.0' as const;
  *   3. Permite establecer la "primary conversion" del sitio en Ads.
  */
 export const GA_CONVERSION = {
-  SEND_TO: 'AW-XXXXXXXXXX/PLACEHOLDER_ENGAGEMENT',
+  SEND_TO: 'AW-XXXXXXXXXX/PLACEHOLDER_CONTACTO',
   CURRENCY: 'USD',
   EVENT_NAME: 'conversion' as const
 };
