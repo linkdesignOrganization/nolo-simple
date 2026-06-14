@@ -50,7 +50,9 @@
   /* Encima del contenido: en /web el hero se mete detrás del topbar (margin-top negativo) para
      que su grilla + gradiente arranquen en y=0; el z-index evita que el hero tape el topbar. */
   position: relative;
-  z-index: 2;
+  /* Alto para que el botón de contacto fijo (hijo del topbar) quede sobre todo el
+     contenido de la página, que llega hasta z-index 2. */
+  z-index: 50;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -100,7 +102,7 @@
 
 .topbar--software {
   position: relative;
-  z-index: 2;
+  z-index: 50;
 }
 
 /* Topbar de rutas terminales (/contacto, /politicas-de-privacidad): solo la flecha de volver. */
@@ -379,6 +381,64 @@
   transform: scaleY(1);
 }
 
+/* ────────────────────────────────────────────────────────────────────────────
+   Botón de contacto del topbar (desktop "Hablemos" + mobile headset): invierte
+   con el tema de la página reusando el MISMO relleno del hover (la capa que sube
+   con scaleY) como gesto de transición claro↔oscuro. En fondo claro se ve OSCURO;
+   en fondo oscuro (:host-context(.app-dark)) se ve CLARO. Siempre contrasta.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.topbar-link::before {
+  transform: scaleY(1);
+}
+
+.topbar-link {
+  color: #ffffff;
+}
+
+.topbar-link .button-arrow {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+:host-context(.app-dark) .topbar-link::before {
+  transform: scaleY(0);
+}
+
+:host-context(.app-dark) .topbar-link {
+  color: var(--ink);
+}
+
+:host-context(.app-dark) .topbar-link .button-arrow {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+:host-context(.app-dark) .hs-button::before {
+  transform: scaleY(1);
+}
+
+:host-context(.app-dark) .hs-button {
+  color: var(--ink);
+}
+
+/* ────────────────────────────────────────────────────────────────────────────
+   Posición fija del botón de contacto (solo internas; el @if del template ya lo
+   excluye de home). Queda fijo al hacer scroll; el spacer invisible hermano
+   reserva su lugar para que el WhatsApp y el resto no se recorran.
+   ──────────────────────────────────────────────────────────────────────────── */
+.cbtn {
+  position: fixed;
+  top: 1.25rem;
+  right: clamp(1rem, 3vw, 2.5rem);
+  z-index: 5;
+}
+
+.cbtn-spacer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .content {
   flex: 1 1 auto;
   /* Sin padding-bottom: las páginas de contenido cierran con el contact-footer (full-bleed). */
@@ -495,5 +555,17 @@
   .topbar--home .hs-button {
     background: var(--ink);
     color: #ffffff;
+  }
+
+  /* Fondo oscuro (mobile): el headset invierte a claro. Especificidad mayor que las
+     reglas de color mobile de arriba para poder ganarles (icono negro sobre relleno claro). */
+  :host-context(.app-dark) .topbar:not(.topbar--home) .hs-button,
+  :host-context(.app-dark) .topbar--home .hs-button {
+    color: var(--ink);
+  }
+
+  /* El botón fijo (headset) va más arriba: el topbar de mobile es más compacto. */
+  .cbtn {
+    top: 0.8rem;
   }
 }

@@ -79,13 +79,27 @@
         </a>
 
         @if (!isHome()) {
-          <a class="button topbar-link" routerLink="/contacto">
+          <a class="button topbar-link cbtn" routerLink="/contacto">
             <span>{{ t().talk }}</span>
             <span class="button-arrow" aria-hidden="true">→</span>
           </a>
+          <!-- Spacers invisibles: reservan el lugar del botón fijo (el visible según el
+               breakpoint) para que el WhatsApp y el resto del topbar no se recorran. -->
+          <span class="button topbar-link cbtn-spacer" aria-hidden="true">
+            <span>{{ t().talk }}</span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </span>
+          <span class="hs-button cbtn-spacer" aria-hidden="true">
+            <svg lucideHeadset [size]="22" [strokeWidth]="1" aria-hidden="true"></svg>
+          </span>
         }
 
-        <a class="hs-button" routerLink="/contacto" [attr.aria-label]="t().talk">
+        <a
+          class="hs-button"
+          [class.cbtn]="!isHome()"
+          routerLink="/contacto"
+          [attr.aria-label]="t().talk"
+        >
           <svg lucideHeadset [size]="22" [strokeWidth]="1" aria-hidden="true"></svg>
         </a>
       </div>

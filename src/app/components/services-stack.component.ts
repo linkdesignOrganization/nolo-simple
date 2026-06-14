@@ -131,7 +131,7 @@ export type ServiceItem = {
     .ss-item__title {
       margin: 0;
       color: var(--ink);
-      font-size: clamp(1.5rem, 3.2vw, 2.7rem);
+      font-size: clamp(1.5rem, 3.2vw, 2.2rem);
       font-weight: 400;
       letter-spacing: -0.04em;
       line-height: 1.04;
