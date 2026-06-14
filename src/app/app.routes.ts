@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 
 import { ContactPageComponent } from './pages/contact-page';
 import { LandingData, LandingPageComponent } from './pages/landing-page';
+import { NotFoundPageComponent } from './pages/not-found-page';
 import { PrivacyPageComponent } from './pages/privacy-page';
 import { SystemDetailPageComponent } from './pages/system-detail-page';
 
@@ -1081,7 +1082,11 @@ export const routes: Routes = [
     component: PrivacyPageComponent
   },
   {
+    path: '404',
+    component: NotFoundPageComponent
+  },
+  {
     path: '**',
-    redirectTo: ''
+    redirectTo: '/404'
   }
 ];

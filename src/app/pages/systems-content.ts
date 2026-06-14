@@ -67,9 +67,9 @@ export const SYSTEMS_CONTENT: Record<SystemSlug, { es: SystemDetail; en: SystemD
   'crm-a-medida': {
     es: {
       slug: 'crm-a-medida',
-      name: 'CRM a medida',
+      name: 'CRM a la medida',
       whatItIs:
-        'Un CRM a medida es un sistema de gestión comercial construido sobre el proceso de venta real de tu empresa. No es una plantilla que se configura. Se diseña a partir de cómo vende tu equipo: tus etapas, tus criterios y tus canales.',
+        'Un CRM a la medida es un sistema de gestión comercial construido sobre el proceso de venta real de tu empresa. No es una plantilla que se configura. Se diseña a partir de cómo vende tu equipo: tus etapas, tus criterios y tus canales.',
       problem: [
         'El equipo comercial trabaja con la información dispersa. Los mensajes están en WhatsApp, los correos en otra parte, las llamadas sin registrar y el seguimiento en una planilla que cada uno completa a su manera.',
         'Esa dispersión hace que se pierdan oportunidades y que nadie sepa con certeza en qué etapa está cada venta. El CRM concentra todo el proceso en un solo lugar, con un historial por cliente.'

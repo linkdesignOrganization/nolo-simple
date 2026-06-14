@@ -5,11 +5,12 @@ import {
   ElementRef,
   OnDestroy,
   PLATFORM_ID,
+  effect,
   inject,
   input,
   signal
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { LucidePlus } from '@lucide/angular';
 
 export type FaqItem = {
@@ -254,7 +255,35 @@ export class FaqAccordionComponent implements AfterViewInit, OnDestroy {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly doc = inject(DOCUMENT);
   private observer: IntersectionObserver | null = null;
+  private faqScript: HTMLScriptElement | null = null;
+
+  constructor() {
+    // FAQPage JSON-LD para rich results de Google. Se inyecta al <head> en el prerender (SSG) y se
+    // actualiza al togglear idioma (reactivo a items()). El faq-accordion es la única fuente del FAQ,
+    // así que el schema vive donde viven los datos y cubre cualquier página que use este componente.
+    effect(() => {
+      const items = this.items();
+      if (!items?.length) return;
+      const data = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: items.map((it) => ({
+          '@type': 'Question',
+          name: it.question,
+          acceptedAnswer: { '@type': 'Answer', text: it.answer }
+        }))
+      };
+      if (!this.faqScript) {
+        this.faqScript = this.doc.createElement('script');
+        this.faqScript.setAttribute('type', 'application/ld+json');
+        this.faqScript.setAttribute('data-seo', 'faq');
+        this.doc.head.appendChild(this.faqScript);
+      }
+      this.faqScript.textContent = JSON.stringify(data);
+    });
+  }
 
   // Multi-open: cada pregunta abre/cierra independiente. Guardamos el set de índices abiertos
   // y en cada toggle creamos un Set nuevo (referencia distinta) para que OnPush refresque.
@@ -312,5 +341,7 @@ export class FaqAccordionComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.observer?.disconnect();
     this.observer = null;
+    this.faqScript?.remove();
+    this.faqScript = null;
   }
 }

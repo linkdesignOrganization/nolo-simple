@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import { Component, HostListener, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -23,6 +23,7 @@ export class App {
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   private readonly seo = inject(SeoService);
+  private readonly doc = inject(DOCUMENT);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -67,6 +68,11 @@ export class App {
     // SEO por ruta + idioma: title, meta, OG, canonical y JSON-LD reaccionan al navegar y al toggle ES/EN.
     effect(() => {
       this.seo.apply(seoForUrl(this.currentUrl(), this.i18n.lang()));
+    });
+
+    // <html lang> sigue el idioma activo (a11y + señal de idioma correcta al togglear ES/EN).
+    effect(() => {
+      this.doc.documentElement.lang = this.i18n.lang() === 'en' ? 'en' : 'es';
     });
 
     // Rearma la conversión de scroll en cada navegación → una conversión por página (igual que el legacy).

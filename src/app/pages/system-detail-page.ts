@@ -721,10 +721,10 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
   private observer: IntersectionObserver | null = null;
 
   constructor() {
-    // Slug inexistente → volver al índice de sistemas (no dejar la página vacía).
+    // Slug inexistente → 404 con marca (Sowe ya tiene su propia página /404).
     effect(() => {
       if (this.slug() !== null && this.d() === null) {
-        this.router.navigateByUrl('/software', { replaceUrl: true });
+        this.router.navigateByUrl('/404', { replaceUrl: true });
       }
     });
   }

@@ -98,6 +98,23 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       canonicalPath: '/politicas-de-privacidad',
       locale: 'en_US'
     }
+  },
+  '/404': {
+    es: {
+      title: 'Página no encontrada | Sowe',
+      description: 'La página que buscás no existe o se movió. Volvé al inicio de Sowe.',
+      keywords: 'sowe, argentina',
+      canonicalPath: '/404',
+      robots: 'noindex, follow'
+    },
+    en: {
+      title: 'Page not found | Sowe',
+      description: "The page you're looking for doesn't exist or has moved. Head back to the Sowe home.",
+      keywords: 'sowe, argentina',
+      canonicalPath: '/404',
+      locale: 'en_US',
+      robots: 'noindex, follow'
+    }
   }
 };
 

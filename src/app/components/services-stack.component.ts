@@ -6,12 +6,15 @@ import {
   NgZone,
   OnDestroy,
   PLATFORM_ID,
+  effect,
   inject,
   input
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideArrowUpRight } from '@lucide/angular';
+
+import { environment } from '../../environments/environment';
 
 export type ServiceItem = {
   body: string;
@@ -294,9 +297,39 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly doc = inject(DOCUMENT);
 
   private resizeObserver: ResizeObserver | null = null;
   private lastWidth = 0;
+  private itemListScript: HTMLScriptElement | null = null;
+
+  constructor() {
+    // ItemList JSON-LD: marca los sistemas (items con slug → páginas de detalle) como una lista de
+    // servicios para Google. Se inyecta al <head> en el prerender (SSG). Solo emite donde hay items
+    // con slug (la sección de sistemas en /software).
+    effect(() => {
+      const systems = this.items().filter((it) => !!it.slug);
+      if (!systems.length) return;
+      const origin = (environment.siteUrl || '').replace(/\/+$/, '');
+      const data = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: systems.map((it, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: it.title,
+          url: `${origin}/software/${it.slug}`
+        }))
+      };
+      if (!this.itemListScript) {
+        this.itemListScript = this.doc.createElement('script');
+        this.itemListScript.setAttribute('type', 'application/ld+json');
+        this.itemListScript.setAttribute('data-seo', 'itemlist');
+        this.doc.head.appendChild(this.itemListScript);
+      }
+      this.itemListScript.textContent = JSON.stringify(data);
+    });
+  }
 
   // Índice con cero a la izquierda (01, 02, …), mismo formato que el FAQ.
   pad(index: number): string {
@@ -331,6 +364,8 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
     this.resizeObserver = null;
+    this.itemListScript?.remove();
+    this.itemListScript = null;
   }
 
   // Cada header se pega justo debajo de los anteriores: su top sticky es la
