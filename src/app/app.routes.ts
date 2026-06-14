@@ -140,9 +140,15 @@ const softwarePageEs: LandingData = {
         chips: ['Reglas comerciales', 'Tipos de cliente', 'Listas de precio', 'Condiciones de pago']
       },
       {
-        title: 'Plataformas de reservas y ticketing',
+        title: 'Ticketing con marca propia',
         body:
-          'Agenda, disponibilidad, recordatorios automáticos y pago en línea integrados al mismo sistema que maneja el resto de la operación. La reserva entra al flujo del negocio, no queda atrapada en una herramienta separada que después hay que conciliar.',
+          'Plataformas de venta de entradas para artistas, productoras y espacios que quieren operar con su propia marca. El público compra desde el sitio oficial, recibe su ticket con QR y accede al evento dentro del mismo flujo. Pagos, ventas, asistentes y control de ingreso quedan centralizados, sin depender de una ticketera externa.',
+        chips: ['Marca propia', 'Venta de entradas', 'Tickets con QR', 'Control de acceso']
+      },
+      {
+        title: 'Plataformas de reservas y agenda',
+        body:
+          'Sistemas de reservas con agenda, disponibilidad, recordatorios automáticos y pago en línea integrados a la operación. Cada cita entra al flujo del negocio, actualiza la capacidad disponible y queda vinculada con el cliente. La información no queda atrapada en una herramienta separada que después haya que conciliar.',
         chips: ['Agenda', 'Disponibilidad', 'Recordatorios automáticos', 'Pago en línea']
       },
       {
@@ -355,9 +361,15 @@ const softwarePageEn: LandingData = {
         chips: ['Commercial rules', 'Customer types', 'Price lists', 'Payment terms']
       },
       {
-        title: 'Booking & ticketing platforms',
+        title: 'Own-brand ticketing',
         body:
-          'Scheduling, availability, automatic reminders and online payment integrated into the same system that runs the rest of the operation. The booking enters the business flow instead of getting stuck in a separate tool you have to reconcile later.',
+          'Ticket-sales platforms for artists, producers and venues that want to operate under their own brand. The audience buys from the official site, gets a QR ticket and enters the event within the same flow. Payments, sales, attendees and access control stay centralized, without depending on an external ticketing service.',
+        chips: ['Own brand', 'Ticket sales', 'QR tickets', 'Access control']
+      },
+      {
+        title: 'Booking & scheduling platforms',
+        body:
+          "Booking systems with scheduling, availability, automatic reminders and online payment integrated into the operation. Each appointment enters the business flow, updates available capacity and stays linked to the client. The information doesn't get stuck in a separate tool you have to reconcile afterward.",
         chips: ['Scheduling', 'Availability', 'Automatic reminders', 'Online payment']
       },
       {
