@@ -5,20 +5,27 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { LucideArrowUpRight } from '@lucide/angular';
 
 export type ServiceItem = {
   body: string;
   chips: string[];
   title: string;
+  /** Si está, el título enlaza a /software/<slug> (página de detalle del sistema). */
+  slug?: string;
 };
 
 @Component({
   selector: 'app-services-stack',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterLink, LucideArrowUpRight],
   host: {
     'class': 'services-stack'
   },
@@ -32,7 +39,18 @@ export type ServiceItem = {
       @for (item of items(); track item.title; let i = $index) {
         <header class="ss-item__head" [style.--i]="i">
           <span class="ss-item__num">{{ pad(i) }}</span>
-          <h3 class="ss-item__title">{{ item.title }}</h3>
+          @if (item.slug) {
+            <h3 class="ss-item__title">
+              <a class="ss-item__link" [routerLink]="['/software', item.slug]">
+                <span class="ss-item__title-text">{{ item.title }}</span>
+                <span class="ss-item__arrow" aria-hidden="true">
+                  <svg lucideArrowUpRight [size]="26" [strokeWidth]="1"></svg>
+                </span>
+              </a>
+            </h3>
+          } @else {
+            <h3 class="ss-item__title">{{ item.title }}</h3>
+          }
         </header>
         <div class="ss-item__body">
           <p class="ss-item__txt">{{ item.body }}</p>
@@ -138,6 +156,65 @@ export type ServiceItem = {
       text-wrap: balance;
     }
 
+    /* Título como enlace al detalle del sistema: flecha pegada al texto + underline que
+       entra de izquierda a derecha, y el ícono cambia de color en hover. */
+    .ss-item__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      width: fit-content;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .ss-item__title-text {
+      position: relative;
+    }
+
+    .ss-item__title-text::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -0.06em;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ss-item__arrow {
+      display: inline-flex;
+      flex-shrink: 0;
+      color: var(--muted);
+      transition: color 200ms ease, transform 200ms ease;
+    }
+
+    .ss-item__link:hover .ss-item__title-text::after,
+    .ss-item__link:focus-visible .ss-item__title-text::after {
+      transform: scaleX(1);
+    }
+
+    .ss-item__link:hover .ss-item__arrow,
+    .ss-item__link:focus-visible .ss-item__arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    .ss-item__link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ss-item__title-text::after,
+      .ss-item__arrow {
+        transition: none;
+      }
+    }
+
     .ss-item__body {
       position: relative;
       z-index: 1;
@@ -216,6 +293,7 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private resizeObserver: ResizeObserver | null = null;
   private lastWidth = 0;
@@ -226,6 +304,9 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       this.lastWidth = this.hostRef.nativeElement.getBoundingClientRect().width;
       this.layoutStack();

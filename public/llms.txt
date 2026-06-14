@@ -1,0 +1,37 @@
+# Sowe
+
+> Sowe es un estudio de desarrollo de software y sitios web a medida con sede en Buenos Aires, Argentina. Construimos software empresarial, aplicaciones internas, e-commerce y sitios corporativos desde código — sin plantillas ni constructores visuales.
+
+Sowe opera dos líneas de trabajo: **software a medida** (sistemas internos construidos sobre la operación real de cada empresa) y **sitios web a medida** (landing pages, sitios corporativos, e-commerce). El stack principal es Angular (frontend) y Node.js (backend); la tecnología puntual se define en el discovery de cada proyecto.
+
+## Páginas
+
+- [Inicio](https://sowe.ar/): Resumen de las dos líneas — software y web a medida.
+- [Software a medida](https://sowe.ar/software): Los sistemas que construimos, con proceso por módulos y discovery previo.
+- [Sitios web](https://sowe.ar/web): Landing pages, sitios corporativos y e-commerce a medida.
+- [Contacto](https://sowe.ar/contacto): Formulario, WhatsApp, correo y agenda de reuniones.
+- [Política de privacidad](https://sowe.ar/politicas-de-privacidad): Tratamiento de datos personales.
+
+## Sistemas de software a medida
+
+Cada sistema se construye sobre la operación real del cliente, por módulos, con un discovery previo. No se muestran sistemas de clientes (confidencialidad); se ofrece una versión navegable en una conversación.
+
+- [CRM a medida](https://sowe.ar/software/crm-a-medida): Gestión comercial sobre el proceso de venta real. Centraliza WhatsApp, correo y llamadas por cliente, ordena oportunidades por etapa y arma cotizaciones con criterios propios.
+- [ERP de operación e inventario](https://sowe.ar/software/erp-operacion-inventario): Control de stock y movimientos de mercadería por depósito y sucursal, con trazabilidad de cada movimiento.
+- [E-commerce con lógica propia](https://sowe.ar/software/ecommerce-logica-propia): Tienda en línea con las reglas comerciales reales del negocio (tipos de cliente, listas de precio, condiciones) dentro del sistema.
+- [Ticketing con marca propia](https://sowe.ar/software/ticketing-marca-propia): Venta de entradas bajo la marca del cliente, con QR y una aplicación propia de control de acceso; sin ticketera externa ni comisión.
+- [Plataformas de reservas y agenda](https://sowe.ar/software/reservas-y-agenda): Reservas en línea con disponibilidad real, recordatorios automáticos y pago de seña, integradas a la operación.
+- [Dashboards y reporting](https://sowe.ar/software/dashboards-y-reporting): Métricas en tiempo real alimentadas directo desde los sistemas en producción, con reportes descargables y vistas por rol.
+- [Automatización con IA aplicada](https://sowe.ar/software/automatizacion-ia): Flujos que leen documentos, completan formularios y clasifican datos en segundo plano, para tareas repetitivas con patrón claro.
+
+## Contacto
+
+- Correo: hola@sowe.ar
+- WhatsApp: +54 9 11 3333-7180
+- Ubicación: Buenos Aires, Argentina
+- Horario: Lunes a viernes, 9:00–18:00
+
+## Notas
+
+- El sitio está disponible en español (predeterminado) e inglés.
+- Cliente ideal: empresas con operación real (manufactura, agro, servicios, comercio) que necesitan ordenar procesos con software propio.

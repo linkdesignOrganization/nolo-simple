@@ -4,10 +4,12 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input,
   signal
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LucidePlus } from '@lucide/angular';
 
 export type FaqItem = {
@@ -194,6 +196,23 @@ export type FaqItem = {
       text-wrap: pretty;
     }
 
+    /* Tema oscuro de página (cuando el FAQ vive dentro de una zona oscura): texto e hilos
+       claros. El + se queda en --accent (se ve bien sobre negro). */
+    :host-context(.app-dark) .faq-title,
+    :host-context(.app-dark) .faq-q,
+    :host-context(.app-dark) .faq-q__index,
+    :host-context(.app-dark) .faq-a__text {
+      color: #f4f4f4;
+    }
+
+    :host-context(.app-dark) .faq-list {
+      border-bottom-color: rgba(255, 255, 255, 0.16);
+    }
+
+    :host-context(.app-dark) .faq-item {
+      border-top-color: rgba(255, 255, 255, 0.16);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .faq-item {
         opacity: 1;
@@ -234,6 +253,7 @@ export class FaqAccordionComponent implements AfterViewInit, OnDestroy {
   readonly items = input.required<FaqItem[]>();
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
+  private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
 
   // Multi-open: cada pregunta abre/cierra independiente. Guardamos el set de índices abiertos
@@ -260,6 +280,10 @@ export class FaqAccordionComponent implements AfterViewInit, OnDestroy {
 
   // Reveal de una sola pasada, idéntico al resto de las secciones.
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const host = this.hostRef.nativeElement as HTMLElement;
     const reducedMotion =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, Directive, ElementRef, NgZone, OnDestroy, inject } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { AfterViewInit, Directive, ElementRef, NgZone, OnDestroy, PLATFORM_ID, inject } from '@angular/core';
 
 import { DarkZoneService } from './dark-zone.service';
 
@@ -15,11 +15,16 @@ export class DarkZoneDirective implements AfterViewInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
   private readonly darkZone = inject(DarkZoneService);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private rafId: number | null = null;
   private readonly onScroll = (): void => this.requestUpdate();
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.zone.runOutsideAngular(() => {
       const win = this.document.defaultView;
       win?.addEventListener('scroll', this.onScroll, { passive: true });

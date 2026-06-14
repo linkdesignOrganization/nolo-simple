@@ -8,6 +8,8 @@ import { filter, map, startWith } from 'rxjs';
 import { TechnicalGridSurfaceComponent } from './components/technical-grid-surface.component';
 import { LanguageService } from './services/language.service';
 import { AdsService } from './services/ads.service';
+import { SeoService } from './services/seo.service';
+import { seoForUrl } from './services/seo-content';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,7 @@ export class App {
   private readonly location = inject(Location);
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
+  private readonly seo = inject(SeoService);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -34,13 +37,20 @@ export class App {
   protected readonly t = computed(() => TOPBAR_TEXT[this.lang()]);
 
   protected readonly isHome = computed(() => this.currentUrl() === '/');
-  protected readonly isSoftware = computed(() => this.currentUrl().startsWith('/software'));
+  // Path sin query ni fragment, para distinguir /software (landing) de /software/<slug> (detalle).
+  private readonly pathname = computed(() => this.currentUrl().split('?')[0].split('#')[0]);
+  protected readonly isSoftware = computed(() => this.pathname() === '/software');
+  // Detalle de un sistema: /software/<slug> (página terminal, no la landing de software).
+  protected readonly isSystemDetail = computed(() => this.pathname().startsWith('/software/'));
   protected readonly isContact = computed(() => this.currentUrl().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.currentUrl().startsWith('/politicas-de-privacidad'));
   protected readonly isNotFound = computed(() => this.currentUrl().startsWith('/404'));
 
-  // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver (contacto + privacidad).
-  protected readonly backOnly = computed(() => this.isContact() || this.isPrivacy());
+  // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
+  // (contacto, privacidad y el detalle de un sistema).
+  protected readonly backOnly = computed(
+    () => this.isContact() || this.isPrivacy() || this.isSystemDetail()
+  );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
   // /software → Sistemas, Proceso, Casos · /web → Capacidades, Servicios, Portfolio.
@@ -54,6 +64,11 @@ export class App {
   private scrollConversionSent = false;
 
   constructor() {
+    // SEO por ruta + idioma: title, meta, OG, canonical y JSON-LD reaccionan al navegar y al toggle ES/EN.
+    effect(() => {
+      this.seo.apply(seoForUrl(this.currentUrl(), this.i18n.lang()));
+    });
+
     // Rearma la conversión de scroll en cada navegación → una conversión por página (igual que el legacy).
     effect(() => {
       this.currentUrl();

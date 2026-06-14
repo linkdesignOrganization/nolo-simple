@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { ContactPageComponent } from './pages/contact-page';
 import { LandingData, LandingPageComponent } from './pages/landing-page';
 import { PrivacyPageComponent } from './pages/privacy-page';
+import { SystemDetailPageComponent } from './pages/system-detail-page';
 
 const contactInfo = {
   email: 'hola@sowe.ar',
@@ -123,42 +124,49 @@ const softwarePageEs: LandingData = {
     items: [
       {
         title: 'CRM a la medida',
+        slug: 'crm-a-medida',
         body:
           'Unificamos WhatsApp, llamadas y correo en un mismo flujo de venta. La cotización se arma con IA según los criterios del negocio, no con plantillas genéricas. El equipo comercial ve en qué etapa está cada lead sin saltar entre herramientas.',
         chips: ['Multicanal', 'Cotización con IA', 'Pipeline visible', 'Historial unificado']
       },
       {
         title: 'ERP de operación e inventario',
+        slug: 'erp-operacion-inventario',
         body:
           'Stock por depósito o sucursal, ventas con registro de despacho y trazabilidad completa de cada movimiento. Todo queda en el mismo sistema, con datos vivos en lugar de planillas paralelas. Pensado para que el control no dependa de pasar información de una herramienta a otra.',
         chips: ['Stock multi depósito', 'Despacho', 'Trazabilidad', 'Movimientos en tiempo real']
       },
       {
         title: 'E-commerce con lógica propia',
+        slug: 'ecommerce-logica-propia',
         body:
           'Tiendas con reglas comerciales construidas según el modelo del negocio. Tipos de cliente, listas de precio, condiciones de pago y descuentos viven dentro del sistema, no como excepciones manuales. Si la operación cambia, el código cambia con ella.',
         chips: ['Reglas comerciales', 'Tipos de cliente', 'Listas de precio', 'Condiciones de pago']
       },
       {
         title: 'Ticketing con marca propia',
+        slug: 'ticketing-marca-propia',
         body:
           'Plataformas de venta de entradas para artistas, productoras y espacios que quieren operar con su propia marca. El público compra desde el sitio oficial, recibe su ticket con QR y accede al evento dentro del mismo flujo. Pagos, ventas, asistentes y control de ingreso quedan centralizados, sin depender de una ticketera externa.',
         chips: ['Marca propia', 'Venta de entradas', 'Tickets con QR', 'Control de acceso']
       },
       {
         title: 'Plataformas de reservas y agenda',
+        slug: 'reservas-y-agenda',
         body:
           'Sistemas de reservas con agenda, disponibilidad, recordatorios automáticos y pago en línea integrados a la operación. Cada cita entra al flujo del negocio, actualiza la capacidad disponible y queda vinculada con el cliente. La información no queda atrapada en una herramienta separada que después haya que conciliar.',
         chips: ['Agenda', 'Disponibilidad', 'Recordatorios automáticos', 'Pago en línea']
       },
       {
         title: 'Dashboards y reporting',
+        slug: 'dashboards-y-reporting',
         body:
           'Tableros con métricas en tiempo real y reportes descargables, alimentados directamente desde los sistemas en producción. No son extractos manuales ni archivos cargados aparte. Si el dato existe en la operación, está en el tablero.',
         chips: ['Tiempo real', 'Reportes descargables', 'KPIs configurables', 'Datos en vivo']
       },
       {
         title: 'Automatización con IA aplicada',
+        slug: 'automatizacion-ia',
         body:
           'Flujos que leen documentos, completan formularios, clasifican datos y conectan tareas manuales que antes se hacían a mano. La IA opera en segundo plano sin cambiar la forma de trabajar del equipo, y sin reemplazar la relación con el cliente.',
         chips: ['IA aplicada', 'Lectura de documentos', 'Clasificación de datos', 'Procesos automáticos']
@@ -344,42 +352,49 @@ const softwarePageEn: LandingData = {
     items: [
       {
         title: 'Custom CRM',
+        slug: 'crm-a-medida',
         body:
           "We unify WhatsApp, calls and email into a single sales flow. Quotes are built with AI based on the business's criteria, not generic templates. The sales team sees what stage each lead is in without jumping between tools.",
         chips: ['Multichannel', 'AI quoting', 'Visible pipeline', 'Unified history']
       },
       {
         title: 'Operations & inventory ERP',
+        slug: 'erp-operacion-inventario',
         body:
           "Stock by warehouse or branch, sales with dispatch records and full traceability of every movement. Everything stays in one system, with live data instead of parallel spreadsheets. Designed so control doesn't depend on moving information from one tool to another.",
         chips: ['Multi-warehouse stock', 'Dispatch', 'Traceability', 'Real-time movements']
       },
       {
         title: 'E-commerce with its own logic',
+        slug: 'ecommerce-logica-propia',
         body:
           'Stores with commercial rules built around the business model. Customer types, price lists, payment terms and discounts live inside the system, not as manual exceptions. If the operation changes, the code changes with it.',
         chips: ['Commercial rules', 'Customer types', 'Price lists', 'Payment terms']
       },
       {
         title: 'Own-brand ticketing',
+        slug: 'ticketing-marca-propia',
         body:
           'Ticket-sales platforms for artists, producers and venues that want to operate under their own brand. The audience buys from the official site, gets a QR ticket and enters the event within the same flow. Payments, sales, attendees and access control stay centralized, without depending on an external ticketing service.',
         chips: ['Own brand', 'Ticket sales', 'QR tickets', 'Access control']
       },
       {
         title: 'Booking & scheduling platforms',
+        slug: 'reservas-y-agenda',
         body:
           "Booking systems with scheduling, availability, automatic reminders and online payment integrated into the operation. Each appointment enters the business flow, updates available capacity and stays linked to the client. The information doesn't get stuck in a separate tool you have to reconcile afterward.",
         chips: ['Scheduling', 'Availability', 'Automatic reminders', 'Online payment']
       },
       {
         title: 'Dashboards & reporting',
+        slug: 'dashboards-y-reporting',
         body:
           "Dashboards with real-time metrics and downloadable reports, fed directly from the systems in production. No manual extracts or files loaded on the side. If the data exists in the operation, it's on the dashboard.",
         chips: ['Real-time', 'Downloadable reports', 'Configurable KPIs', 'Live data']
       },
       {
         title: 'Applied AI automation',
+        slug: 'automatizacion-ia',
         body:
           'Flows that read documents, fill out forms, classify data and connect tasks that used to be done by hand. AI runs in the background without changing how the team works — and without replacing the client relationship.',
         chips: ['Applied AI', 'Document reading', 'Data classification', 'Automated processes']
@@ -1045,6 +1060,12 @@ export const routes: Routes = [
     path: 'software',
     component: LandingPageComponent,
     data: { es: softwarePageEs, en: softwarePageEn }
+  },
+  {
+    // Detalle de cada sistema de software. El contenido lo resuelve el componente
+    // por el :slug (ver systems-content.ts). Página terminal (header simplificado).
+    path: 'software/:slug',
+    component: SystemDetailPageComponent
   },
   {
     path: 'web',

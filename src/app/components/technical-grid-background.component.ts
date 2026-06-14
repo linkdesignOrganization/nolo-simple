@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   ViewChild,
   inject,
   input
@@ -100,6 +101,7 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
   private readonly document = inject(DOCUMENT);
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private animationFrameId: number | null = null;
   private canvasContext: CanvasRenderingContext2D | null = null;
@@ -122,6 +124,10 @@ export class TechnicalGridBackgroundComponent implements AfterViewInit, OnDestro
   private width = 0;
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.zone.runOutsideAngular(() => {
       try {
         this.canvasContext = this.canvasRef.nativeElement.getContext('2d');

@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
@@ -389,6 +390,7 @@ export class WebCapabilitiesComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private static readonly MOBILE_MAX = 860;
   // Viewport-heights de scroll por card → controla el ritmo del horizontal (cómodo).
@@ -411,6 +413,9 @@ export class WebCapabilitiesComponent implements AfterViewInit, OnDestroy {
   private readonly onResize = (): void => this.handleResize();
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       const host = this.hostRef.nativeElement as HTMLElement;
       this.tallEl = host.querySelector<HTMLElement>('.wc-tall');

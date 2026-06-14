@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input,
   signal
@@ -413,6 +414,7 @@ export class DevTypesComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private static readonly MOBILE_MAX = 860;
   private static readonly LOCK_FALLBACK_MS = 3000;
@@ -431,6 +433,10 @@ export class DevTypesComponent implements AfterViewInit, OnDestroy {
   };
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.zone.runOutsideAngular(() => {
       const host = this.hostRef.nativeElement as HTMLElement;
       this.panelEls = Array.from(host.querySelectorAll<HTMLElement>('.dt-panel'));

@@ -4,9 +4,11 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LucideCircleCheck, LucideCircleOff, LucideRoute } from '@lucide/angular';
 
 export type Principle = {
@@ -190,12 +192,16 @@ export class WorkPrinciplesComponent implements AfterViewInit, OnDestroy {
   readonly cards = input.required<Principle[]>();
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
+  private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
 
   // Reveal de una sola pasada: apenas la sección asoma en pantalla, se agrega
   // `.is-in` al host y las cards entran escalonadas (transition-delay por índice).
   // Sin scroll-jacking: la página fluye normal.
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const host = this.hostRef.nativeElement as HTMLElement;
     const reducedMotion =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -33,6 +33,17 @@ export type ContactInfo = {
   whatsappLink: string;
 };
 
+/**
+ * Contexto del sistema cuando el form vive en una página /software/<slug>.
+ * Sirve para identificar mejor el lead del lado del CRM (qué sistema estaba viendo).
+ */
+export type SystemContext = {
+  /** Nombre legible del sistema, ya resuelto al idioma activo (ej. "CRM a medida"). */
+  name: string;
+  /** Slug de la URL (ej. "crm-a-medida"). */
+  slug: string;
+};
+
 type NeedChip = { key: string; es: string; en: string };
 type ContactMethod = { key: string; icon: 'mail' | 'message' | 'phone'; es: string; en: string };
 
@@ -750,6 +761,16 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 export class ContactFooterComponent {
   readonly info = input.required<ContactInfo>();
 
+  /**
+   * Contexto opcional del sistema cuando el form se renderiza en una página /software/<slug>.
+   * Si está presente, se antepone una línea al mensaje del lead para que el CRM identifique
+   * qué sistema estaba viendo. Es el único canal viable sin redeploy del CRM: `message` es el
+   * campo que viaja en el payload Y se muestra en el email de aviso a hola@sowe.ar; un campo
+   * nuevo en el payload lo descartaría el esquema Zod del CRM (z.object → strip de claves
+   * desconocidas). En el resto del sitio el input va ausente y el mensaje no se toca.
+   */
+  readonly systemContext = input<SystemContext | null>(null);
+
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
@@ -842,7 +863,7 @@ export class ContactFooterComponent {
       company: v.company,
       email: v.email,
       phone: v.phone,
-      message: v.message,
+      message: this.withSystemContext(v.message),
       need: [...this.needs()].map((k) => NEED_MAP[k]).filter((x): x is NeedOption => !!x),
       preferred_contact: [...this.contactPrefs()]
         .map((k) => CONTACT_MAP[k])
@@ -866,6 +887,23 @@ export class ContactFooterComponent {
         this.submitError.set(result.message);
       }
     });
+  }
+
+  // Si el form viene de la página de un sistema, antepone una línea limpia y legible al
+  // mensaje para que el CRM (email de aviso + detalle) identifique qué sistema veía el lead.
+  // Si no hay contexto, devuelve el mensaje sin tocar. El prefijo es corto (no arriesga el
+  // tope de 1000 chars que recorta el sanitizado del servicio).
+  private withSystemContext(message: string): string {
+    const sys = this.systemContext();
+    if (!sys) {
+      return message;
+    }
+    const note =
+      this.lang() === 'en'
+        ? `[Lead from the system page: ${sys.name}]`
+        : `[Consulta desde la página del sistema: ${sys.name}]`;
+    const body = message.trim();
+    return body ? `${note}\n\n${body}` : note;
   }
 
   protected copyEmail(): void {

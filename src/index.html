@@ -9,6 +9,9 @@
     name="description"
     content="Software y sitios web a medida. Construimos el sistema alrededor de cómo funciona tu operación."
   >
+  <meta name="author" content="Sowe">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://sowe.ar/">
 
   <!-- Content Security Policy: habilita Google Ads/Analytics y Google Fonts.
        ws:/localhost permiten el live-reload del dev-server; en producción son inocuos. -->
@@ -61,6 +64,48 @@
   <meta name="twitter:title" content="sowe | software + web a medida">
   <meta name="twitter:description" content="Software y sitios web a medida.">
   <meta name="twitter:image" content="https://sowe.ar/og-image.png">
+
+  <!-- Structured data: Organization + WebSite. El SeoService agrega el WebPage/Service por ruta. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://sowe.ar/#organization",
+        "name": "Sowe",
+        "url": "https://sowe.ar/",
+        "description": "Estudio de desarrollo de software y sitios web a medida en Buenos Aires, Argentina. Software empresarial, aplicaciones internas, e-commerce y sitios corporativos construidos desde código.",
+        "slogan": "Software y sitios web a medida, construidos desde código.",
+        "knowsAbout": ["Desarrollo de software a medida", "Desarrollo web", "E-commerce", "Aplicaciones empresariales internas", "Automatización con IA", "CRM", "ERP", "Angular", "Node.js"],
+        "logo": "https://sowe.ar/og-image.png",
+        "email": "hola@sowe.ar",
+        "telephone": "+5491133337180",
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Buenos Aires",
+          "addressCountry": "AR"
+        },
+        "areaServed": "AR",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+5491133337180",
+          "email": "hola@sowe.ar",
+          "contactType": "customer service"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sowe.ar/#website",
+        "url": "https://sowe.ar/",
+        "name": "Sowe",
+        "inLanguage": "es-AR",
+        "publisher": { "@id": "https://sowe.ar/#organization" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <app-root></app-root>

@@ -4,9 +4,11 @@ import {
   Component,
   ElementRef,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export type ProjectStage = {
   order: string;
@@ -217,12 +219,17 @@ export class ProjectStagesComponent implements AfterViewInit, OnDestroy {
   readonly light = input(false);
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
+  private readonly platformId = inject(PLATFORM_ID);
   private observer: IntersectionObserver | null = null;
 
   // Reveal de una sola pasada: al asomar la sección, las 4 etapas entran escalonadas
   // (01→04) vía el transition-delay por índice. No administra el tema oscuro: lo mantiene
   // la sección showcase de arriba.
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     const host = this.hostRef.nativeElement as HTMLElement;
     const reducedMotion =
       typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;

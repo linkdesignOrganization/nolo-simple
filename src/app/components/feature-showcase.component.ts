@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -6,6 +6,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   inject,
   input
 } from '@angular/core';
@@ -229,6 +230,7 @@ export class FeatureShowcaseComponent implements AfterViewInit, OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   // Posiciones (en %) en el orden de la tabla del spec.
   // Desktop (landscape): constelación amplia a los lados del título.
@@ -283,6 +285,9 @@ export class FeatureShowcaseComponent implements AfterViewInit, OnDestroy {
   };
 
   ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       const host = this.hostRef.nativeElement as HTMLElement;
       this.cardEls = Array.from(host.querySelectorAll<HTMLElement>('.fs-card'));
