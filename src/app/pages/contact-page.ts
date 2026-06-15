@@ -35,7 +35,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     <section class="contact" [attr.aria-label]="t().aria">
       <div class="contact-grid">
         <div class="ct-brand">
-          <h1 class="ct-title">sowe</h1>
+          <h1 class="ct-title">nolo</h1>
         </div>
 
         <div class="ct-cards">
@@ -149,11 +149,11 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       display: flex;
       align-items: flex-end;
       /* Container query: el título se mide contra el ancho de SU columna, no del viewport,
-         así "sowe" llena la columna sin desbordar hacia el recuadro. */
+         así "nolo" llena la columna sin desbordar hacia el recuadro. */
       container-type: inline-size;
     }
 
-    /* "sowe" llena el ancho de su columna (≈42% del ancho de columna por glifo del wordmark). */
+    /* "nolo" llena el ancho de su columna (≈42% del ancho de columna por glifo del wordmark). */
     .ct-title {
       margin: 0;
       color: var(--ink);
@@ -350,10 +350,10 @@ export class ContactPageComponent {
   protected readonly t = computed(() => CONTACT_TEXT[this.lang()]);
 
   protected readonly info: ContactInfo = {
-    email: 'hola@sowe.ar',
+    email: 'hola@nolo.ar',
     whatsappLink: 'https://wa.me/5491133337180',
-    calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
-    calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe',
+    calendarLink: 'https://cal.com/nolo.ar/reunion-con-nolo',
+    calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo',
     location: 'Buenos Aires, Argentina'
   };
 

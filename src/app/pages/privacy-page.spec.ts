@@ -18,15 +18,15 @@ describe('PrivacyPageComponent', () => {
     expect(el.querySelectorAll('.pp-section').length).toBe(8);
 
     const mailto = el.querySelector('a.pp-link[href^="mailto:"]');
-    expect(mailto?.getAttribute('href')).toBe('mailto:hola@sowe.ar');
+    expect(mailto?.getAttribute('href')).toBe('mailto:hola@nolo.ar');
   });
 
-  it('closes with a simple legal bar mentioning Sowe (no contact footer)', () => {
+  it('closes with a simple legal bar mentioning Nolo (no contact footer)', () => {
     const fixture = TestBed.createComponent(PrivacyPageComponent);
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.pp-legal')?.textContent).toContain('Sowe');
+    expect(el.querySelector('.pp-legal')?.textContent).toContain('Nolo');
     expect(el.querySelector('app-contact-footer')).toBeNull();
   });
 });

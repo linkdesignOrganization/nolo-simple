@@ -17,12 +17,12 @@ export interface SeoData {
 
 /**
  * SeoService — title + meta tags (description, keywords, robots), Open Graph,
- * Twitter card, canonical, hreflang y JSON-LD por ruta e idioma. Marca Sowe (AR).
+ * Twitter card, canonical, hreflang y JSON-LD por ruta e idioma. Marca Nolo (AR).
  */
 @Injectable({ providedIn: 'root' })
 export class SeoService {
-  private readonly siteOrigin = this.normalizeOrigin(environment.siteUrl) || 'https://sowe.ar';
-  private readonly defaultImage = 'https://sowe.ar/og-image.png';
+  private readonly siteOrigin = this.normalizeOrigin(environment.siteUrl) || 'https://nolo.ar';
+  private readonly defaultImage = 'https://nolo.ar/og-image.png';
 
   constructor(
     private title: Title,

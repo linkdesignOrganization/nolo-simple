@@ -1,7 +1,7 @@
 import { FaqItem } from '../components/faq-accordion.component';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Contenido de las páginas de detalle de cada sistema de software (Sowe).
+// Contenido de las páginas de detalle de cada sistema de software (Nolo).
 // Fuente única de verdad: transcrito VERBATIM de contenido-sistemas-software.md
 // (voseo argentino, tildes). No editar el copy "a ojo"; está aprobado.
 //

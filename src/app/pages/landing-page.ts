@@ -125,7 +125,7 @@ export type LandingData = {
           class="split reveal reveal--delayed"
           [class.split--software-active]="activeArm() === 'software'"
           [class.split--web-active]="activeArm() === 'web'"
-          aria-label="Sowe services"
+          aria-label="Nolo services"
         >
           @for (arm of page().homeArms ?? []; track arm.route; let index = $index) {
             <article

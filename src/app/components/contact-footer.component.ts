@@ -263,7 +263,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     </div>
 
     <div class="cf-legal">
-      <p class="cf-legal__copy">© {{ year }} Sowe. {{ t().rights }}</p>
+      <p class="cf-legal__copy">© {{ year }} Nolo. {{ t().rights }}</p>
       <a class="cf-legal__link" [routerLink]="'/politicas-de-privacidad' | localizeUrl">{{ t().privacy }}</a>
     </div>
   `,
@@ -767,7 +767,7 @@ export class ContactFooterComponent {
    * Contexto opcional del sistema cuando el form se renderiza en una página /software/<slug>.
    * Si está presente, se antepone una línea al mensaje del lead para que el CRM identifique
    * qué sistema estaba viendo. Es el único canal viable sin redeploy del CRM: `message` es el
-   * campo que viaja en el payload Y se muestra en el email de aviso a hola@sowe.ar; un campo
+   * campo que viaja en el payload Y se muestra en el email de aviso a hola@nolo.ar; un campo
    * nuevo en el payload lo descartaría el esquema Zod del CRM (z.object → strip de claves
    * desconocidas). En el resto del sitio el input va ausente y el mensaje no se toca.
    */

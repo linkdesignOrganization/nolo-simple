@@ -4,12 +4,12 @@ import { afterEach, vi } from 'vitest';
 import { Viewcase, ViewcasesComponent } from './viewcases.component';
 
 const items: Viewcase[] = [
-  { label: 'CRM', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'ERP', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'E-commerce', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Reservas', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Dashboards', videoSrc: '/media/software-demo.mp4', link: '#' },
-  { label: 'Automatización', videoSrc: '/media/software-demo.mp4', link: '#' }
+  { label: 'CRM', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' },
+  { label: 'ERP', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' },
+  { label: 'E-commerce', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' },
+  { label: 'Reservas', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' },
+  { label: 'Dashboards', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' },
+  { label: 'Automatización', category: '', videoSrc: '/media/software-demo.mp4', poster: '', link: '#' }
 ];
 
 describe('ViewcasesComponent', () => {

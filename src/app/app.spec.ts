@@ -28,7 +28,7 @@ describe('App', () => {
     const brand = compiled.querySelector('.brand')?.textContent?.trim();
 
     expect(links.length).toBe(0);
-    expect(brand).toBe('sowe');
+    expect(brand).toBe('nolo');
   });
 
   it('should render the software header navigation on internal pages', async () => {

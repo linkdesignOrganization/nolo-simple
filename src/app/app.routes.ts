@@ -9,12 +9,12 @@ import { SystemDetailPageComponent } from './pages/system-detail-page';
 import { langGuard } from './services/lang.guard';
 
 const contactInfo = {
-  email: 'hola@sowe.ar',
+  email: 'hola@nolo.ar',
   whatsappLink: 'https://wa.me/5491133337180',
-  // Reunión en cal.com por idioma: ES (reunion-con-sowe) / EN (meeting-with-sowe), para que el
+  // Reunión en cal.com por idioma: ES (reunion-con-nolo) / EN (meeting-with-nolo), para que el
   // user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
-  calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
-  calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe'
+  calendarLink: 'https://cal.com/nolo.ar/reunion-con-nolo',
+  calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -23,10 +23,10 @@ const contactInfo = {
 
 const homePageEs: LandingData = {
   isHome: true,
-  eyebrow: 'Sowe / 001',
+  eyebrow: 'Nolo / 001',
   title: 'Dos brazos. Un mismo criterio para construir software y webs a medida.',
   description:
-    'Sowe separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
+    'Nolo separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
   homeArms: [
     {
       eyebrow: '/software',
@@ -56,10 +56,10 @@ const homePageEs: LandingData = {
 
 const homePageEn: LandingData = {
   isHome: true,
-  eyebrow: 'Sowe / 001',
+  eyebrow: 'Nolo / 001',
   title: 'Two sides. One standard for building custom software and websites.',
   description:
-    'Sowe splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
+    'Nolo splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
   homeArms: [
     {
       eyebrow: '/software',

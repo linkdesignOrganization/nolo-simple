@@ -35,7 +35,7 @@ type PrivacySection = { title: string; body: string[] };
       </section>
     </article>
 
-    <div class="pp-legal">© {{ year }} Sowe. {{ t().rights }}</div>
+    <div class="pp-legal">© {{ year }} Nolo. {{ t().rights }}</div>
   `,
   styles: `
     :host {
@@ -135,7 +135,7 @@ export class PrivacyPageComponent {
   protected readonly t = computed(() => PRIVACY_TEXT[this.lang()]);
 
   protected readonly year = new Date().getFullYear();
-  protected readonly email = 'hola@sowe.ar';
+  protected readonly email = 'hola@nolo.ar';
 }
 
 type PrivacyText = {
@@ -153,7 +153,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Política de privacidad',
     updated: 'Última actualización: Junio de 2026',
     intro:
-      'En Sowe construimos software y sitios web a medida. Esta política explica qué datos ' +
+      'En Nolo construimos software y sitios web a medida. Esta política explica qué datos ' +
       'recopilamos cuando visitás nuestro sitio o nos contactás, cómo los usamos y qué derechos ' +
       'tenés sobre ellos. Al usar el sitio, aceptás las prácticas que describimos acá.',
     contactTitle: 'Contacto',
@@ -211,7 +211,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           'Podés solicitar el acceso a tus datos, la corrección de información inexacta, su ' +
             'eliminación, la limitación de su uso o el retiro de tu consentimiento en cualquier ' +
-            'momento. Para ejercerlos, escribinos a hola@sowe.ar.'
+            'momento. Para ejercerlos, escribinos a hola@nolo.ar.'
         ]
       },
       {
@@ -227,7 +227,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Privacy policy',
     updated: 'Last updated: June 2026',
     intro:
-      'At Sowe we build custom software and websites. This policy explains what data we collect ' +
+      'At Nolo we build custom software and websites. This policy explains what data we collect ' +
       'when you visit our site or contact us, how we use it and what rights you have over it. By ' +
       'using the site, you accept the practices described here.',
     contactTitle: 'Contact',
@@ -285,7 +285,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
         body: [
           'You can request access to your data, the correction of inaccurate information, its ' +
             'deletion, the restriction of its use or the withdrawal of your consent at any time. To ' +
-            'exercise them, write to us at hola@sowe.ar.'
+            'exercise them, write to us at hola@nolo.ar.'
         ]
       },
       {

@@ -2,7 +2,7 @@ import { Injectable, effect, signal } from '@angular/core';
 
 export type Lang = 'es' | 'en';
 
-const STORAGE_KEY = 'sowe-lang';
+const STORAGE_KEY = 'nolo-lang';
 
 function readInitialLang(): Lang {
   // El idioma lo manda la URL: /en/... → en, resto → es. Así el cliente arranca en el mismo

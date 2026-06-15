@@ -7,7 +7,7 @@ import { LandingData, LandingPageComponent } from './landing-page';
 
 const homePage: LandingData = {
   description: 'Home test page',
-  eyebrow: 'Sowe / 001',
+  eyebrow: 'Nolo / 001',
   homeArms: [
     {
       body: 'Construimos software a medida.',

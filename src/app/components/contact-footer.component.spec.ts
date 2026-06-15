@@ -53,7 +53,7 @@ describe('ContactFooterComponent', () => {
     expect(el.querySelector('.cf-submit')?.textContent).toContain('Enviar mensaje');
 
     // Barra de cierre: copyright con la marca + link de privacidad.
-    expect(el.querySelector('.cf-legal__copy')?.textContent).toContain('Sowe');
+    expect(el.querySelector('.cf-legal__copy')?.textContent).toContain('Nolo');
     expect(el.querySelector('.cf-legal__link')?.textContent?.trim()).toBe('Política de privacidad');
 
     fixture.destroy();

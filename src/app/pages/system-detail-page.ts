@@ -711,17 +711,17 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
 
   // Footer del sitio (mismos datos que contact-page).
   protected readonly info: ContactInfo = {
-    email: 'hola@sowe.ar',
+    email: 'hola@nolo.ar',
     whatsappLink: 'https://wa.me/5491133337180',
-    calendarLink: 'https://cal.com/sowe.ar/reunion-con-sowe',
-    calendarLinkEn: 'https://cal.com/sowe.ar/meeting-with-sowe',
+    calendarLink: 'https://cal.com/nolo.ar/reunion-con-nolo',
+    calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo',
     location: 'Buenos Aires, Argentina'
   };
 
   private observer: IntersectionObserver | null = null;
 
   constructor() {
-    // Slug inexistente → 404 con marca (Sowe ya tiene su propia página /404).
+    // Slug inexistente → 404 con marca (Nolo ya tiene su propia página /404).
     effect(() => {
       if (this.slug() !== null && this.d() === null) {
         this.router.navigateByUrl('/404', { replaceUrl: true });

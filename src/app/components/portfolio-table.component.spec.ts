@@ -6,6 +6,7 @@ import { PortfolioRow, PortfolioTableComponent } from './portfolio-table.compone
 const rows: PortfolioRow[] = [
   {
     client: 'Tornos del Sur',
+    logo: '',
     industry: 'Metalúrgica',
     projectType: 'Sistema interno + reportes',
     link: 'https://ejemplo-uno.com',
@@ -14,6 +15,7 @@ const rows: PortfolioRow[] = [
   },
   {
     client: 'Estudio Bertolino',
+    logo: '',
     industry: 'Estudio jurídico',
     projectType: 'Corporativo',
     link: 'https://ejemplo-dos.com',
@@ -22,6 +24,7 @@ const rows: PortfolioRow[] = [
   },
   {
     client: 'Clínica Mendieta',
+    logo: '',
     industry: 'Salud',
     projectType: 'Corporativo + reservas',
     link: 'https://ejemplo-tres.com',

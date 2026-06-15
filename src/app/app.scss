@@ -509,7 +509,7 @@
   .topbar:not(.topbar--home) .brand {
     grid-area: brand;
     justify-self: center;
-    /* Logo más grande en celulares ("sowe" es corto, hay aire entre los dos botones). */
+    /* Logo más grande en celulares ("nolo" es corto, hay aire entre los dos botones). */
     font-size: clamp(2.3rem, 9vw, 3rem);
   }
 

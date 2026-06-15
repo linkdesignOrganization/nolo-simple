@@ -4,9 +4,9 @@ import { isPlatformBrowser } from '@angular/common';
 declare var gtag: Function;
 
 /**
- * Conversion actions de Google Ads de Sowe.
+ * Conversion actions de Google Ads de Nolo.
  *
- * ⚠️ PLACEHOLDERS — reemplazar cuando esté la cuenta de Google Ads de Sowe:
+ * ⚠️ PLACEHOLDERS — reemplazar cuando esté la cuenta de Google Ads de Nolo:
  *   1. El ID de cuenta `AW-XXXXXXXXXX` (también en src/index.html → gtag config).
  *   2. El label de cada conversion action (lo que va después de la `/`).
  * Mientras sean placeholders, gtag es no-op real (no hay cuenta detrás) y no rompe nada.
