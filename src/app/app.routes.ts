@@ -160,6 +160,8 @@ const softwarePageEs: LandingData = {
           'Sistemas de reservas con agenda, disponibilidad, recordatorios automáticos y pago en línea integrados a la operación. Cada cita entra al flujo del negocio, actualiza la capacidad disponible y queda vinculada con el cliente. La información no queda atrapada en una herramienta separada que después haya que conciliar.',
         chips: ['Agenda', 'Disponibilidad', 'Recordatorios automáticos', 'Pago en línea']
       },
+      // Oculto en /software por ahora (2026-06-15) — NO borrar; descomentar para reactivar.
+      /*
       {
         title: 'Dashboards y reporting',
         slug: 'dashboards-y-reporting',
@@ -167,6 +169,7 @@ const softwarePageEs: LandingData = {
           'Tableros con métricas en tiempo real y reportes descargables, alimentados directamente desde los sistemas en producción. No son extractos manuales ni archivos cargados aparte. Si el dato existe en la operación, está en el tablero.',
         chips: ['Tiempo real', 'Reportes descargables', 'KPIs configurables', 'Datos en vivo']
       },
+      */
       {
         title: 'Automatización con IA aplicada',
         slug: 'automatizacion-ia',
@@ -388,6 +391,8 @@ const softwarePageEn: LandingData = {
           "Booking systems with scheduling, availability, automatic reminders and online payment integrated into the operation. Each appointment enters the business flow, updates available capacity and stays linked to the client. The information doesn't get stuck in a separate tool you have to reconcile afterward.",
         chips: ['Scheduling', 'Availability', 'Automatic reminders', 'Online payment']
       },
+      // Oculto en /software por ahora (2026-06-15) — NO borrar; descomentar para reactivar.
+      /*
       {
         title: 'Dashboards & reporting',
         slug: 'dashboards-y-reporting',
@@ -395,6 +400,7 @@ const softwarePageEn: LandingData = {
           "Dashboards with real-time metrics and downloadable reports, fed directly from the systems in production. No manual extracts or files loaded on the side. If the data exists in the operation, it's on the dashboard.",
         chips: ['Real-time', 'Downloadable reports', 'Configurable KPIs', 'Live data']
       },
+      */
       {
         title: 'Applied AI automation',
         slug: 'automatizacion-ia',
