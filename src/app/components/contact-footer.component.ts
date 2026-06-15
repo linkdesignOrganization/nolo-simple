@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { AdsService } from '../services/ads.service';
 import { LeadFormService, LeadSubmitContext } from '../lead-form/services/lead-form.service';
 import { LeadFormRawValue } from '../lead-form/models/lead-payload.model';
@@ -67,6 +68,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    LocalizeUrlPipe,
     LucideMail,
     LucidePhone,
     LucideCopy,
@@ -262,7 +264,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
 
     <div class="cf-legal">
       <p class="cf-legal__copy">© {{ year }} Sowe. {{ t().rights }}</p>
-      <a class="cf-legal__link" routerLink="/politicas-de-privacidad">{{ t().privacy }}</a>
+      <a class="cf-legal__link" [routerLink]="'/politicas-de-privacidad' | localizeUrl">{{ t().privacy }}</a>
     </div>
   `,
   styles: `

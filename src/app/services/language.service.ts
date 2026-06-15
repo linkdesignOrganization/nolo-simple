@@ -5,13 +5,11 @@ export type Lang = 'es' | 'en';
 const STORAGE_KEY = 'sowe-lang';
 
 function readInitialLang(): Lang {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'es' || saved === 'en') {
-      return saved;
-    }
-  } catch {
-    // localStorage no disponible (modo privado, etc.): caemos al default.
+  // El idioma lo manda la URL: /en/... → en, resto → es. Así el cliente arranca en el mismo
+  // idioma que el HTML prerenderizado (evita mismatch de hidratación). En server cae a 'es';
+  // el langGuard lo corrige por ruta durante el prerender.
+  if (typeof location !== 'undefined' && /^\/en(?=\/|$)/.test(location.pathname)) {
+    return 'en';
   }
   return 'es';
 }
@@ -48,5 +46,17 @@ export class LanguageService {
 
   set(lang: Lang): void {
     this._lang.set(lang);
+  }
+
+  /**
+   * Prefija `/en` a un path interno cuando el idioma activo es inglés (preservando el #fragment),
+   * para mantener los enlaces dentro del árbol del idioma actual. Externos/relativos: sin tocar.
+   */
+  link(path: string): string {
+    if (this.lang() !== 'en') return path;
+    if (!path || path[0] !== '/') return path;
+    if (path === '/') return '/en';
+    if (/^\/en(?=[/#]|$)/.test(path)) return path;
+    return '/en' + path;
   }
 }

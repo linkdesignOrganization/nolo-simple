@@ -37,15 +37,22 @@ export class App {
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => TOPBAR_TEXT[this.lang()]);
 
-  protected readonly isHome = computed(() => this.currentUrl() === '/');
-  // Path sin query ni fragment, para distinguir /software (landing) de /software/<slug> (detalle).
-  private readonly pathname = computed(() => this.currentUrl().split('?')[0].split('#')[0]);
-  protected readonly isSoftware = computed(() => this.pathname() === '/software');
-  // Detalle de un sistema: /software/<slug> (página terminal, no la landing de software).
-  protected readonly isSystemDetail = computed(() => this.pathname().startsWith('/software/'));
-  protected readonly isContact = computed(() => this.currentUrl().startsWith('/contacto'));
-  protected readonly isPrivacy = computed(() => this.currentUrl().startsWith('/politicas-de-privacidad'));
-  protected readonly isNotFound = computed(() => this.currentUrl().startsWith('/404'));
+  // Prefija /en a enlaces internos cuando el idioma es inglés (para no salir del árbol EN).
+  protected readonly localizeUrl = (path: string): string => this.i18n.link(path);
+
+  // Path sin query/fragment y SIN el prefijo /en, para que las flags traten /en/x igual que /x
+  // (mismo shell: grilla, header back-only, nav) en ambos idiomas.
+  private readonly pathNoLang = computed(() => {
+    const p = (this.currentUrl().split('#')[0].split('?')[0] || '/').replace(/^\/en(?=\/|$)/, '');
+    return p === '' ? '/' : p;
+  });
+  protected readonly isHome = computed(() => this.pathNoLang() === '/');
+  // /software es la landing; /software/<slug> es el detalle (terminal, header back-only).
+  protected readonly isSoftware = computed(() => this.pathNoLang() === '/software');
+  protected readonly isSystemDetail = computed(() => /^\/software\/[^/]+$/.test(this.pathNoLang()));
+  protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
+  protected readonly isPrivacy = computed(() => this.pathNoLang().startsWith('/politicas-de-privacidad'));
+  protected readonly isNotFound = computed(() => this.pathNoLang().startsWith('/404'));
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
   // (contacto, privacidad y el detalle de un sistema).
@@ -83,7 +90,16 @@ export class App {
   }
 
   protected toggleLang(): void {
-    this.i18n.toggle();
+    // Navega a la URL equivalente en el otro idioma (preservando el #fragment); el langGuard fija
+    // el idioma al llegar. ES→EN antepone /en; EN→ES lo quita.
+    const url = this.currentUrl();
+    const hashIdx = url.indexOf('#');
+    const fragment = hashIdx >= 0 ? url.slice(hashIdx + 1) : null;
+    const path = (hashIdx >= 0 ? url.slice(0, hashIdx) : url).split('?')[0] || '/';
+    const inEn = /^\/en(?=\/|$)/.test(path);
+    const base = inEn ? path.replace(/^\/en(?=\/|$)/, '') || '/' : path;
+    const target = inEn ? base : base === '/' ? '/en' : '/en' + base;
+    this.router.navigateByUrl(fragment ? `${target}#${fragment}` : target);
   }
 
   // Click en el botón de WhatsApp del topbar → conversión de Google Ads.

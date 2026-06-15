@@ -6,6 +6,8 @@ import { NotFoundPageComponent } from './pages/not-found-page';
 import { PrivacyPageComponent } from './pages/privacy-page';
 import { SystemDetailPageComponent } from './pages/system-detail-page';
 
+import { langGuard } from './services/lang.guard';
+
 const contactInfo = {
   email: 'hola@sowe.ar',
   whatsappLink: 'https://wa.me/5491133337180',
@@ -1051,42 +1053,54 @@ const webPageEn: LandingData = {
 // ROUTES — cada landing lleva su par { es, en }; LandingPageComponent resuelve por idioma.
 // ────────────────────────────────────────────────────────────────────────────
 
+// Rutas de contenido (idénticas en ambos idiomas). Se registran dos veces: en la raíz (ES) y
+// bajo /en (EN). El idioma lo fija langGuard desde data.lang. Factory → arrays nuevos por árbol.
+function contentRoutes(): Routes {
+  return [
+    {
+      path: '',
+      component: LandingPageComponent,
+      data: { es: homePageEs, en: homePageEn }
+    },
+    {
+      path: 'software',
+      component: LandingPageComponent,
+      data: { es: softwarePageEs, en: softwarePageEn }
+    },
+    {
+      // Detalle de cada sistema de software. El contenido lo resuelve el componente
+      // por el :slug (ver systems-content.ts). Página terminal (header simplificado).
+      path: 'software/:slug',
+      component: SystemDetailPageComponent
+    },
+    {
+      path: 'web',
+      component: LandingPageComponent,
+      data: { es: webPageEs, en: webPageEn }
+    },
+    {
+      path: 'contacto',
+      component: ContactPageComponent
+    },
+    {
+      path: 'politicas-de-privacidad',
+      component: PrivacyPageComponent
+    },
+    {
+      path: '404',
+      component: NotFoundPageComponent
+    },
+    // Catch-all relativo: dentro de /en → /en/404; en la raíz → /404.
+    {
+      path: '**',
+      redirectTo: '404'
+    }
+  ];
+}
+
+// Dos árboles de idioma. 'en' primero para que /en/... matchee el subtree inglés. El parent
+// componentless con path '' no agrega segmento → las URLs ES quedan idénticas (sin migración).
 export const routes: Routes = [
-  {
-    path: '',
-    component: LandingPageComponent,
-    data: { es: homePageEs, en: homePageEn }
-  },
-  {
-    path: 'software',
-    component: LandingPageComponent,
-    data: { es: softwarePageEs, en: softwarePageEn }
-  },
-  {
-    // Detalle de cada sistema de software. El contenido lo resuelve el componente
-    // por el :slug (ver systems-content.ts). Página terminal (header simplificado).
-    path: 'software/:slug',
-    component: SystemDetailPageComponent
-  },
-  {
-    path: 'web',
-    component: LandingPageComponent,
-    data: { es: webPageEs, en: webPageEn }
-  },
-  {
-    path: 'contacto',
-    component: ContactPageComponent
-  },
-  {
-    path: 'politicas-de-privacidad',
-    component: PrivacyPageComponent
-  },
-  {
-    path: '404',
-    component: NotFoundPageComponent
-  },
-  {
-    path: '**',
-    redirectTo: '/404'
-  }
+  { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes() },
+  { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes() }
 ];

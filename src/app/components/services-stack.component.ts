@@ -15,6 +15,8 @@ import { RouterLink } from '@angular/router';
 import { LucideArrowUpRight } from '@lucide/angular';
 
 import { environment } from '../../environments/environment';
+import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 export type ServiceItem = {
   body: string;
@@ -28,7 +30,7 @@ export type ServiceItem = {
   selector: 'app-services-stack',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LucideArrowUpRight],
+  imports: [RouterLink, LucideArrowUpRight, LocalizeUrlPipe],
   host: {
     'class': 'services-stack'
   },
@@ -44,7 +46,7 @@ export type ServiceItem = {
           <span class="ss-item__num">{{ pad(i) }}</span>
           @if (item.slug) {
             <h3 class="ss-item__title">
-              <a class="ss-item__link" [routerLink]="['/software', item.slug]">
+              <a class="ss-item__link" [routerLink]="('/software/' + item.slug) | localizeUrl">
                 <span class="ss-item__title-text">{{ item.title }}</span>
                 <span class="ss-item__arrow" aria-hidden="true">
                   <svg lucideArrowUpRight [size]="26" [strokeWidth]="1"></svg>
@@ -298,6 +300,7 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
   private readonly zone = inject(NgZone);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly doc = inject(DOCUMENT);
+  private readonly i18n = inject(LanguageService);
 
   private resizeObserver: ResizeObserver | null = null;
   private lastWidth = 0;
@@ -318,7 +321,7 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
           '@type': 'ListItem',
           position: i + 1,
           name: it.title,
-          url: `${origin}/software/${it.slug}`
+          url: origin + this.i18n.link('/software/' + it.slug)
         }))
       };
       if (!this.itemListScript) {

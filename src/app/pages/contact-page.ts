@@ -13,6 +13,7 @@ import { ContactFooterComponent, ContactInfo } from '../components/contact-foote
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 @Component({
   selector: 'app-contact-page',
@@ -20,6 +21,7 @@ import { AdsService } from '../services/ads.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterLink,
+    LocalizeUrlPipe,
     ContactFooterComponent,
     DarkZoneDirective,
     LucideMail,
@@ -92,7 +94,7 @@ import { AdsService } from '../services/ads.service';
             <span class="ct-card__label">{{ t().areas }}</span>
             <ul class="ct-list">
               <li>
-                <a class="ct-area" routerLink="/software">
+                <a class="ct-area" [routerLink]="'/software' | localizeUrl">
                   <span class="ct-area__text">{{ t().software }}</span>
                   <span class="ct-area__arrow" aria-hidden="true">
                     <svg lucideArrowUpRight [size]="22" [strokeWidth]="1"></svg>
@@ -100,7 +102,7 @@ import { AdsService } from '../services/ads.service';
                 </a>
               </li>
               <li>
-                <a class="ct-area" routerLink="/web">
+                <a class="ct-area" [routerLink]="'/web' | localizeUrl">
                   <span class="ct-area__text">{{ t().web }}</span>
                   <span class="ct-area__arrow" aria-hidden="true">
                     <svg lucideArrowUpRight [size]="22" [strokeWidth]="1"></svg>

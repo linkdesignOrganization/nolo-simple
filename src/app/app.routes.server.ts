@@ -13,5 +13,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => SYSTEM_SLUGS.map((slug) => ({ slug }))
   },
+  {
+    path: 'en/software/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => SYSTEM_SLUGS.map((slug) => ({ slug }))
+  },
   { path: '**', renderMode: RenderMode.Prerender }
 ];

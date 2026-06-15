@@ -169,17 +169,27 @@ function systemSeo(detail: SystemDetail, lang: Lang): SeoData {
   };
 }
 
-/** Resuelve el SEO de una URL (limpiando query/fragment). Maneja /software/<slug> dinámico. */
+/**
+ * Resuelve el contenido SEO de una URL (limpiando query/fragment). El diccionario usa rutas SIN
+ * prefijo de idioma; acá se quita el `/en` para el lookup y se deriva el `canonicalPath` por idioma
+ * (EN → `/en/...`), así cada página declara su URL canónica correcta. Maneja /software/<slug>.
+ */
 export function seoForUrl(url: string, lang: Lang): SeoData {
-  const path = (url || '/').split('#')[0].split('?')[0] || '/';
+  const raw = (url || '/').split('#')[0].split('?')[0] || '/';
+  const base = raw.replace(/^\/en(?=\/|$)/, '') || '/';
+  const toCanonical = (p: string) => (lang === 'en' ? '/en' + (p === '/' ? '' : p) : p);
+  const withCanonical = (data: SeoData): SeoData => ({
+    ...data,
+    canonicalPath: toCanonical(data.canonicalPath ?? base)
+  });
 
   // Detalle de sistema: /software/<slug>
-  const detailMatch = path.match(/^\/software\/([^/]+)$/);
+  const detailMatch = base.match(/^\/software\/([^/]+)$/);
   if (detailMatch) {
     const detail = getSystemDetail(detailMatch[1], lang);
-    if (detail) return systemSeo(detail, lang);
+    if (detail) return withCanonical(systemSeo(detail, lang));
   }
 
-  const entry = SEO_CONTENT[path] ?? SEO_FALLBACK;
-  return entry[lang];
+  const entry = SEO_CONTENT[base] ?? SEO_FALLBACK;
+  return withCanonical(entry[lang]);
 }

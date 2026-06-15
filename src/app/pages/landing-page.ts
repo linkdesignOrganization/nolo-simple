@@ -18,6 +18,7 @@ import { Principle, WorkPrinciplesComponent } from '../components/work-principle
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 export type LandingModuleFigure =
   | 'arrows'
@@ -110,7 +111,8 @@ export type LandingData = {
     ViewcasesComponent,
     WebCapabilitiesComponent,
     WebHeroComponent,
-    WorkPrinciplesComponent
+    WorkPrinciplesComponent,
+    LocalizeUrlPipe
   ],
   template: `
     <div
@@ -147,7 +149,7 @@ export type LandingData = {
               </div>
 
               <div class="arm-footer">
-                <a class="button arm-button" [routerLink]="arm.route">
+                <a class="button arm-button" [routerLink]="arm.route | localizeUrl">
                   <span>{{ arm.cta }}</span>
                   <span class="button-arrow" aria-hidden="true">→</span>
                 </a>
@@ -197,7 +199,7 @@ export type LandingData = {
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
                     } @else {
-                      <a class="button" [routerLink]="page().ctaPrimaryLink ?? '/'">
+                      <a class="button" [routerLink]="(page().ctaPrimaryLink ?? '/') | localizeUrl">
                         <span>{{ page().ctaPrimary }}</span>
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
@@ -217,7 +219,7 @@ export type LandingData = {
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
                     } @else {
-                      <a class="button" [routerLink]="page().ctaSecondaryLink ?? '/'">
+                      <a class="button" [routerLink]="(page().ctaSecondaryLink ?? '/') | localizeUrl">
                         <span>{{ page().ctaSecondary }}</span>
                         <span class="button-arrow" aria-hidden="true">→</span>
                       </a>
@@ -389,7 +391,7 @@ export type LandingData = {
                   <p>{{ module.body }}</p>
 
                   @if (module.link && module.linkLabel) {
-                    <a class="inline-link" [routerLink]="module.link">{{ module.linkLabel }}</a>
+                    <a class="inline-link" [routerLink]="module.link | localizeUrl">{{ module.linkLabel }}</a>
                   }
                 </div>
               </article>
@@ -423,7 +425,7 @@ export type LandingData = {
               <h2>{{ page().closingTitle }}</h2>
               <p>{{ page().closingText }}</p>
             </div>
-            <a class="button" [routerLink]="page().closingLink ?? '/'">
+            <a class="button" [routerLink]="(page().closingLink ?? '/') | localizeUrl">
               <span>{{ page().closingLinkLabel }}</span>
               <span class="button-arrow" aria-hidden="true">→</span>
             </a>

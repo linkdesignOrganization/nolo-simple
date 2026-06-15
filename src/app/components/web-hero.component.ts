@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { LucideCircleOff } from '@lucide/angular';
 
 import { TechnicalGridBackgroundComponent } from './technical-grid-background.component';
@@ -36,7 +37,7 @@ type Slide = { label: string; src: string; poster: string };
   selector: 'app-web-hero',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, TechnicalGridBackgroundComponent, LucideCircleOff],
+  imports: [RouterLink, TechnicalGridBackgroundComponent, LucideCircleOff, LocalizeUrlPipe],
   host: {
     'class': 'web-hero'
   },
@@ -65,7 +66,7 @@ type Slide = { label: string; src: string; poster: string };
                       <span class="button-arrow" aria-hidden="true">→</span>
                     </a>
                   } @else {
-                    <a class="button" [routerLink]="action.link">
+                    <a class="button" [routerLink]="action.link | localizeUrl">
                       <span>{{ action.label }}</span>
                       <span class="button-arrow" aria-hidden="true">→</span>
                     </a>

@@ -57,7 +57,7 @@ export class SeoService {
     this.meta.updateTag({ name: 'twitter:image', content: image });
 
     this.setCanonical(url);
-    this.setHreflang(url);
+    this.setHreflang(data.canonicalPath ?? this.currentPath());
     this.setJsonLd(data, url);
   }
 
@@ -71,10 +71,14 @@ export class SeoService {
     link.setAttribute('href', url);
   }
 
-  // Sitio single-URL bilingüe (toggle client-side): declaramos 'es' y 'x-default' a la URL canónica.
-  private setHreflang(url: string): void {
-    this.setAlternate('es', url);
-    this.setAlternate('x-default', url);
+  // hreflang recíproco a partir del path base (ES, sin /en): cada página declara su par es↔en
+  // + x-default (= ES). Vale igual en páginas ES y EN.
+  private setHreflang(canonicalPath: string): void {
+    const base = (canonicalPath || '/').replace(/^\/en(?=\/|$)/, '') || '/';
+    const enPath = base === '/' ? '/en' : '/en' + base;
+    this.setAlternate('es', this.absoluteUrl(base));
+    this.setAlternate('en', this.absoluteUrl(enPath));
+    this.setAlternate('x-default', this.absoluteUrl(base));
   }
 
   private setAlternate(hreflang: string, url: string): void {

@@ -2,18 +2,19 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { RouterLink } from '@angular/router';
 
 import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 
 @Component({
   selector: 'app-not-found-page',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, LocalizeUrlPipe],
   template: `
     <section class="nf">
       <span class="nf-code">404</span>
       <h1 class="nf-title">{{ t().title }}</h1>
       <p class="nf-text">{{ t().text }}</p>
-      <a class="button" routerLink="/">
+      <a class="button" [routerLink]="'/' | localizeUrl">
         <span>{{ t().cta }}</span>
         <span class="button-arrow" aria-hidden="true">→</span>
       </a>

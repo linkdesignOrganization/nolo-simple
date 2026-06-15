@@ -1,62 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sowe.ar/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software"/>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/crm-a-medida</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/crm-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/crm-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/crm-a-medida"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/erp-operacion-inventario</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/erp-operacion-inventario"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/erp-operacion-inventario"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/erp-operacion-inventario"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/ecommerce-logica-propia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/ecommerce-logica-propia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/ecommerce-logica-propia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/ecommerce-logica-propia"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/ticketing-marca-propia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/ticketing-marca-propia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/ticketing-marca-propia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/ticketing-marca-propia"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/reservas-y-agenda</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/reservas-y-agenda"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/reservas-y-agenda"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/reservas-y-agenda"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/dashboards-y-reporting</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/dashboards-y-reporting"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/dashboards-y-reporting"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/dashboards-y-reporting"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/software/automatizacion-ia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/automatizacion-ia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/automatizacion-ia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/automatizacion-ia"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://sowe.ar/web</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/web"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/web"/>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://sowe.ar/contacto</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/contacto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/contacto"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/contacto"/>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://sowe.ar/politicas-de-privacidad</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/politicas-de-privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/politicas-de-privacidad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/politicas-de-privacidad"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/crm-a-medida</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/crm-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/crm-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/crm-a-medida"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/erp-operacion-inventario</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/erp-operacion-inventario"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/erp-operacion-inventario"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/erp-operacion-inventario"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/ecommerce-logica-propia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/ecommerce-logica-propia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/ecommerce-logica-propia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/ecommerce-logica-propia"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/ticketing-marca-propia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/ticketing-marca-propia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/ticketing-marca-propia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/ticketing-marca-propia"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/reservas-y-agenda</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/reservas-y-agenda"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/reservas-y-agenda"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/reservas-y-agenda"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/dashboards-y-reporting</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/dashboards-y-reporting"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/dashboards-y-reporting"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/dashboards-y-reporting"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/software/automatizacion-ia</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/software/automatizacion-ia"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/software/automatizacion-ia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/software/automatizacion-ia"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/web</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/web"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/web"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/contacto</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/contacto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/contacto"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/contacto"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sowe.ar/en/politicas-de-privacidad</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://sowe.ar/politicas-de-privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sowe.ar/en/politicas-de-privacidad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sowe.ar/politicas-de-privacidad"/>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
