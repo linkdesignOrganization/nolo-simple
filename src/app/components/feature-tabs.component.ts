@@ -36,7 +36,6 @@ export type FeatureTab = {
           loop
           playsinline
           preload="metadata"
-          poster="/media/software-demo-poster.jpg"
           aria-hidden="true"
         ></video>
       }
