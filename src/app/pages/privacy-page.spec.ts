@@ -26,7 +26,7 @@ describe('PrivacyPageComponent', () => {
     fixture.detectChanges();
 
     const el = fixture.nativeElement as HTMLElement;
-    expect(el.querySelector('.pp-legal')?.textContent).toContain('Nolo');
+    expect(el.querySelector('.pp-legal')?.textContent).toContain('Nolõ');
     expect(el.querySelector('app-contact-footer')).toBeNull();
   });
 });

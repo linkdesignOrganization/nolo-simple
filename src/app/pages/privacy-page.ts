@@ -35,7 +35,7 @@ type PrivacySection = { title: string; body: string[] };
       </section>
     </article>
 
-    <div class="pp-legal">© {{ year }} Nolo. {{ t().rights }}</div>
+    <div class="pp-legal">© {{ year }} Nolõ. {{ t().rights }}</div>
   `,
   styles: `
     :host {
@@ -153,7 +153,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Política de privacidad',
     updated: 'Última actualización: Junio de 2026',
     intro:
-      'En Nolo construimos software y sitios web a medida. Esta política explica qué datos ' +
+      'En Nolõ construimos software y sitios web a medida. Esta política explica qué datos ' +
       'recopilamos cuando visitás nuestro sitio o nos contactás, cómo los usamos y qué derechos ' +
       'tenés sobre ellos. Al usar el sitio, aceptás las prácticas que describimos acá.',
     contactTitle: 'Contacto',
@@ -227,7 +227,7 @@ const PRIVACY_TEXT: Record<'es' | 'en', PrivacyText> = {
     title: 'Privacy policy',
     updated: 'Last updated: June 2026',
     intro:
-      'At Nolo we build custom software and websites. This policy explains what data we collect ' +
+      'At Nolõ we build custom software and websites. This policy explains what data we collect ' +
       'when you visit our site or contact us, how we use it and what rights you have over it. By ' +
       'using the site, you accept the practices described here.',
     contactTitle: 'Contact',

@@ -23,10 +23,10 @@ const contactInfo = {
 
 const homePageEs: LandingData = {
   isHome: true,
-  eyebrow: 'Nolo / 001',
+  eyebrow: 'Nolõ / 001',
   title: 'Dos brazos. Un mismo criterio para construir software y webs a medida.',
   description:
-    'Nolo separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
+    'Nolõ separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
   homeArms: [
     {
       eyebrow: '/software',
@@ -56,10 +56,10 @@ const homePageEs: LandingData = {
 
 const homePageEn: LandingData = {
   isHome: true,
-  eyebrow: 'Nolo / 001',
+  eyebrow: 'Nolõ / 001',
   title: 'Two sides. One standard for building custom software and websites.',
   description:
-    'Nolo splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
+    'Nolõ splits into two clear entry points: one for custom software, one for custom websites — inside a living, precise, type-heavy interface.',
   homeArms: [
     {
       eyebrow: '/software',

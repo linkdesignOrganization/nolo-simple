@@ -35,7 +35,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     <section class="contact" [attr.aria-label]="t().aria">
       <div class="contact-grid">
         <div class="ct-brand">
-          <h1 class="ct-title">nolo</h1>
+          <h1 class="ct-title">nolõ</h1>
         </div>
 
         <div class="ct-cards">

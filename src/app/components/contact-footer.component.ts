@@ -263,7 +263,7 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
     </div>
 
     <div class="cf-legal">
-      <p class="cf-legal__copy">© {{ year }} Nolo. {{ t().rights }}</p>
+      <p class="cf-legal__copy">© {{ year }} Nolõ. {{ t().rights }}</p>
       <a class="cf-legal__link" [routerLink]="'/politicas-de-privacidad' | localizeUrl">{{ t().privacy }}</a>
     </div>
   `,
