@@ -713,8 +713,8 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
   protected readonly info: ContactInfo = {
     email: 'hola@nolo.ar',
     whatsappLink: 'https://wa.me/5491133337180',
-    calendarLink: 'https://cal.com/nolo.ar/reunion-con-nolo',
-    calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo',
+    calendarLink: 'https://cal.com/nolo.ar/reunion-con-equipo-nolo',
+    calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo-team',
     location: 'Buenos Aires, Argentina'
   };
 

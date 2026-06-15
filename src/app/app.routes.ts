@@ -13,8 +13,8 @@ const contactInfo = {
   whatsappLink: 'https://wa.me/5491133337180',
   // Reunión en cal.com por idioma: ES (reunion-con-nolo) / EN (meeting-with-nolo), para que el
   // user siga su experiencia en el mismo idioma. La conversión de Google no cambia.
-  calendarLink: 'https://cal.com/nolo.ar/reunion-con-nolo',
-  calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo'
+  calendarLink: 'https://cal.com/nolo.ar/reunion-con-equipo-nolo',
+  calendarLinkEn: 'https://cal.com/nolo.ar/meeting-with-nolo-team'
 };
 
 // ────────────────────────────────────────────────────────────────────────────
