@@ -4,22 +4,22 @@ import { isPlatformBrowser } from '@angular/common';
 declare var gtag: Function;
 
 /**
- * Conversion actions de Google Ads de Nolo.
+ * Conversion actions de Google Ads de SOWE (cuenta AW-16767245191, compartida con LinkDesign).
  *
- * ⚠️ PLACEHOLDERS — reemplazar cuando esté la cuenta de Google Ads de Nolo:
- *   1. El ID de cuenta `AW-XXXXXXXXXX` (también en src/index.html → gtag config).
- *   2. El label de cada conversion action (lo que va después de la `/`).
- * Mientras sean placeholders, gtag es no-op real (no hay cuenta detrás) y no rompe nada.
+ * Acciones PROPIAS de SOWE ("Contacto Argentina" y "Scroll Argentina"), separadas de las de
+ * LinkDesign para no mezclar las conversiones de Argentina con las de Costa Rica. El label (lo
+ * que va después de la `/`) se copió del tag de cada conversion action en Google Ads.
+ * El send_to de CONTACTO se usa también en lead-form/models/lead-form-options.ts (form submit).
  *
  * Mismo modelo que LinkDesign: solo DOS acciones de conversión vienen del sitio:
  *   - CONTACTO: WhatsApp, copiar correo, agendar reunión y formulario (value variable).
  *   - SCROLL: scroll al 50% de la página (value 1).
  */
 export const ADS_CONVERSIONS = {
-  /** "Contacto" en Ads: WhatsApp, copiar correo, agendar reunión y formulario. */
-  CONTACTO: 'AW-XXXXXXXXXX/PLACEHOLDER_CONTACTO',
-  /** "Scroll" en Ads: scroll al 50% de la página. */
-  SCROLL: 'AW-XXXXXXXXXX/PLACEHOLDER_SCROLL'
+  /** "Contacto Argentina" en Ads: WhatsApp, copiar correo, agendar reunión y formulario. */
+  CONTACTO: 'AW-16767245191/-7YECOqL7b8cEIe3n7s-',
+  /** "Scroll Argentina" en Ads: scroll al 50% de la página. */
+  SCROLL: 'AW-16767245191/P_8YCIf4878cEIe3n7s-'
 } as const;
 
 /**

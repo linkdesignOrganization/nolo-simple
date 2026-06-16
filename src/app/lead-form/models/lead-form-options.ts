@@ -171,7 +171,7 @@ export const PAYLOAD_SCHEMA_VERSION = '1.0.0' as const;
  *   3. Permite establecer la "primary conversion" del sitio en Ads.
  */
 export const GA_CONVERSION = {
-  SEND_TO: 'AW-XXXXXXXXXX/PLACEHOLDER_CONTACTO',
+  SEND_TO: 'AW-16767245191/-7YECOqL7b8cEIe3n7s-',
   CURRENCY: 'USD',
   EVENT_NAME: 'conversion' as const
 };
