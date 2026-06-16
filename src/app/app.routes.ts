@@ -698,8 +698,9 @@ const webPageEs: LandingData = {
     rows: [
       { client: 'Asembis', industry: 'Salud', projectType: 'Corporativo + integración', link: 'https://asembis.org/', videoSrc: '', logo: '/media/portfolio/logos/asembis.svg', poster: '/media/portfolio/asembis.jpg' },
       { client: 'Imperio', industry: 'Alimentos', projectType: 'E-commerce + gestión interna', link: 'https://arrozimperio.net/', videoSrc: '/media/portfolio/imperio.mp4', logo: '/media/portfolio/logos/imperio.svg', poster: '/media/portfolio/imperio.jpg' },
-      { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporativo + IA', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
-      { client: 'HESA', industry: 'Veterinaria', projectType: 'Corporativo + catálogo', link: 'https://hesa.co.cr/', videoSrc: '/media/portfolio/hesa.mp4', logo: '/media/portfolio/logos/hesa.svg', poster: '/media/portfolio/hesa.jpg' },
+      // Ocultos por ahora (2026-06-16) — aún no en prod; NO borrar, descomentar al salir.
+      // { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporativo + IA', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
+      // { client: 'HESA', industry: 'Veterinaria', projectType: 'Corporativo + catálogo', link: 'https://hesa.co.cr/', videoSrc: '/media/portfolio/hesa.mp4', logo: '/media/portfolio/logos/hesa.svg', poster: '/media/portfolio/hesa.jpg' },
       { client: 'Uga Comediante', industry: 'Entretenimiento', projectType: 'Creativo + transacciones', link: 'https://ugacomediante.com/', videoSrc: '/media/portfolio/uga.mp4', logo: '/media/portfolio/logos/uga.svg', poster: '/media/portfolio/uga.jpg' },
       { client: 'AAEC', industry: 'Legal', projectType: 'Corporativo', link: 'https://aaec.org/', videoSrc: '/media/portfolio/aaec.mp4', logo: '/media/portfolio/logos/aaec.png', poster: '/media/portfolio/aaec.jpg' },
       { client: 'Xceed', industry: 'Turismo', projectType: 'Corporativo', link: 'https://xceedsportsandtravel.com/', videoSrc: '/media/portfolio/xceed.mp4', logo: '/media/portfolio/logos/xceed.svg', poster: '/media/portfolio/xceed.jpg' },
@@ -947,8 +948,9 @@ const webPageEn: LandingData = {
     rows: [
       { client: 'Asembis', industry: 'Healthcare', projectType: 'Corporate + integration', link: 'https://asembis.org/', videoSrc: '', logo: '/media/portfolio/logos/asembis.svg', poster: '/media/portfolio/asembis.jpg' },
       { client: 'Imperio', industry: 'Food', projectType: 'E-commerce + internal management', link: 'https://arrozimperio.net/', videoSrc: '/media/portfolio/imperio.mp4', logo: '/media/portfolio/logos/imperio.svg', poster: '/media/portfolio/imperio.jpg' },
-      { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporate + AI', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
-      { client: 'HESA', industry: 'Veterinary', projectType: 'Corporate + catalog', link: 'https://hesa.co.cr/', videoSrc: '/media/portfolio/hesa.mp4', logo: '/media/portfolio/logos/hesa.svg', poster: '/media/portfolio/hesa.jpg' },
+      // Ocultos por ahora (2026-06-16) — aún no en prod; NO borrar, descomentar al salir.
+      // { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporate + AI', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
+      // { client: 'HESA', industry: 'Veterinary', projectType: 'Corporate + catalog', link: 'https://hesa.co.cr/', videoSrc: '/media/portfolio/hesa.mp4', logo: '/media/portfolio/logos/hesa.svg', poster: '/media/portfolio/hesa.jpg' },
       { client: 'Uga Comediante', industry: 'Entertainment', projectType: 'Creative + transactions', link: 'https://ugacomediante.com/', videoSrc: '/media/portfolio/uga.mp4', logo: '/media/portfolio/logos/uga.svg', poster: '/media/portfolio/uga.jpg' },
       { client: 'AAEC', industry: 'Legal', projectType: 'Corporate', link: 'https://aaec.org/', videoSrc: '/media/portfolio/aaec.mp4', logo: '/media/portfolio/logos/aaec.png', poster: '/media/portfolio/aaec.jpg' },
       { client: 'Xceed', industry: 'Tourism', projectType: 'Corporate', link: 'https://xceedsportsandtravel.com/', videoSrc: '/media/portfolio/xceed.mp4', logo: '/media/portfolio/logos/xceed.svg', poster: '/media/portfolio/xceed.jpg' },
