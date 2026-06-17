@@ -7,11 +7,13 @@ import {
   NgZone,
   OnDestroy,
   PLATFORM_ID,
+  effect,
   inject,
   input
 } from '@angular/core';
 import { LucideMousePointerClick } from '@lucide/angular';
 
+import { environment } from '../../environments/environment';
 import { TechnicalGridBackgroundComponent } from './technical-grid-background.component';
 
 export type Viewcase = {
@@ -317,6 +319,37 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   private targetX = 0;
   private targetY = 0;
   private rafId: number | null = null;
+  private videoScript: HTMLScriptElement | null = null;
+
+  constructor() {
+    // VideoObject JSON-LD de los demos (viewcases): los hace elegibles para indexado y
+    // rich results de video. Se inyecta al <head> en el prerender (SSG), reactivo a items().
+    effect(() => {
+      const items = this.items();
+      if (!items.length) {
+        return;
+      }
+      const origin = (environment.siteUrl || '').replace(/\/+$/, '');
+      const data = {
+        '@context': 'https://schema.org',
+        '@graph': items.map((it) => ({
+          '@type': 'VideoObject',
+          name: it.label,
+          description: `${it.label} — ${it.category}`,
+          thumbnailUrl: origin + it.poster,
+          contentUrl: origin + it.videoSrc,
+          uploadDate: '2026-06-07'
+        }))
+      };
+      if (!this.videoScript) {
+        this.videoScript = this.document.createElement('script');
+        this.videoScript.setAttribute('type', 'application/ld+json');
+        this.videoScript.setAttribute('data-seo', 'viewcases-videos');
+        this.document.head.appendChild(this.videoScript);
+      }
+      this.videoScript.textContent = JSON.stringify(data);
+    });
+  }
 
   // Desktop: el video se ve como imagen (primer frame) y se reproduce al hover.
   play(event: Event): void {
@@ -464,6 +497,8 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
       cancelAnimationFrame(this.rafId);
       this.rafId = null;
     }
+    this.videoScript?.remove();
+    this.videoScript = null;
   }
 }
 
