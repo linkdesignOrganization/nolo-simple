@@ -261,7 +261,7 @@ const softwarePageEs: LandingData = {
     intro:
       'Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
     items: [
-      { label: 'Cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://jolly-sand-01620130f.7.azurestaticapps.net' },
+      { label: 'Cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
       { label: 'Estudio Dental Mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
       { label: 'Tornos del Sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
       { label: 'Punto Cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
@@ -493,7 +493,7 @@ const softwarePageEn: LandingData = {
     intro:
       "Each demo is a working version of a custom system, built for you to walk through the full operation of a different industry. You'll feel how simple and fast software designed specifically for the way you work can be.",
     items: [
-      { label: 'Cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://jolly-sand-01620130f.7.azurestaticapps.net' },
+      { label: 'Cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
       { label: 'Estudio Dental Mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
       { label: 'Tornos del Sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
       { label: 'Punto Cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/' },
