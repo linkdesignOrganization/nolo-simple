@@ -773,6 +773,14 @@ export class ContactFooterComponent {
    */
   readonly systemContext = input<SystemContext | null>(null);
 
+  /**
+   * Igual que systemContext pero para las páginas /industrias/<slug>: antepone una línea al
+   * mensaje para que el CRM identifique de qué industria vino el lead. Reusa el mismo canal
+   * (`message`) por la misma razón (sin redeploy del CRM). Solo uno de los dos contextos aplica
+   * por página (sistema XOR industria).
+   */
+  readonly industryContext = input<SystemContext | null>(null);
+
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
@@ -897,13 +905,22 @@ export class ContactFooterComponent {
   // tope de 1000 chars que recorta el sanitizado del servicio).
   private withSystemContext(message: string): string {
     const sys = this.systemContext();
-    if (!sys) {
+    const ind = this.industryContext();
+    let note: string | null = null;
+    if (sys) {
+      note =
+        this.lang() === 'en'
+          ? `[Lead from the system page: ${sys.name}]`
+          : `[Consulta desde la página del sistema: ${sys.name}]`;
+    } else if (ind) {
+      note =
+        this.lang() === 'en'
+          ? `[Lead from the industry: ${ind.name}]`
+          : `[Consulta desde la industria: ${ind.name}]`;
+    }
+    if (!note) {
       return message;
     }
-    const note =
-      this.lang() === 'en'
-        ? `[Lead from the system page: ${sys.name}]`
-        : `[Consulta desde la página del sistema: ${sys.name}]`;
     const body = message.trim();
     return body ? `${note}\n\n${body}` : note;
   }

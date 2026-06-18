@@ -1,10 +1,10 @@
 <div
   class="shell"
   appTechnicalGridSurface
-  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail()"
+  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail() && !isIndustries() && !isIndustryDetail()"
   [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
-  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() ? 18 : null"
+  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() || isIndustries() || isIndustryDetail() ? 18 : null"
   [class.shell--plain]="isHome()"
   [class.shell--software]="isSoftware()"
   [class.shell--contact]="isContact()"

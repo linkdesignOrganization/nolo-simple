@@ -124,13 +124,19 @@ export class SeoService {
       });
     }
 
-    if (path === '/software' || path === '/web' || path.startsWith('/software/')) {
+    const isIndustry = path === '/industrias' || path.startsWith('/industrias/');
+    if (path === '/software' || path === '/web' || path.startsWith('/software/') || isIndustry) {
       graph.push({
         '@type': 'Service',
         '@id': `${url}#service`,
         name: shortName,
         description: data.description,
-        serviceType: path === '/web' ? 'Web development' : 'Custom software development',
+        serviceType:
+          path === '/web'
+            ? 'Web development'
+            : isIndustry
+              ? 'Custom software & web development'
+              : 'Custom software development',
         areaServed: 'AR',
         provider: { '@id': `${this.siteOrigin}/#organization` }
       });
