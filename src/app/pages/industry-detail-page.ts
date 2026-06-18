@@ -92,12 +92,10 @@ import { BuildKind, getIndustryDetail } from './industries-content';
             <span class="id-num">02</span>
             <h2 class="id-label">{{ L().whatWeDo }}</h2>
           </header>
-          <div class="id-do__grid id-reveal">
-            <p class="id-do__lead">{{ s.whatWeDo[0] }}</p>
-            <div class="id-do__rest">
-              <p>{{ s.whatWeDo[1] }}</p>
-              <p>{{ s.whatWeDo[2] }}</p>
-            </div>
+          <div class="id-do__body id-reveal">
+            <p>{{ s.whatWeDo[0] }}</p>
+            <p>{{ s.whatWeDo[1] }}</p>
+            <p>{{ s.whatWeDo[2] }}</p>
           </div>
         </section>
 
@@ -158,28 +156,11 @@ import { BuildKind, getIndustryDetail } from './industries-content';
             [intro]="s.couldBuild.intro"
             [items]="buildCards()"
           />
-          <p class="id-build__closing id-reveal">{{ s.couldBuild.closing }}</p>
         </section>
       </article>
 
-      <!-- 06 — Conversemos (cierre + CTA) + footer, todo en zona oscura (un solo cambio de color) -->
-      <div class="id-close" appDarkZone>
-        <section class="id-section id-talk">
-          <header class="id-section__head">
-            <span class="id-num">06</span>
-            <h2 class="id-label">{{ s.talk.title }}</h2>
-          </header>
-          <div class="id-talk__body id-reveal">
-            <p class="id-talk__text">{{ s.talk.text }}</p>
-            <a class="button id-talk__cta" href="#hablemos" (click)="goToContact($event)">
-              <span>{{ L().cta }}</span>
-              <span class="button-arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </section>
-
-        <app-contact-footer id="hablemos" [info]="info" [industryContext]="industryContext()" />
-      </div>
+      <!-- Cierre: el footer ya es el CTA + formulario (sin sección de CTA aparte). -->
+      <app-contact-footer appDarkZone id="hablemos" [info]="info" [industryContext]="industryContext()" />
     }
   `,
   styles: `
@@ -324,31 +305,15 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: balance;
     }
 
-    /* ── 02 Lo que hacemos ─────────────────────────────────────────────────── */
-    .id-do__grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: clamp(1.5rem, 4vw, 3.5rem);
-      align-items: start;
-    }
-
-    /* Mismo tamaño que el resto de los bloques (el más chico de la sección): uniforme. */
-    .id-do__lead {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      font-weight: 400;
-      line-height: 1.6;
-      text-wrap: pretty;
-    }
-
-    .id-do__rest {
+    /* ── 02 Lo que hacemos (columna única, ancho de lectura; todos los bloques al mismo tamaño) ───── */
+    .id-do__body {
       display: flex;
       flex-direction: column;
-      gap: 1.1rem;
+      gap: 1.3rem;
+      max-width: 68ch;
     }
 
-    .id-do__rest p {
+    .id-do__body p {
       margin: 0;
       color: var(--muted);
       font-size: 1.05rem;
@@ -472,45 +437,6 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     /* ── 05 Podríamos construir (3 + 2) ────────────────────────────────────── */
-    .id-build__closing {
-      margin: clamp(1.8rem, 3.5vw, 2.6rem) 0 0;
-      max-width: 60ch;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      text-wrap: pretty;
-    }
-
-    /* ── 06 Conversemos (cierre en zona oscura) ────────────────────────────── */
-    .id-close .id-label {
-      color: #f4f4f4;
-    }
-
-    .id-close .id-num {
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .id-talk__body {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .id-talk__text {
-      margin: 0;
-      max-width: 52ch;
-      color: #e9e9e9;
-      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
-      line-height: 1.5;
-      text-wrap: pretty;
-    }
-
-    .id-talk__cta {
-      flex-shrink: 0;
-    }
-
     /* ── Reveals (SSG-safe; el TS agrega .is-in vía IO, o de inmediato si no hay IO) ───── */
     .id-reveal {
       opacity: 0;
@@ -553,7 +479,6 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     @media (max-width: 760px) {
-      .id-do__grid,
       .id-sector__body {
         grid-template-columns: 1fr;
         gap: 1.6rem;
@@ -623,13 +548,6 @@ export class IndustryDetailPageComponent implements AfterViewInit, OnDestroy {
         this.router.navigateByUrl('/404', { replaceUrl: true });
       }
     });
-  }
-
-  // CTA "Escribinos": scroll suave al formulario del footer (#hablemos), sin navegar.
-  protected goToContact(event: Event): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    event.preventDefault();
-    document.getElementById('hablemos')?.scrollIntoView({ behavior: 'smooth' });
   }
 
   ngAfterViewInit(): void {
@@ -709,8 +627,7 @@ const LABELS = {
     roles: 'Cómo trabajamos juntos',
     youBring: 'Lo que vos ponés',
     weBring: 'Lo que ponemos nosotros',
-    couldBuild: 'Algunas cosas que podríamos construir',
-    cta: 'Escribinos'
+    couldBuild: 'Algunas cosas que podríamos construir'
   },
   en: {
     eyebrow: 'Industries',
@@ -720,8 +637,7 @@ const LABELS = {
     roles: 'How we work together',
     youBring: 'What you bring',
     weBring: 'What we bring',
-    couldBuild: 'Some things we could build',
-    cta: 'Get in touch'
+    couldBuild: 'Some things we could build'
   }
 } as const;
 
