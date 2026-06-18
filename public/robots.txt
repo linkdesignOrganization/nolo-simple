@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://nolo.ar/sitemap.xml
+Sitemap: https://nolo.ar/sitemap-videos.xml

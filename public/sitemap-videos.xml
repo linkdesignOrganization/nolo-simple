@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://nolo.ar/software</loc>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
+      <video:title>Cumbre — Sistema de gestión de RRHH</video:title>
+      <video:description>Demo navegable de Cumbre, un sistema de gestión de RRHH a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
+      <video:title>Estudio Dental Mendieta — Software de gestión clínica</video:title>
+      <video:description>Demo navegable de Estudio Dental Mendieta, software de gestión clínica a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
+      <video:title>Tornos del Sur — ERP industrial</video:title>
+      <video:description>Demo navegable de Tornos del Sur, un ERP industrial a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
+      <video:title>Punto Cero — Sistema de mantenimiento por suscripción</video:title>
+      <video:description>Demo navegable de Punto Cero, un sistema de mantenimiento por suscripción a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
+      <video:title>Vértice Seguridad Industrial — ERP comercial y de inventario</video:title>
+      <video:description>Demo navegable de Vértice, un ERP comercial y de inventario a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/software</loc>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
+      <video:title>Cumbre — HR management system</video:title>
+      <video:description>Working demo of Cumbre, a custom HR management system.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
+      <video:title>Estudio Dental Mendieta — Clinic management software</video:title>
+      <video:description>Working demo of Estudio Dental Mendieta, custom clinic management software.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
+      <video:title>Tornos del Sur — Industrial ERP</video:title>
+      <video:description>Working demo of Tornos del Sur, a custom industrial ERP.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
+      <video:title>Punto Cero — Subscription-based maintenance system</video:title>
+      <video:description>Working demo of Punto Cero, a custom subscription-based maintenance system.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
+      <video:title>Vértice Seguridad Industrial — Commercial &amp; inventory ERP</video:title>
+      <video:description>Working demo of Vértice, a custom commercial &amp; inventory ERP.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+    </video:video>
+  </url>
+</urlset>
