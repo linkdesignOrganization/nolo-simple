@@ -708,7 +708,6 @@ const webPageEs: LandingData = {
   },
   portfolio: {
     rows: [
-      { client: 'Asembis', industry: 'Salud', projectType: 'Corporativo + integración', link: 'https://asembis.org/', videoSrc: '', logo: '/media/portfolio/logos/asembis.svg', poster: '/media/portfolio/asembis.jpg' },
       { client: 'Imperio', industry: 'Alimentos', projectType: 'E-commerce + gestión interna', link: 'https://arrozimperio.net/', videoSrc: '/media/portfolio/imperio.mp4', logo: '/media/portfolio/logos/imperio.svg', poster: '/media/portfolio/imperio.jpg' },
       // Ocultos por ahora (2026-06-16) — aún no en prod; NO borrar, descomentar al salir.
       // { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporativo + IA', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
@@ -959,7 +958,6 @@ const webPageEn: LandingData = {
   },
   portfolio: {
     rows: [
-      { client: 'Asembis', industry: 'Healthcare', projectType: 'Corporate + integration', link: 'https://asembis.org/', videoSrc: '', logo: '/media/portfolio/logos/asembis.svg', poster: '/media/portfolio/asembis.jpg' },
       { client: 'Imperio', industry: 'Food', projectType: 'E-commerce + internal management', link: 'https://arrozimperio.net/', videoSrc: '/media/portfolio/imperio.mp4', logo: '/media/portfolio/logos/imperio.svg', poster: '/media/portfolio/imperio.jpg' },
       // Ocultos por ahora (2026-06-16) — aún no en prod; NO borrar, descomentar al salir.
       // { client: 'Facio & Cañas', industry: 'Legal', projectType: 'Corporate + AI', link: 'https://fayca.com/', videoSrc: '/media/portfolio/faciosycanas.mp4', logo: '/media/portfolio/logos/faciosycanas.svg', poster: '/media/portfolio/faciosycanas.jpg' },
