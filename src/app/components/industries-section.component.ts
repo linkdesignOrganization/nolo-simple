@@ -131,7 +131,7 @@ const STEP = 26;
 
     .ind-grid {
       display: grid;
-      grid-template-columns: 4fr 8fr;
+      grid-template-columns: 1fr 1fr;
       gap: clamp(2rem, 5vw, 5rem);
       align-items: start; /* requisito del sticky de ambas columnas */
     }
