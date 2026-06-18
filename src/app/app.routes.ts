@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import type { LandingData } from './pages/landing-page';
+import { INDUSTRY_CARDS } from './pages/industries-content';
 
 import { langGuard } from './services/lang.guard';
 
@@ -89,6 +90,15 @@ const homePageEn: LandingData = {
 // ────────────────────────────────────────────────────────────────────────────
 // SOFTWARE
 // ────────────────────────────────────────────────────────────────────────────
+
+// Sección "Industrias" (es-only): misma data en /software y /web. Copy de conexión (revisable);
+// las cards salen de INDUSTRY_CARDS (derivadas del contenido verbatim por-industria).
+const industriasSection = {
+  heading: 'Lo construimos para tu industria',
+  intro:
+    'Cada sector opera distinto. Entrá al tuyo y mirá qué software y qué sitio web tendrían sentido para tu operación.',
+  items: INDUSTRY_CARDS('es')
+};
 
 const softwarePageEs: LandingData = {
   eyebrow: '',
@@ -319,7 +329,8 @@ const softwarePageEs: LandingData = {
   },
   contact: { ...contactInfo, location: 'CABA, Argentina' },
   stats: [],
-  theme: 'software'
+  theme: 'software',
+  industries: industriasSection
 };
 
 const softwarePageEn: LandingData = {
@@ -805,7 +816,8 @@ const webPageEs: LandingData = {
       }
     ]
   },
-  contact: { ...contactInfo, location: 'CABA, Argentina' }
+  contact: { ...contactInfo, location: 'CABA, Argentina' },
+  industries: industriasSection
 };
 
 const webPageEn: LandingData = {
@@ -1064,7 +1076,7 @@ const webPageEn: LandingData = {
 
 // Rutas de contenido (idénticas en ambos idiomas). Se registran dos veces: en la raíz (ES) y
 // bajo /en (EN). El idioma lo fija langGuard desde data.lang. Factory → arrays nuevos por árbol.
-function contentRoutes(): Routes {
+function contentRoutes(includeIndustrias = false): Routes {
   return [
     {
       path: '',
@@ -1096,6 +1108,21 @@ function contentRoutes(): Routes {
       path: 'politicas-de-privacidad',
       loadComponent: () => import('./pages/privacy-page').then((m) => m.PrivacyPageComponent)
     },
+    // Industrias (FASE 1: solo en el árbol es; en /en cae al catch-all → /en/404). Antes del 404.
+    ...(includeIndustrias
+      ? [
+          {
+            path: 'industrias',
+            loadComponent: () =>
+              import('./pages/industries-page').then((m) => m.IndustriesPageComponent)
+          },
+          {
+            path: 'industrias/:slug',
+            loadComponent: () =>
+              import('./pages/industry-detail-page').then((m) => m.IndustryDetailPageComponent)
+          }
+        ]
+      : []),
     {
       path: '404',
       loadComponent: () => import('./pages/not-found-page').then((m) => m.NotFoundPageComponent)
@@ -1111,6 +1138,6 @@ function contentRoutes(): Routes {
 // Dos árboles de idioma. 'en' primero para que /en/... matchee el subtree inglés. El parent
 // componentless con path '' no agrega segmento → las URLs ES quedan idénticas (sin migración).
 export const routes: Routes = [
-  { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes() },
-  { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes() }
+  { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes(false) }, // sin industrias (fase 1 es-only)
+  { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes(true) }
 ];

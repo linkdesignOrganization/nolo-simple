@@ -1,6 +1,7 @@
 import { Lang } from './language.service';
 import { SeoData } from './seo.service';
 import { getSystemDetail, SystemDetail } from '../pages/systems-content';
+import { getIndustryDetail, IndustryDetail } from '../pages/industries-content';
 
 /**
  * Contenido SEO por ruta e idioma (ES/EN) para Nolo (Argentina, voseo).
@@ -62,6 +63,23 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
       keywords:
         'web development, custom websites, landing page, corporate site, e-commerce, web design, argentina',
       canonicalPath: '/web',
+      locale: 'en_US'
+    }
+  },
+  '/industrias': {
+    es: {
+      title: 'Soluciones a medida por industria | Nolo',
+      description:
+        'Software y sitios web a medida para tu sector: industria, distribución y logística, salud, servicios profesionales y técnicos, fitness y educación.',
+      keywords: 'industrias, soluciones por industria, software a medida, sitios web, argentina, nolo',
+      canonicalPath: '/industrias'
+    },
+    en: {
+      title: 'Custom solutions by industry | Nolo',
+      description:
+        'Custom software and websites for your sector: industry, distribution and logistics, health, professional and technical services, fitness and education.',
+      keywords: 'industries, solutions by industry, custom software, websites, argentina, nolo',
+      canonicalPath: '/industrias',
       locale: 'en_US'
     }
   },
@@ -169,6 +187,23 @@ function systemSeo(detail: SystemDetail, lang: Lang): SeoData {
   };
 }
 
+// SEO derivado del contenido de cada industria (title = "Título de página" del .md; description =
+// el subtítulo recortado a ~158). Mismo patrón que systemSeo.
+function industrySeo(detail: IndustryDetail, lang: Lang): SeoData {
+  const description = metaDescription(detail.subtitle);
+  const keywords =
+    lang === 'en'
+      ? `${detail.name.toLowerCase()}, custom software, web development, argentina, nolo`
+      : `${detail.name.toLowerCase()}, software a medida, sitios web, argentina, nolo`;
+  return {
+    title: `${detail.pageTitle} | Nolo`,
+    description,
+    keywords,
+    canonicalPath: `/industrias/${detail.slug}`,
+    locale: lang === 'en' ? 'en_US' : 'es_AR'
+  };
+}
+
 /**
  * Resuelve el contenido SEO de una URL (limpiando query/fragment). El diccionario usa rutas SIN
  * prefijo de idioma; acá se quita el `/en` para el lookup y se deriva el `canonicalPath` por idioma
@@ -188,6 +223,13 @@ export function seoForUrl(url: string, lang: Lang): SeoData {
   if (detailMatch) {
     const detail = getSystemDetail(detailMatch[1], lang);
     if (detail) return withCanonical(systemSeo(detail, lang));
+  }
+
+  // Detalle de industria: /industrias/<slug>
+  const industryMatch = base.match(/^\/industrias\/([^/]+)$/);
+  if (industryMatch) {
+    const detail = getIndustryDetail(industryMatch[1], lang);
+    if (detail) return withCanonical(industrySeo(detail, lang));
   }
 
   const entry = SEO_CONTENT[base] ?? SEO_FALLBACK;

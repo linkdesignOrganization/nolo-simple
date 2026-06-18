@@ -1,6 +1,7 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 import { SYSTEM_SLUGS } from './pages/systems-content';
+import { INDUSTRY_SLUGS } from './pages/industries-content';
 
 /**
  * Todas las rutas se prerenderan a HTML estático (SSG) para SEO y LLMs.
@@ -17,6 +18,12 @@ export const serverRoutes: ServerRoute[] = [
     path: 'en/software/:slug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => SYSTEM_SLUGS.map((slug) => ({ slug }))
+  },
+  {
+    // Industrias: FASE 1 solo es (no se declara en/industrias/:slug → /en cae al catch-all → /en/404).
+    path: 'industrias/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))
   },
   { path: '**', renderMode: RenderMode.Prerender }
 ];

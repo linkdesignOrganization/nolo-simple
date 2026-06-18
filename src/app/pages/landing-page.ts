@@ -10,6 +10,7 @@ import { FeatureTab, FeatureTabsComponent } from '../components/feature-tabs.com
 import { PortfolioRow, PortfolioTableComponent } from '../components/portfolio-table.component';
 import { ProjectStage, ProjectStagesComponent } from '../components/project-stages.component';
 import { ServiceItem, ServicesStackComponent } from '../components/services-stack.component';
+import { IndustriesSectionComponent } from '../components/industries-section.component';
 import { TechnicalGridSurfaceComponent } from '../components/technical-grid-surface.component';
 import { Viewcase, ViewcasesComponent } from '../components/viewcases.component';
 import { CapabilityCard, WebCapabilitiesComponent } from '../components/web-capabilities.component';
@@ -19,6 +20,7 @@ import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
+import { IndustryCard } from './industries-content';
 
 export type LandingModuleFigure =
   | 'arrows'
@@ -70,6 +72,7 @@ export type LandingData = {
   eyebrow: string;
   faq?: { heading: string; items: FaqItem[] };
   featureTabs?: FeatureTab[];
+  industries?: { heading: string; intro: string; items: IndustryCard[] };
   homeArms?: [HomeArm, HomeArm];
   isHome?: boolean;
   matrixIntro?: string;
@@ -108,6 +111,7 @@ export type LandingData = {
     PortfolioTableComponent,
     ProjectStagesComponent,
     ServicesStackComponent,
+    IndustriesSectionComponent,
     ViewcasesComponent,
     WebCapabilitiesComponent,
     WebHeroComponent,
@@ -279,6 +283,10 @@ export type LandingData = {
 
         @if (page().viewcases; as v) {
           <app-viewcases id="casos" [title]="v.title" [intro]="v.intro" [items]="v.items" />
+        }
+
+        @if (page().industries; as ind) {
+          <app-industries id="industrias" [heading]="ind.heading" [intro]="ind.intro" [items]="ind.items" />
         }
 
         @if (page().faq; as faq) {

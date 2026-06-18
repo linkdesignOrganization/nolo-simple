@@ -1,10 +1,10 @@
 <div
   class="shell"
   appTechnicalGridSurface
-  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail()"
+  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail() && !isIndustries() && !isIndustryDetail()"
   [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
-  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() ? 18 : null"
+  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() || isIndustries() || isIndustryDetail() ? 18 : null"
   [class.shell--plain]="isHome()"
   [class.shell--software]="isSoftware()"
   [class.shell--contact]="isContact()"
@@ -19,19 +19,21 @@
       <button class="topbar-back" type="button" (click)="goBack()" [attr.aria-label]="t().back">
         <svg lucideArrowLeft [size]="22" [strokeWidth]="1" aria-hidden="true"></svg>
       </button>
-      <button
-        type="button"
-        class="lang-toggle"
-        [class.is-en]="lang() === 'en'"
-        role="switch"
-        [attr.aria-checked]="lang() === 'en'"
-        [attr.aria-label]="t().switchLang"
-        (click)="toggleLang()"
-      >
-        <span class="lang-toggle__thumb" aria-hidden="true"></span>
-        <span class="lang-toggle__opt" [class.is-active]="lang() === 'es'">ES</span>
-        <span class="lang-toggle__opt" [class.is-active]="lang() === 'en'">EN</span>
-      </button>
+      @if (!isIndustriesArea()) {
+        <button
+          type="button"
+          class="lang-toggle"
+          [class.is-en]="lang() === 'en'"
+          role="switch"
+          [attr.aria-checked]="lang() === 'en'"
+          [attr.aria-label]="t().switchLang"
+          (click)="toggleLang()"
+        >
+          <span class="lang-toggle__thumb" aria-hidden="true"></span>
+          <span class="lang-toggle__opt" [class.is-active]="lang() === 'es'">ES</span>
+          <span class="lang-toggle__opt" [class.is-active]="lang() === 'en'">EN</span>
+        </button>
+      }
     } @else {
       <a class="brand" [routerLink]="localizeUrl('/')">nolõ</a>
 
@@ -46,19 +48,21 @@
               <span></span>
             </span>
           }
-          <button
-            type="button"
-            class="lang-toggle"
-            [class.is-en]="lang() === 'en'"
-            role="switch"
-            [attr.aria-checked]="lang() === 'en'"
-            [attr.aria-label]="t().switchLang"
-            (click)="toggleLang()"
-          >
-            <span class="lang-toggle__thumb" aria-hidden="true"></span>
-            <span class="lang-toggle__opt" [class.is-active]="lang() === 'es'">ES</span>
-            <span class="lang-toggle__opt" [class.is-active]="lang() === 'en'">EN</span>
-          </button>
+          @if (!isIndustriesArea()) {
+            <button
+              type="button"
+              class="lang-toggle"
+              [class.is-en]="lang() === 'en'"
+              role="switch"
+              [attr.aria-checked]="lang() === 'en'"
+              [attr.aria-label]="t().switchLang"
+              (click)="toggleLang()"
+            >
+              <span class="lang-toggle__thumb" aria-hidden="true"></span>
+              <span class="lang-toggle__opt" [class.is-active]="lang() === 'es'">ES</span>
+              <span class="lang-toggle__opt" [class.is-active]="lang() === 'en'">EN</span>
+            </button>
+          }
         </nav>
       }
 

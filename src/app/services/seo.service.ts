@@ -75,10 +75,20 @@ export class SeoService {
   // + x-default (= ES). Vale igual en páginas ES y EN.
   private setHreflang(canonicalPath: string): void {
     const base = (canonicalPath || '/').replace(/^\/en(?=\/|$)/, '') || '/';
-    const enPath = base === '/' ? '/en' : '/en' + base;
+    // FASE 1: industrias es solo español → no declarar un alternate /en (daría 404). Solo es + x-default.
+    const singleLang = base === '/industrias' || base.startsWith('/industrias/');
     this.setAlternate('es', this.absoluteUrl(base));
-    this.setAlternate('en', this.absoluteUrl(enPath));
+    if (singleLang) {
+      this.removeAlternate('en');
+    } else {
+      const enPath = base === '/' ? '/en' : '/en' + base;
+      this.setAlternate('en', this.absoluteUrl(enPath));
+    }
     this.setAlternate('x-default', this.absoluteUrl(base));
+  }
+
+  private removeAlternate(hreflang: string): void {
+    this.doc.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)?.remove();
   }
 
   private setAlternate(hreflang: string, url: string): void {
@@ -124,13 +134,19 @@ export class SeoService {
       });
     }
 
-    if (path === '/software' || path === '/web' || path.startsWith('/software/')) {
+    const isIndustry = path === '/industrias' || path.startsWith('/industrias/');
+    if (path === '/software' || path === '/web' || path.startsWith('/software/') || isIndustry) {
       graph.push({
         '@type': 'Service',
         '@id': `${url}#service`,
         name: shortName,
         description: data.description,
-        serviceType: path === '/web' ? 'Web development' : 'Custom software development',
+        serviceType:
+          path === '/web'
+            ? 'Web development'
+            : isIndustry
+              ? 'Custom software & web development'
+              : 'Custom software development',
         areaServed: 'AR',
         provider: { '@id': `${this.siteOrigin}/#organization` }
       });

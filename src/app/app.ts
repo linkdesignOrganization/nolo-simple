@@ -53,11 +53,17 @@ export class App {
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() => this.pathNoLang().startsWith('/politicas-de-privacidad'));
   protected readonly isNotFound = computed(() => this.pathNoLang().startsWith('/404'));
+  // /industrias es el índice (header normal, sin links de nav); /industrias/<slug> es el detalle
+  // (terminal, back-only). Ambos muestran la grilla del shell en su hero.
+  protected readonly isIndustries = computed(() => this.pathNoLang() === '/industrias');
+  protected readonly isIndustryDetail = computed(() => /^\/industrias\/[^/]+$/.test(this.pathNoLang()));
+  // Toda el área de industrias es es-only (fase 1) → se oculta el toggle de idioma (EN daría 404).
+  protected readonly isIndustriesArea = computed(() => this.isIndustries() || this.isIndustryDetail());
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
   // (contacto, privacidad y el detalle de un sistema).
   protected readonly backOnly = computed(
-    () => this.isContact() || this.isPrivacy() || this.isSystemDetail()
+    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail()
   );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
@@ -65,7 +71,7 @@ export class App {
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
+    this.isIndustries() ? [] : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
