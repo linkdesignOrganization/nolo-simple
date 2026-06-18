@@ -66,14 +66,21 @@ export class App {
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
   // /software → Sistemas, Proceso, Casos · /web → Capacidades, Servicios, Portfolio.
+  // /industrias (índice/hub) → links a los dos brazos (Software, Web), no anclas de sección.
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isIndustries() ? [] : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
+    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
   private scrollConversionSent = false;
+
+  // history.length al cargar la app (entrada directa/pestaña nueva: la entrada previa es externa,
+  // p. ej. about:blank). Si luego crece por navegación interna, location.back() es seguro; si no,
+  // volver saldría del sitio → goBack usa un fallback con sentido. (La nav inicial del router usa
+  // replaceState, no agranda el historial, así que este valor es estable.)
+  private readonly initialHistoryLength = typeof history !== 'undefined' ? history.length : 0;
 
   constructor() {
     // SEO por ruta + idioma: title, meta, OG, canonical y JSON-LD reaccionan al navegar y al toggle ES/EN.
@@ -128,11 +135,22 @@ export class App {
   // Flecha de "volver" del topbar en rutas terminales: vuelve a la página anterior, o al inicio si se
   // entró directo por URL (sin historial), para no salir del sitio.
   protected goBack(): void {
-    if (typeof history !== 'undefined' && history.length > 1) {
+    // history.length > 1 NO alcanza: al abrir en pestaña nueva o por link directo, la entrada previa
+    // suele ser about:blank (length 2) y location.back() saldría a una página en blanco. Solo usamos
+    // el historial del navegador si creció por navegación REAL dentro de la app.
+    if (typeof history !== 'undefined' && history.length > this.initialHistoryLength) {
       this.location.back();
-    } else {
-      this.router.navigateByUrl('/');
+      return;
     }
+    // Entrada directa (sin historial in-app: link compartido, recarga o pestaña nueva): en vez de
+    // saltar al inicio o a una página en blanco, volvemos a un padre con sentido según la página
+    // terminal, respetando el idioma activo.
+    const fallback = this.isIndustryDetail()
+      ? '/industrias'
+      : this.isSystemDetail()
+        ? '/software'
+        : '/';
+    this.router.navigateByUrl(this.i18n.link(fallback));
   }
 }
 
@@ -149,6 +167,13 @@ const WEB_NAV: NavLink[] = [
   { label: { es: 'Capacidades', en: 'Capabilities' }, href: '/web#capacidades' },
   { label: { es: 'Servicios', en: 'Services' }, href: '/web#servicios' },
   { label: { es: 'Portafolio', en: 'Portfolio' }, href: '/web#portfolio' }
+];
+
+// El índice /industrias es un hub (no una landing larga con secciones): su nav apunta a los dos
+// brazos del sitio para que se sienta integrado. (En el detalle /industrias/:slug el header es back-only.)
+const INDUSTRIES_NAV: NavLink[] = [
+  { label: { es: 'Software', en: 'Software' }, href: '/software' },
+  { label: { es: 'Web', en: 'Web' }, href: '/web' }
 ];
 
 const TOPBAR_TEXT = {

@@ -25,7 +25,7 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))
   },
   {
-    // EN: la página existe para que el toggle funcione; el contenido cae a ES hasta tener copy EN.
+    // EN: cada detalle tiene su propio copy en inglés (traducción con sentido); el toggle cambia el idioma.
     path: 'en/industrias/:slug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))

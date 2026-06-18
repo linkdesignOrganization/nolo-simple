@@ -7,6 +7,7 @@ import {
   NgZone,
   OnDestroy,
   PLATFORM_ID,
+  afterNextRender,
   computed,
   effect,
   inject
@@ -133,14 +134,14 @@ import { BuildKind, getIndustryDetail } from './industries-content';
           <div class="id-roles__grid id-reveal">
             <article class="id-role">
               <span class="id-role__icon" aria-hidden="true">
-                <svg lucideUserRound [size]="30" [strokeWidth]="1"></svg>
+                <svg lucideUserRound [size]="60" [strokeWidth]="1"></svg>
               </span>
               <span class="id-role__tag">{{ L().youBring }}</span>
               <p>{{ s.roles.yours }}</p>
             </article>
             <article class="id-role id-role--ours">
               <span class="id-role__icon id-role__icon--accent" aria-hidden="true">
-                <svg lucideCode [size]="30" [strokeWidth]="1"></svg>
+                <svg lucideCode [size]="60" [strokeWidth]="1"></svg>
               </span>
               <span class="id-role__tag">{{ L().weBring }}</span>
               <p>{{ s.roles.ours }}</p>
@@ -402,15 +403,24 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     .id-role {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        'tag  icon'
+        'body icon';
+      column-gap: clamp(1rem, 2.5vw, 2rem);
+      row-gap: 0.9rem;
+      align-items: start;
       padding: clamp(1.6rem, 2.6vw, 2.2rem);
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
 
+    /* Icono grande, a la derecha y centrado vertical: ancla visual del bloque (ink en "vos",
+       acento en "nosotros"). El texto fluye en la columna izquierda sin pelearse con el icono. */
     .id-role__icon {
+      grid-area: icon;
+      align-self: center;
       display: inline-flex;
       color: var(--ink);
     }
@@ -420,6 +430,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     .id-role__tag {
+      grid-area: tag;
       color: var(--muted);
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -429,6 +440,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     .id-role p {
+      grid-area: body;
       margin: 0;
       color: var(--ink);
       font-size: 1.05rem;
@@ -542,6 +554,10 @@ export class IndustryDetailPageComponent implements AfterViewInit, OnDestroy {
   private rafId = 0;
 
   constructor() {
+    // Al entrar (típicamente desde una card del mazo, que está scrolleada abajo) arrancamos arriba del
+    // detalle: el router no restaura scroll, así que lo forzamos al primer render (igual que contact-page).
+    afterNextRender(() => window.scrollTo({ top: 0, left: 0 }));
+
     // Slug inexistente → 404 con marca.
     effect(() => {
       if (this.slug() !== null && this.d() === null) {

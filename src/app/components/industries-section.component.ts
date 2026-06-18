@@ -492,17 +492,46 @@ export class IndustriesSectionComponent implements AfterViewInit, OnDestroy {
   // en `position: static` (el top inline se ignora) y oculta el spacer. Mismo enfoque que services-stack.
   private layoutStack(): void {
     const host = this.hostRef.nativeElement as HTMLElement;
-    const cards = host.querySelectorAll<HTMLElement>('.ind-card');
+    const cards = Array.from(host.querySelectorAll<HTMLElement>('.ind-card'));
+    if (!cards.length) {
+      return;
+    }
+    const spacer = host.querySelector<HTMLElement>('.ind-spacer');
 
+    // Reset de la altura forzada: para medir la natural y para no arrastrarla a mobile.
+    cards.forEach((card) => {
+      card.style.minHeight = '';
+    });
+
+    // ¿Mazo (desktop → position: sticky) o flujo (mobile → static)? Se lee del layout real
+    // (no de innerWidth, que en la carga inicial se leía en transición).
+    const isDeck = getComputedStyle(cards[0]).position === 'sticky';
+    if (!isDeck) {
+      cards.forEach((card) => {
+        card.style.top = '';
+      });
+      if (spacer) {
+        spacer.style.height = '';
+      }
+      return;
+    }
+
+    // Igualar TODAS las cards a la más alta. Con alturas uniformes el "release" del sticky sale
+    // ordenado por índice → la ÚLTIMA card arranca la salida y se lleva a las demás (como en
+    // services-stack). Con alturas dispares el umbral de salida (top + alto) se desordenaba y
+    // salían 2 cards antes que el resto.
+    let maxH = 0;
+    cards.forEach((card) => {
+      maxH = Math.max(maxH, card.offsetHeight);
+    });
     cards.forEach((card, i) => {
+      card.style.minHeight = `${maxH}px`;
       card.style.top = `${STACK_TOP + i * STEP}px`;
     });
 
-    // Cola para que la última card termine de apilarse antes de soltar la sección (oculta en mobile por CSS).
-    const spacer = host.querySelector<HTMLElement>('.ind-spacer');
+    // Cola de una card de alto: el mazo queda un momento totalmente apilado antes de soltarse.
     if (spacer) {
-      const last = cards[cards.length - 1];
-      spacer.style.height = last ? `${last.offsetHeight}px` : '0px';
+      spacer.style.height = `${maxH}px`;
     }
   }
 }

@@ -96,44 +96,68 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-  <!-- Industrias (FASE 1: solo español, sin alternate /en) -->
+  <!-- Industrias (bilingüe es/en) -->
   <url>
     <loc>https://nolo.ar/industrias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/industria-y-produccion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/industria-y-produccion"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/distribucion-y-logistica</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/distribucion-y-logistica"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/salud-y-bienestar</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/salud-y-bienestar"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/servicios-profesionales</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/servicios-profesionales"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/servicios-tecnicos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/servicios-tecnicos"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/fitness-y-wellness</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/fitness-y-wellness"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nolo.ar/industrias/educacion-y-formacion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/educacion-y-formacion"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -232,5 +256,70 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/politicas-de-privacidad"/>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+  <!-- Industrias (EN) -->
+  <url>
+    <loc>https://nolo.ar/en/industrias</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/industria-y-produccion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/industria-y-produccion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/industria-y-produccion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/distribucion-y-logistica</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/distribucion-y-logistica"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/distribucion-y-logistica"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/salud-y-bienestar</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/salud-y-bienestar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/salud-y-bienestar"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/servicios-profesionales</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/servicios-profesionales"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/servicios-profesionales"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/servicios-tecnicos</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/servicios-tecnicos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/servicios-tecnicos"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/fitness-y-wellness</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/fitness-y-wellness"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/fitness-y-wellness"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/industrias/educacion-y-formacion</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/educacion-y-formacion"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/educacion-y-formacion"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

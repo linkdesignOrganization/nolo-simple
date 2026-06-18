@@ -75,20 +75,10 @@ export class SeoService {
   // + x-default (= ES). Vale igual en páginas ES y EN.
   private setHreflang(canonicalPath: string): void {
     const base = (canonicalPath || '/').replace(/^\/en(?=\/|$)/, '') || '/';
-    // FASE 1: industrias es solo español → no declarar un alternate /en (daría 404). Solo es + x-default.
-    const singleLang = base === '/industrias' || base.startsWith('/industrias/');
+    const enPath = base === '/' ? '/en' : '/en' + base;
     this.setAlternate('es', this.absoluteUrl(base));
-    if (singleLang) {
-      this.removeAlternate('en');
-    } else {
-      const enPath = base === '/' ? '/en' : '/en' + base;
-      this.setAlternate('en', this.absoluteUrl(enPath));
-    }
+    this.setAlternate('en', this.absoluteUrl(enPath));
     this.setAlternate('x-default', this.absoluteUrl(base));
-  }
-
-  private removeAlternate(hreflang: string): void {
-    this.doc.querySelector(`link[rel="alternate"][hreflang="${hreflang}"]`)?.remove();
   }
 
   private setAlternate(hreflang: string, url: string): void {
