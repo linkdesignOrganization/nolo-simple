@@ -20,8 +20,13 @@ export const serverRoutes: ServerRoute[] = [
     getPrerenderParams: async () => SYSTEM_SLUGS.map((slug) => ({ slug }))
   },
   {
-    // Industrias: FASE 1 solo es (no se declara en/industrias/:slug → /en cae al catch-all → /en/404).
     path: 'industrias/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))
+  },
+  {
+    // EN: la página existe para que el toggle funcione; el contenido cae a ES hasta tener copy EN.
+    path: 'en/industrias/:slug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))
   },

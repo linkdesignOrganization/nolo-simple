@@ -150,14 +150,14 @@ import { BuildKind, getIndustryDetail } from './industries-content';
           </div>
         </section>
 
-        <!-- 05 — Algunas cosas que podríamos construir (intro + 5 cards + cierre) -->
+        <!-- 05 — Algunas cosas que podríamos construir (scroll horizontal con título+intro fijos en el pin) -->
         <section class="id-section id-build">
-          <header class="id-section__head">
-            <span class="id-num">05</span>
-            <h2 class="id-label">{{ L().couldBuild }}</h2>
-          </header>
-          <p class="id-build__intro id-reveal">{{ s.couldBuild.intro }}</p>
-          <app-industry-build [items]="buildCards()" />
+          <app-industry-build
+            [num]="'05'"
+            [label]="L().couldBuild"
+            [intro]="s.couldBuild.intro"
+            [items]="buildCards()"
+          />
           <p class="id-build__closing id-reveal">{{ s.couldBuild.closing }}</p>
         </section>
       </article>
@@ -286,7 +286,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     .id-hero__art {
       display: flex;
       align-items: center;
-      justify-content: flex-end; /* anclado al borde derecho de la grilla, no flotando al centro */
+      justify-content: center; /* centrado en su propia columna */
     }
 
     .id-hero__icon {
@@ -332,13 +332,13 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       align-items: start;
     }
 
+    /* Mismo tamaño que el resto de los bloques (el más chico de la sección): uniforme. */
     .id-do__lead {
       margin: 0;
-      color: var(--ink);
-      font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+      color: var(--muted);
+      font-size: 1.05rem;
       font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
+      line-height: 1.6;
       text-wrap: pretty;
     }
 
@@ -387,11 +387,14 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: pretty;
     }
 
-    /* Minimal: sin caja, sin filete, sin línea. Entra deslizándose desde la derecha (id-reveal--right). */
+    /* Borde neutro (sin filete de acento, esquinas rectas) para destacarlo del texto de al lado.
+       Entra deslizándose desde la derecha (id-reveal--right). */
     .id-disclaimer {
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      padding: clamp(1.4rem, 2.4vw, 1.9rem);
+      border: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .id-disclaimer__eyebrow {
@@ -469,17 +472,6 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     /* ── 05 Podríamos construir (3 + 2) ────────────────────────────────────── */
-    .id-build__intro {
-      margin: 0 0 clamp(1.8rem, 3.5vw, 2.6rem);
-      max-width: 60ch;
-      color: var(--ink);
-      font-size: clamp(1.2rem, 2vw, 1.6rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.35;
-      text-wrap: pretty;
-    }
-
     .id-build__closing {
       margin: clamp(1.8rem, 3.5vw, 2.6rem) 0 0;
       max-width: 60ch;
@@ -713,7 +705,7 @@ const LABELS = {
     eyebrow: 'Industrias',
     whatWeDo: 'Lo que hacemos',
     inTheSector: 'Cómo se ve esto en el sector',
-    withRespect: 'Con respeto',
+    withRespect: 'Para ser claros',
     roles: 'Cómo trabajamos juntos',
     youBring: 'Lo que vos ponés',
     weBring: 'Lo que ponemos nosotros',
@@ -724,7 +716,7 @@ const LABELS = {
     eyebrow: 'Industries',
     whatWeDo: 'What we do',
     inTheSector: 'How this looks in your sector',
-    withRespect: 'With respect',
+    withRespect: 'To be clear',
     roles: 'How we work together',
     youBring: 'What you bring',
     weBring: 'What we bring',

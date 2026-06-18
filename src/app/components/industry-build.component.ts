@@ -26,10 +26,11 @@ import { BuildKind } from '../pages/industries-content';
 export type BuildCard = { kind: BuildKind; kicker: string; text: string };
 
 /**
- * "Podríamos construir" como scroll horizontal con pin (mismo recurso que /web → web-capabilities):
- * la sección se fija y el track de cards se desliza mientras scrolleás vertical; las cards del centro
- * se ven más nítidas. En mobile/reduced-motion cae a modo "flat": cards apiladas con reveal.
- * Todo gated con isPlatformBrowser (SSG-safe).
+ * "Podríamos construir" como scroll horizontal con pin (mismo recurso que /web → web-capabilities),
+ * pero el título + intro quedan FIJOS arriba dentro del pin mientras el track de cards se desliza
+ * debajo: durante el efecto se ven título + texto + cards juntos. Las cards del centro se ven más
+ * nítidas y los bordes hacen fade (máscara en el clip del track, no en el título).
+ * En mobile/reduced-motion cae a modo "flat": título + cards apiladas con reveal. SSG-safe.
  */
 @Component({
   selector: 'app-industry-build',
@@ -50,30 +51,38 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
     <!-- .ibuild-tall crea el rango de scroll vertical que el pin consume como horizontal (alto fijado por JS). -->
     <div class="ibuild-tall">
       <div class="ibuild-pin">
-        <div class="ibuild-track">
-          @for (item of items(); track $index) {
-            <article class="ibuild-card ibuild-anim">
-              <div class="ibuild-card__top">
-                <span class="ibuild-card__icon" aria-hidden="true">
-                  @switch (item.kind) {
-                    @case ('internal') { <svg lucideMonitorCog [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('portal') { <svg lucideUsers [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('mobile') { <svg lucideSmartphone [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('billing') { <svg lucideReceipt [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('web') { <svg lucideGlobe [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('scheduling') { <svg lucideCalendarClock [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('records') { <svg lucideClipboardList [size]="28" [strokeWidth]="1"></svg> }
-                    @case ('crm') { <svg lucideGitCompareArrows [size]="28" [strokeWidth]="1"></svg> }
-                  }
-                </span>
-                <span class="ibuild-card__num">{{ pad($index + 1) }}</span>
-              </div>
-              <div class="ibuild-card__main">
-                <span class="ibuild-card__kicker">{{ item.kicker }}</span>
-                <p class="ibuild-card__text">{{ item.text }}</p>
-              </div>
-            </article>
-          }
+        <header class="ibuild-head">
+          <span class="ibuild-head__num">{{ num() }}</span>
+          <h2 class="ibuild-head__label">{{ label() }}</h2>
+          <p class="ibuild-head__intro">{{ intro() }}</p>
+        </header>
+
+        <div class="ibuild-clip">
+          <div class="ibuild-track">
+            @for (item of items(); track $index) {
+              <article class="ibuild-card ibuild-anim">
+                <div class="ibuild-card__top">
+                  <span class="ibuild-card__icon" aria-hidden="true">
+                    @switch (item.kind) {
+                      @case ('internal') { <svg lucideMonitorCog [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('portal') { <svg lucideUsers [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('mobile') { <svg lucideSmartphone [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('billing') { <svg lucideReceipt [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('web') { <svg lucideGlobe [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('scheduling') { <svg lucideCalendarClock [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('records') { <svg lucideClipboardList [size]="28" [strokeWidth]="1"></svg> }
+                      @case ('crm') { <svg lucideGitCompareArrows [size]="28" [strokeWidth]="1"></svg> }
+                    }
+                  </span>
+                  <span class="ibuild-card__num">{{ pad($index + 1) }}</span>
+                </div>
+                <div class="ibuild-card__main">
+                  <span class="ibuild-card__kicker">{{ item.kicker }}</span>
+                  <p class="ibuild-card__text">{{ item.text }}</p>
+                </div>
+              </article>
+            }
+          </div>
         </div>
       </div>
     </div>
@@ -88,7 +97,7 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
     .ibuild-tall {
       position: relative;
       overflow-anchor: none;
-      height: 280vh; /* fallback; el JS lo ajusta a vh + nº cards * VH_PER_CARD * vh */
+      height: 240vh; /* fallback; el JS lo ajusta a vh + maxX * 1.25 */
     }
 
     .ibuild-pin {
@@ -97,10 +106,56 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
       height: 100vh;
       width: 100vw;
       margin-inline: calc(50% - 50vw);
-      overflow: hidden;
       display: flex;
-      align-items: center;
-      /* Fade en los bordes: las cards se desvanecen al entrar/salir por los lados. */
+      flex-direction: column;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vh, 3rem);
+      overflow: hidden;
+    }
+
+    /* Título + intro: FIJOS dentro del pin (no se difuminan). Alineados al contenido de la página. */
+    .ibuild-head {
+      padding-inline: clamp(1rem, 3vw, 2.5rem);
+      display: grid;
+      grid-template-columns: 2.6rem minmax(0, 1fr);
+      column-gap: 1rem;
+      row-gap: clamp(0.8rem, 1.5vw, 1.2rem);
+      align-items: baseline;
+    }
+
+    .ibuild-head__num {
+      grid-column: 1;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .ibuild-head__label {
+      grid-column: 2;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      text-wrap: balance;
+    }
+
+    .ibuild-head__intro {
+      grid-column: 2;
+      margin: 0;
+      max-width: 64ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+
+    /* Clip del track: acá va la máscara de fade en los bordes (no toca al título). */
+    .ibuild-clip {
+      overflow: hidden;
       --ibuild-fade: clamp(1.5rem, 5vw, 5rem);
       -webkit-mask-image: linear-gradient(
         to right,
@@ -121,21 +176,20 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
     .ibuild-track {
       display: flex;
       align-items: stretch;
-      padding-inline: clamp(1.5rem, 11vw, 13vw);
+      padding-inline: clamp(2rem, 7vw, 9vw);
       will-change: transform;
     }
 
-    /* Cards conectadas por hairlines (sin relleno, esquinas rectas): grilla de líneas en horizontal.
-       Altas (llenan el pin) e icono arriba / texto abajo. */
+    /* Cards conectadas por hairlines (sin relleno, esquinas rectas): grilla de líneas en horizontal. */
     .ibuild-card {
       flex: 0 0 auto;
-      width: clamp(18rem, 27vw, 24rem);
-      min-height: clamp(20rem, 56vh, 30rem);
+      width: clamp(19rem, 27vw, 25rem);
+      min-height: clamp(13rem, 36vh, 18rem);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 1.5rem;
-      padding: clamp(1.6rem, 2.4vw, 2.2rem);
+      gap: 1.25rem;
+      padding: clamp(1.5rem, 2.2vw, 2rem);
       border: 1px solid var(--line-strong);
     }
 
@@ -165,7 +219,7 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
     .ibuild-card__main {
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
+      gap: 0.6rem;
     }
 
     .ibuild-card__kicker {
@@ -189,7 +243,7 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
       will-change: opacity;
     }
 
-    /* ── Modo flat (mobile / reduced-motion): sin pin ni hijack; cards apiladas con reveal ───── */
+    /* ── Modo flat (mobile / reduced-motion): sin pin ni hijack; título + cards apiladas ───── */
     :host(.ibuild-flat) .ibuild-tall {
       height: auto !important;
     }
@@ -200,7 +254,18 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
       width: auto;
       margin-inline: 0;
       overflow: visible;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: clamp(1.8rem, 5vw, 2.5rem);
+    }
+
+    :host(.ibuild-flat) .ibuild-head {
+      padding-inline: 0;
+    }
+
+    :host(.ibuild-flat) .ibuild-clip {
+      overflow: visible;
       -webkit-mask-image: none;
       mask-image: none;
     }
@@ -244,6 +309,9 @@ export type BuildCard = { kind: BuildKind; kicker: string; text: string };
   `
 })
 export class IndustryBuildComponent implements AfterViewInit, OnDestroy {
+  readonly num = input.required<string>();
+  readonly label = input.required<string>();
+  readonly intro = input.required<string>();
   readonly items = input.required<BuildCard[]>();
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
@@ -351,7 +419,6 @@ export class IndustryBuildComponent implements AfterViewInit, OnDestroy {
     this.update();
   }
 
-  // Reveal escalonado por card en modo flat (mobile).
   private setupReveal(): void {
     if (typeof IntersectionObserver === 'undefined') {
       this.cardEls.forEach((el) => el.classList.add('is-in'));

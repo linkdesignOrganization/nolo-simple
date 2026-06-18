@@ -1136,6 +1136,7 @@ function contentRoutes(includeIndustrias = false): Routes {
 // Dos árboles de idioma. 'en' primero para que /en/... matchee el subtree inglés. El parent
 // componentless con path '' no agrega segmento → las URLs ES quedan idénticas (sin migración).
 export const routes: Routes = [
-  { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes(false) }, // sin industrias (fase 1 es-only)
+  // Industrias también en EN para que el toggle funcione; el contenido cae a ES hasta tener copy EN.
+  { path: 'en', canActivate: [langGuard], data: { lang: 'en' }, children: contentRoutes(true) },
   { path: '', canActivate: [langGuard], data: { lang: 'es' }, children: contentRoutes(true) }
 ];

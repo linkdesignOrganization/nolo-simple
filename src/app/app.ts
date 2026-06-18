@@ -57,8 +57,6 @@ export class App {
   // (terminal, back-only). Ambos muestran la grilla del shell en su hero.
   protected readonly isIndustries = computed(() => this.pathNoLang() === '/industrias');
   protected readonly isIndustryDetail = computed(() => /^\/industrias\/[^/]+$/.test(this.pathNoLang()));
-  // Toda el área de industrias es es-only (fase 1) → se oculta el toggle de idioma (EN daría 404).
-  protected readonly isIndustriesArea = computed(() => this.isIndustries() || this.isIndustryDetail());
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
   // (contacto, privacidad y el detalle de un sistema).
