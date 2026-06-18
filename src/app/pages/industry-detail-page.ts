@@ -190,6 +190,8 @@ import { BuildKind, getIndustryDetail } from './industries-content';
                 <p class="id-build__text">{{ item.text }}</p>
               </article>
             }
+            <!-- Celda fantasma: completa la grilla 3×2 (5 ítems + 1) para que las líneas cierren. -->
+            <div class="id-build__ghost" aria-hidden="true"></div>
           </div>
           <p class="id-build__closing id-reveal">{{ s.couldBuild.closing }}</p>
         </section>
@@ -420,15 +422,13 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: pretty;
     }
 
+    /* Minimal: sin caja ni filete de acento; solo una línea divisoria arriba. */
     .id-disclaimer {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      padding: clamp(1.4rem, 2.4vw, 2rem);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-left: 2px solid var(--accent); /* aparte deliberado, anclado al acento (no un alert flotando) */
-      border-radius: 0.5rem;
-      background: rgba(255, 255, 255, 0.02);
+      padding-top: clamp(1.3rem, 2.2vw, 1.8rem);
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .id-disclaimer__eyebrow {
@@ -462,10 +462,12 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     /* ── 04 Roles (vos / nosotros) ─────────────────────────────────────────── */
+    /* Misma lógica: grilla de líneas, sin cajas. "Nosotros" se distingue por el icono en acento. */
     .id-roles__grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(1rem, 2.5vw, 1.75rem);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
     }
 
     .id-role {
@@ -473,13 +475,8 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       flex-direction: column;
       gap: 1rem;
       padding: clamp(1.6rem, 2.6vw, 2.2rem);
-      border: 1px solid var(--line);
-      border-radius: 0.9rem;
-      background: #fafafa;
-    }
-
-    .id-role--ours {
-      border-left: 2px solid var(--accent);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .id-role__icon {
@@ -520,27 +517,26 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: pretty;
     }
 
-    /* 3 columnas: 5 cards → fila de 3 + fila de 2 (mismo ancho, alineadas a la izquierda; la 6.ª
-       celda queda vacía). Evita el huérfano ancho del 3+2 y mantiene todas las cards iguales. */
+    /* Grilla de LÍNEAS (no cajas): 3 columnas; 5 celdas + 1 fantasma cierran la grilla 3×2.
+       Sin fondo, sin bordes redondeados → minimalista, como el cuerpo de los landings. */
     .id-build__grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: clamp(0.9rem, 2vw, 1.25rem);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .id-build__card,
+    .id-build__ghost {
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
 
     .id-build__card {
       display: flex;
       flex-direction: column;
       gap: 0.85rem;
-      padding: clamp(1.4rem, 2.2vw, 1.9rem);
-      border: 1px solid var(--line);
-      border-radius: 0.9rem;
-      background: #fafafa;
-      transition: border-color 220ms ease;
-    }
-
-    .id-build__card:hover {
-      border-color: var(--line-strong);
+      padding: clamp(1.6rem, 2.4vw, 2.1rem);
     }
 
     .id-build__icon {
@@ -625,6 +621,12 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       transform: none;
     }
 
+    /* En las grillas de líneas el reveal es solo opacidad (sin translate → las líneas no se desalinean). */
+    .id-build__card.id-reveal,
+    .id-role.id-reveal {
+      transform: none;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .id-reveal {
         opacity: 1;
@@ -648,6 +650,10 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       .id-build__grid {
         grid-template-columns: 1fr;
       }
+
+      .id-build__ghost {
+        display: none;
+      }
     }
 
     @media (max-width: 860px) {
@@ -663,10 +669,13 @@ import { BuildKind, getIndustryDetail } from './industries-content';
 
     @media (max-width: 760px) {
       .id-do__grid,
-      .id-sector__body,
-      .id-roles__grid {
+      .id-sector__body {
         grid-template-columns: 1fr;
         gap: 1.6rem;
+      }
+
+      .id-roles__grid {
+        grid-template-columns: 1fr;
       }
 
       .id-section__head {
