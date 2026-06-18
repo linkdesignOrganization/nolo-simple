@@ -16,26 +16,19 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import {
   LucideBriefcase,
-  LucideCalendarClock,
-  LucideClipboardList,
   LucideCode,
   LucideDumbbell,
   LucideFactory,
-  LucideGitCompareArrows,
-  LucideGlobe,
   LucideGraduationCap,
   LucideHandshake,
   LucideHeartPulse,
-  LucideMonitorCog,
-  LucideReceipt,
-  LucideSmartphone,
   LucideTruck,
   LucideUserRound,
-  LucideUsers,
   LucideWrench
 } from '@lucide/angular';
 
 import { ContactFooterComponent, ContactInfo, SystemContext } from '../components/contact-footer.component';
+import { BuildCard, IndustryBuildComponent } from '../components/industry-build.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { LanguageService } from '../services/language.service';
 import { BuildKind, getIndustryDetail } from './industries-content';
@@ -50,24 +43,17 @@ import { BuildKind, getIndustryDetail } from './industries-content';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ContactFooterComponent,
+    IndustryBuildComponent,
     DarkZoneDirective,
     LucideBriefcase,
-    LucideCalendarClock,
-    LucideClipboardList,
     LucideCode,
     LucideDumbbell,
     LucideFactory,
-    LucideGitCompareArrows,
-    LucideGlobe,
     LucideGraduationCap,
     LucideHandshake,
     LucideHeartPulse,
-    LucideMonitorCog,
-    LucideReceipt,
-    LucideSmartphone,
     LucideTruck,
     LucideUserRound,
-    LucideUsers,
     LucideWrench
   ],
   template: `
@@ -127,7 +113,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
                 <p>{{ s.inTheSector.paragraphs[0] }}</p>
                 <p>{{ s.inTheSector.paragraphs[1] }}</p>
               </div>
-              <aside class="id-disclaimer id-reveal">
+              <aside class="id-disclaimer id-reveal id-reveal--right">
                 <span class="id-disclaimer__eyebrow">{{ L().withRespect }}</span>
                 <div class="id-disclaimer__row">
                   <span class="id-disclaimer__icon" aria-hidden="true">
@@ -146,15 +132,15 @@ import { BuildKind, getIndustryDetail } from './industries-content';
             <span class="id-num">04</span>
             <h2 class="id-label">{{ L().roles }}</h2>
           </header>
-          <div class="id-roles__grid">
-            <article class="id-role id-reveal">
+          <div class="id-roles__grid id-reveal">
+            <article class="id-role">
               <span class="id-role__icon" aria-hidden="true">
                 <svg lucideUserRound [size]="30" [strokeWidth]="1"></svg>
               </span>
               <span class="id-role__tag">{{ L().youBring }}</span>
               <p>{{ s.roles.yours }}</p>
             </article>
-            <article class="id-role id-role--ours id-reveal">
+            <article class="id-role id-role--ours">
               <span class="id-role__icon id-role__icon--accent" aria-hidden="true">
                 <svg lucideCode [size]="30" [strokeWidth]="1"></svg>
               </span>
@@ -171,28 +157,7 @@ import { BuildKind, getIndustryDetail } from './industries-content';
             <h2 class="id-label">{{ L().couldBuild }}</h2>
           </header>
           <p class="id-build__intro id-reveal">{{ s.couldBuild.intro }}</p>
-          <div class="id-build__grid">
-            @for (item of s.couldBuild.items; track $index; let i = $index) {
-              <article class="id-build__card id-reveal" [style.--i]="i">
-                <span class="id-build__icon" aria-hidden="true">
-                  @switch (item.kind) {
-                    @case ('internal') { <svg lucideMonitorCog [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('portal') { <svg lucideUsers [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('mobile') { <svg lucideSmartphone [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('billing') { <svg lucideReceipt [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('web') { <svg lucideGlobe [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('scheduling') { <svg lucideCalendarClock [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('records') { <svg lucideClipboardList [size]="26" [strokeWidth]="1"></svg> }
-                    @case ('crm') { <svg lucideGitCompareArrows [size]="26" [strokeWidth]="1"></svg> }
-                  }
-                </span>
-                <span class="id-build__kicker">{{ kindLabel(item.kind) }}</span>
-                <p class="id-build__text">{{ item.text }}</p>
-              </article>
-            }
-            <!-- Celda fantasma: completa la grilla 3×2 (5 ítems + 1) para que las líneas cierren. -->
-            <div class="id-build__ghost" aria-hidden="true"></div>
-          </div>
+          <app-industry-build [items]="buildCards()" />
           <p class="id-build__closing id-reveal">{{ s.couldBuild.closing }}</p>
         </section>
       </article>
@@ -422,13 +387,11 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: pretty;
     }
 
-    /* Minimal: sin caja ni filete de acento; solo una línea divisoria arriba. */
+    /* Minimal: sin caja, sin filete, sin línea. Entra deslizándose desde la derecha (id-reveal--right). */
     .id-disclaimer {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      padding-top: clamp(1.3rem, 2.2vw, 1.8rem);
-      border-top: 1px solid rgba(255, 255, 255, 0.16);
     }
 
     .id-disclaimer__eyebrow {
@@ -517,55 +480,6 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       text-wrap: pretty;
     }
 
-    /* Grilla de LÍNEAS (no cajas): 3 columnas; 5 celdas + 1 fantasma cierran la grilla 3×2.
-       Sin fondo, sin bordes redondeados → minimalista, como el cuerpo de los landings. */
-    .id-build__grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-top: 1px solid var(--line);
-      border-left: 1px solid var(--line);
-    }
-
-    .id-build__card,
-    .id-build__ghost {
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .id-build__card {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      padding: clamp(1.6rem, 2.4vw, 2.1rem);
-    }
-
-    .id-build__icon {
-      display: inline-flex;
-      color: var(--ink);
-      transition: color 220ms ease;
-    }
-
-    .id-build__card:hover .id-build__icon {
-      color: var(--accent);
-    }
-
-    .id-build__kicker {
-      color: var(--muted);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .id-build__text {
-      margin: 0;
-      color: var(--ink);
-      font-size: 1rem;
-      line-height: 1.5;
-      text-wrap: pretty;
-    }
-
     .id-build__closing {
       margin: clamp(1.8rem, 3.5vw, 2.6rem) 0 0;
       max-width: 60ch;
@@ -612,18 +526,13 @@ import { BuildKind, getIndustryDetail } from './industries-content';
       transition: opacity 600ms ease, transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .id-build__card.id-reveal {
-      transition-delay: calc(var(--i, 0) * 80ms);
+    /* Variante: entra deslizándose desde la derecha (bloque "Con respeto"). */
+    .id-reveal--right {
+      transform: translateX(48px);
     }
 
     .id-reveal.is-in {
       opacity: 1;
-      transform: none;
-    }
-
-    /* En las grillas de líneas el reveal es solo opacidad (sin translate → las líneas no se desalinean). */
-    .id-build__card.id-reveal,
-    .id-role.id-reveal {
       transform: none;
     }
 
@@ -640,22 +549,6 @@ import { BuildKind, getIndustryDetail } from './industries-content';
     }
 
     /* ── Responsive ────────────────────────────────────────────────────────── */
-    @media (max-width: 980px) {
-      .id-build__grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 620px) {
-      .id-build__grid {
-        grid-template-columns: 1fr;
-      }
-
-      .id-build__ghost {
-        display: none;
-      }
-    }
-
     @media (max-width: 860px) {
       .id-hero {
         grid-template-columns: 1fr;
@@ -703,6 +596,14 @@ export class IndustryDetailPageComponent implements AfterViewInit, OnDestroy {
   protected readonly d = computed(() => getIndustryDetail(this.slug(), this.lang()));
   protected readonly L = computed(() => LABELS[this.lang()]);
 
+  // Cards de "podríamos construir" con el kicker resuelto, para el componente de scroll horizontal.
+  protected readonly buildCards = computed<BuildCard[]>(() => {
+    const detail = this.d();
+    if (!detail) return [];
+    const labels = BUILD_LABELS[this.lang()];
+    return detail.couldBuild.items.map((it) => ({ kind: it.kind, kicker: labels[it.kind], text: it.text }));
+  });
+
   // Contexto para el footer: identifica del lado del CRM de qué industria vino el lead.
   protected readonly industryContext = computed<SystemContext | null>(() => {
     const detail = this.d();
@@ -730,10 +631,6 @@ export class IndustryDetailPageComponent implements AfterViewInit, OnDestroy {
         this.router.navigateByUrl('/404', { replaceUrl: true });
       }
     });
-  }
-
-  protected kindLabel(kind: BuildKind): string {
-    return BUILD_LABELS[this.lang()][kind];
   }
 
   // CTA "Escribinos": scroll suave al formulario del footer (#hablemos), sin navegar.
