@@ -14,6 +14,7 @@ import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { AdsService } from '../services/ads.service';
 import { LeadFormService, LeadSubmitContext } from '../lead-form/services/lead-form.service';
+import { TimelineService } from '../lead-form/services/timeline.service';
 import { LeadFormRawValue } from '../lead-form/models/lead-payload.model';
 import { NeedOption, PreferredContactOption } from '../lead-form/models/lead-form-options';
 import {
@@ -821,14 +822,26 @@ export class ContactFooterComponent {
 
   // CRM: servicio + contexto anti-spam (tiempo en el form + nº de interacciones).
   private readonly leadForm = inject(LeadFormService);
+  private readonly timeline = inject(TimelineService);
   private readonly formLoadedAt = Date.now();
   private interactionCount = 0;
+  // Momento del PRIMER foco/cambio real del usuario en el form (no el render).
+  private formFirstInteractionAt: number | null = null;
 
   constructor() {
     // Cada cambio del form cuenta como interacción (anti-spam mínimo: ≥1).
     this.form.valueChanges.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.interactionCount += 1;
+      this.registerInteraction();
     });
+  }
+
+  /** Cuenta una interacción y marca el primer foco (para medir el tiempo real de llenado). */
+  private registerInteraction(): void {
+    if (this.formFirstInteractionAt === null) {
+      this.formFirstInteractionAt = Date.now();
+      this.timeline.log('form', 'Empezó a llenar el formulario');
+    }
+    this.interactionCount += 1;
   }
 
   protected isNeed(label: string): boolean {
@@ -840,10 +853,12 @@ export class ContactFooterComponent {
   }
 
   protected toggleNeed(label: string): void {
+    this.registerInteraction();
     this.needs.set(toggleInSet(this.needs(), label));
   }
 
   protected toggleContact(label: string): void {
+    this.registerInteraction();
     this.contactPrefs.set(toggleInSet(this.contactPrefs(), label));
   }
 
@@ -885,6 +900,7 @@ export class ContactFooterComponent {
     const context: LeadSubmitContext = {
       formLocation: 'footer',
       formLoadedAt: this.formLoadedAt,
+      formFirstInteractionAt: this.formFirstInteractionAt,
       interactionCount: this.interactionCount
     };
 

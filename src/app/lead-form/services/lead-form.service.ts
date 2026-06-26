@@ -47,6 +47,8 @@ declare var gtag: Function;
 export interface LeadSubmitContext {
   formLocation: FormLocation;
   formLoadedAt: number;
+  /** Momento del primer foco/cambio del usuario en el form (null si nunca interactuó). */
+  formFirstInteractionAt: number | null;
   interactionCount: number;
 }
 
@@ -272,6 +274,10 @@ export class LeadFormService {
       session: {
         ...trackingCtx.session,
         form_load_to_submit_ms: Date.now() - context.formLoadedAt,
+        form_first_interaction_to_submit_ms:
+          context.formFirstInteractionAt != null
+            ? Date.now() - context.formFirstInteractionAt
+            : Date.now() - context.formLoadedAt,
         interaction_count: context.interactionCount
       },
       anti_spam: {

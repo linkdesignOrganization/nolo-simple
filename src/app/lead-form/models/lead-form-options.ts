@@ -128,7 +128,7 @@ export const STORAGE_KEYS = {
 /**
  * Schema version del payload — bumpear cuando haya breaking changes.
  */
-export const PAYLOAD_SCHEMA_VERSION = '1.0.0' as const;
+export const PAYLOAD_SCHEMA_VERSION = '1.4.0' as const;
 
 /**
  * Configuración del evento de conversión de Google Ads que se dispara

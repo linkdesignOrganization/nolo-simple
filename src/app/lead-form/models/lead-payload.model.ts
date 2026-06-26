@@ -114,6 +114,36 @@ export interface LeadAttribution {
 }
 
 /**
+ * Tiempo que una sección estuvo "en foco" (cruzando la banda central del viewport).
+ */
+export interface SectionTime {
+  /** Slug estable de la sección (p.ej. 'sistemas', 'casos', 'portfolio'). */
+  id: string;
+  /** Milisegundos que estuvo en foco (descuenta pestaña en segundo plano). */
+  visible_ms: number;
+}
+
+/**
+ * Veces que el lead tocó un botón/CTA nombrado durante la sesión.
+ */
+export interface ClickCount {
+  /** Etiqueta legible del botón (p.ej. 'WhatsApp', 'Agendar reunión'). */
+  label: string;
+  count: number;
+}
+
+/**
+ * Un hito de la sesión en orden cronológico (para la línea de tiempo).
+ */
+export interface TimelineEvent {
+  /** Milisegundos desde la primera carga de la sesión. */
+  at_ms: number;
+  kind: 'page' | 'section' | 'click' | 'form';
+  /** Path, slug de sección, etiqueta de botón o texto del hito. */
+  label: string;
+}
+
+/**
  * Datos de sesión y telemetría.
  */
 export interface LeadSession {
@@ -141,6 +171,17 @@ export interface LeadSession {
   interaction_count: number;
   /** Tiempo entre carga del form y submit. */
   form_load_to_submit_ms: number;
+  /**
+   * v1.1.0 — Tiempo ACTIVO en el sitio (ms): descuenta el rato con la pestaña en segundo
+   * plano (Page Visibility API). Más fiable que time_on_site_ms para saber cuánto estuvo
+   * realmente prestando atención.
+   */
+  time_on_site_active_ms: number;
+  /**
+   * v1.1.0 — Tiempo de llenado del form desde el PRIMER foco/cambio del usuario hasta el
+   * submit (no desde que el form se renderizó). Vive dentro del tiempo activo.
+   */
+  form_first_interaction_to_submit_ms: number;
   /** Resolución de pantalla "1920x1080". */
   screen_resolution: string | null;
   /** Timezone IANA del navegador (ej: "America/Costa_Rica"). */
@@ -164,6 +205,20 @@ export interface LeadSession {
    *   - null       → no se pudo inferir
    */
   country_source: 'timezone' | 'locale' | 'both' | null;
+  /**
+   * v1.2.0 — Tiempo en foco por sección del sitio (las que el lead realmente miró).
+   * Acotado; el CRM ordena por tiempo para el informe "Secciones que más miró".
+   */
+  sections: SectionTime[];
+  /**
+   * v1.3.0 — Botones/CTAs que el lead tocó durante la sesión, con su conteo.
+   */
+  clicks: ClickCount[];
+  /**
+   * v1.4.0 — Línea de tiempo de la sesión: hitos en orden (páginas, secciones, clics,
+   * inicio del formulario) con su offset en ms. Acotado.
+   */
+  timeline: TimelineEvent[];
 }
 
 /**
@@ -224,5 +279,8 @@ export interface LeadFormRawValue {
 export interface TrackingContext {
   source: LeadSource;
   attribution: LeadAttribution;
-  session: Omit<LeadSession, 'form_load_to_submit_ms' | 'interaction_count'>;
+  session: Omit<
+    LeadSession,
+    'form_load_to_submit_ms' | 'interaction_count' | 'form_first_interaction_to_submit_ms'
+  >;
 }

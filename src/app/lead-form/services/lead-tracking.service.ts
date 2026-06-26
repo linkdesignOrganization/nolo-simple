@@ -11,6 +11,9 @@ import {
   ssSet
 } from '../utils/storage-safe';
 import { getCountryFromTimezone } from '../utils/country-from-timezone';
+import { SectionTrackingService } from './section-tracking.service';
+import { ClickTrackingService } from './click-tracking.service';
+import { TimelineService } from './timeline.service';
 import {
   STORAGE_KEYS,
   UTM_TTL_MS,
@@ -56,21 +59,33 @@ export class LeadTrackingService {
   /** Recorrido de paths visitados en orden cronológico. */
   private visitedPaths: string[] = [];
 
+  // Tiempo ACTIVO (Page Visibility): acumula solo el rato con la pestaña visible.
+  private activeMs = 0;
+  private lastResumeAt = Date.now();
+  private visible = true;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private document: Document,
     private router: Router,
-    private i18n: LanguageService
+    private i18n: LanguageService,
+    private sectionTracking: SectionTrackingService,
+    private clickTracking: ClickTrackingService,
+    private timeline: TimelineService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
 
     if (this.isBrowser) {
       this.firstLoadAt = Date.now();
+      this.lastResumeAt = Date.now();
+      this.visible = this.document.visibilityState !== 'hidden';
+      this.trackVisibility();
       this.pagesVisited = 1; // página inicial cuenta
 
       // Registrar la página inicial en el recorrido
       const initialPath = this.cleanPath(this.document.location.pathname);
       this.visitedPaths.push(initialPath);
+      this.timeline.log('page', initialPath);
 
       // Capturar UTM al cargar (incluye la primera visita)
       this.persistUtmParams();
@@ -85,6 +100,7 @@ export class LeadTrackingService {
           const lastPath = this.visitedPaths[this.visitedPaths.length - 1];
           if (nextPath !== lastPath) {
             this.visitedPaths.push(nextPath);
+            this.timeline.log('page', nextPath);
             // Mantener tamaño acotado
             if (this.visitedPaths.length > MAX_VISITED_PATHS) {
               this.visitedPaths = this.visitedPaths.slice(-MAX_VISITED_PATHS);
@@ -225,7 +241,10 @@ export class LeadTrackingService {
   // Session
   // ──────────────────────────────────────────────────────────────────────────
 
-  private getSessionPartial(): Omit<LeadSession, 'form_load_to_submit_ms' | 'interaction_count'> {
+  private getSessionPartial(): Omit<
+    LeadSession,
+    'form_load_to_submit_ms' | 'interaction_count' | 'form_first_interaction_to_submit_ms'
+  > {
     const tz = this.getTimezone();
     const locale = this.getLocale();
     const countryInfo = this.getCountry(locale, tz);
@@ -234,13 +253,17 @@ export class LeadTrackingService {
       user_agent: this.isBrowser ? navigator.userAgent : '',
       device_type: this.getDeviceType(),
       time_on_site_ms: this.getTimeOnSite(),
+      time_on_site_active_ms: this.getActiveTimeOnSite(),
       pages_visited: this.pagesVisited,
       pages_visited_paths: [...this.visitedPaths],
       screen_resolution: this.getScreenResolution(),
       timezone: tz,
       locale,
       country: countryInfo.country,
-      country_source: countryInfo.source
+      country_source: countryInfo.source,
+      sections: this.sectionTracking.getSnapshot(),
+      clicks: this.clickTracking.getSnapshot(),
+      timeline: this.timeline.getSnapshot()
     };
   }
 
@@ -255,6 +278,32 @@ export class LeadTrackingService {
   getTimeOnSite(): number {
     if (!this.isBrowser) return 0;
     return Date.now() - this.firstLoadAt;
+  }
+
+  /**
+   * Tiempo ACTIVO en el sitio: descuenta los lapsos con la pestaña en segundo plano
+   * (Page Visibility API). Refleja mejor cuánto estuvo realmente prestando atención.
+   */
+  getActiveTimeOnSite(): number {
+    if (!this.isBrowser) return 0;
+    return this.visible
+      ? this.activeMs + (Date.now() - this.lastResumeAt)
+      : this.activeMs;
+  }
+
+  /** Suscribe a visibilitychange para acumular solo el tiempo con la pestaña visible. */
+  private trackVisibility(): void {
+    if (!this.isBrowser) return;
+    this.document.addEventListener('visibilitychange', () => {
+      const hidden = this.document.visibilityState === 'hidden';
+      if (hidden && this.visible) {
+        this.activeMs += Date.now() - this.lastResumeAt;
+        this.visible = false;
+      } else if (!hidden && !this.visible) {
+        this.lastResumeAt = Date.now();
+        this.visible = true;
+      }
+    });
   }
 
   private getScreenResolution(): string | null {

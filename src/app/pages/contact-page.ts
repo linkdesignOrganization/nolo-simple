@@ -11,6 +11,7 @@ import {
 
 import { ContactFooterComponent, ContactInfo } from '../components/contact-footer.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
+import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
@@ -24,6 +25,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     LocalizeUrlPipe,
     ContactFooterComponent,
     DarkZoneDirective,
+    TrackSectionDirective,
     LucideMail,
     LucideMessageCircle,
     LucideCalendar,
@@ -32,7 +34,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
     LucideCheck
   ],
   template: `
-    <section class="contact" [attr.aria-label]="t().aria">
+    <section class="contact" appTrackSection="contacto" [attr.aria-label]="t().aria">
       <div class="contact-grid">
         <div class="ct-brand">
           <h1 class="ct-title">nolõ</h1>
@@ -115,7 +117,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
       </div>
     </section>
 
-    <app-contact-footer appDarkZone id="hablemos" [info]="info" />
+    <app-contact-footer appDarkZone id="hablemos" appTrackSection="hablemos" [info]="info" />
   `,
   styles: `
     :host {

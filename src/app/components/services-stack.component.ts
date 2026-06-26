@@ -17,6 +17,7 @@ import { LucideArrowUpRight } from '@lucide/angular';
 import { environment } from '../../environments/environment';
 import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
+import { TrackClickDirective } from '../directives/track-click.directive';
 
 export type ServiceItem = {
   body: string;
@@ -30,7 +31,7 @@ export type ServiceItem = {
   selector: 'app-services-stack',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, LucideArrowUpRight, LocalizeUrlPipe],
+  imports: [RouterLink, LucideArrowUpRight, LocalizeUrlPipe, TrackClickDirective],
   host: {
     'class': 'services-stack'
   },
@@ -46,7 +47,7 @@ export type ServiceItem = {
           <span class="ss-item__num">{{ pad(i) }}</span>
           @if (item.slug) {
             <h3 class="ss-item__title">
-              <a class="ss-item__link" [routerLink]="('/software/' + item.slug) | localizeUrl">
+              <a class="ss-item__link" [appTrackClick]="'Sistema: ' + item.title" [routerLink]="('/software/' + item.slug) | localizeUrl">
                 <span class="ss-item__title-text">{{ item.title }}</span>
                 <span class="ss-item__arrow" aria-hidden="true">
                   <svg lucideArrowUpRight [size]="26" [strokeWidth]="1"></svg>

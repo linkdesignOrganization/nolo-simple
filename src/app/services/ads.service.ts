@@ -1,5 +1,6 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { ClickTrackingService } from '../lead-form/services/click-tracking.service';
 
 declare var gtag: Function;
 
@@ -31,6 +32,7 @@ export const ADS_CONVERSIONS = {
 @Injectable({ providedIn: 'root' })
 export class AdsService {
   private readonly isBrowser: boolean;
+  private readonly clicks = inject(ClickTrackingService);
 
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -47,16 +49,19 @@ export class AdsService {
 
   /** Click en WhatsApp (value 5). */
   whatsapp(): void {
+    this.clicks.record('WhatsApp');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, 5);
   }
 
   /** Copiar el correo (value 25). */
   emailCopy(): void {
+    this.clicks.record('Copiar correo');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, 25);
   }
 
   /** Click en "Agendar reunión" (value 30). */
   scheduleMeeting(): void {
+    this.clicks.record('Agendar reunión');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, 30);
   }
 

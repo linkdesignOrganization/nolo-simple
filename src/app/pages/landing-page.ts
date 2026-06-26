@@ -17,6 +17,7 @@ import { CapabilityCard, WebCapabilitiesComponent } from '../components/web-capa
 import { HeroAction, HeroMarquee, HeroSlide, WebHeroComponent } from '../components/web-hero.component';
 import { Principle, WorkPrinciplesComponent } from '../components/work-principles.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
+import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { AdsService } from '../services/ads.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
@@ -103,6 +104,7 @@ export type LandingData = {
     RouterLink,
     TechnicalGridSurfaceComponent,
     DarkZoneDirective,
+    TrackSectionDirective,
     ContactFooterComponent,
     DevTypesComponent,
     FaqAccordionComponent,
@@ -165,6 +167,7 @@ export type LandingData = {
       } @else {
         @if (page().webHero; as wh) {
           <app-web-hero
+            appTrackSection="hero"
             [title]="wh.title"
             [lead]="wh.lead"
             [actions]="wh.actions"
@@ -174,7 +177,7 @@ export type LandingData = {
         }
 
         @if (!page().webHero) {
-        <section class="hero" [class.hero--software]="page().theme === 'software'">
+        <section class="hero" appTrackSection="hero" [class.hero--software]="page().theme === 'software'">
           <div class="hero-title">
             @if (page().eyebrow) {
               <span class="eyebrow">{{ page().eyebrow }}</span>
@@ -237,19 +240,19 @@ export type LandingData = {
         }
 
         @if (page().capabilities; as cap) {
-          <app-web-capabilities id="capacidades" [heading]="cap.heading" [cards]="cap.cards" />
+          <app-web-capabilities id="capacidades" appTrackSection="capacidades" [heading]="cap.heading" [cards]="cap.cards" />
         }
 
         @if (page().devTypes; as dt) {
-          <app-dev-types id="servicios" appDarkZone [blocks]="dt.blocks" />
+          <app-dev-types id="servicios" appTrackSection="servicios" appDarkZone [blocks]="dt.blocks" />
         }
 
         @if (page().portfolio; as pf) {
-          <app-portfolio-table id="portfolio" [rows]="pf.rows" />
+          <app-portfolio-table id="portfolio" appTrackSection="portfolio" [rows]="pf.rows" />
         }
 
         @if (page().webProcess; as wp) {
-          <app-project-stages [light]="true" [title]="wp.title" [intro]="wp.intro" [stages]="wp.stages" />
+          <app-project-stages [light]="true" appTrackSection="proceso" [title]="wp.title" [intro]="wp.intro" [stages]="wp.stages" />
         }
 
         @if ((page().featureTabs ?? []).length) {
@@ -259,6 +262,7 @@ export type LandingData = {
         @if (page().systems; as systems) {
           <app-services-stack
             id="sistemas"
+            appTrackSection="sistemas"
             [heading]="systems.heading"
             [intro]="systems.intro"
             [items]="systems.items"
@@ -272,25 +276,25 @@ export type LandingData = {
         @if (page().showcase || page().process) {
           <div appDarkZone>
             @if (page().showcase; as showcase) {
-              <app-feature-showcase id="showcases" [title]="showcase.title" [features]="showcase.features" />
+              <app-feature-showcase id="showcases" appTrackSection="showcases" [title]="showcase.title" [features]="showcase.features" />
             }
 
             @if (page().process; as process) {
-              <app-project-stages id="proceso" [title]="process.title" [intro]="process.intro" [stages]="process.stages" />
+              <app-project-stages id="proceso" appTrackSection="proceso" [title]="process.title" [intro]="process.intro" [stages]="process.stages" />
             }
           </div>
         }
 
         @if (page().viewcases; as v) {
-          <app-viewcases id="casos" [title]="v.title" [intro]="v.intro" [items]="v.items" />
+          <app-viewcases id="casos" appTrackSection="casos" [title]="v.title" [intro]="v.intro" [items]="v.items" />
         }
 
         @if (page().industries; as ind) {
-          <app-industries id="industrias" [heading]="ind.heading" [intro]="ind.intro" [items]="ind.items" />
+          <app-industries id="industrias" appTrackSection="industrias" [heading]="ind.heading" [intro]="ind.intro" [items]="ind.items" />
         }
 
         @if (page().faq; as faq) {
-          <app-faq-accordion [heading]="faq.heading" [items]="faq.items" />
+          <app-faq-accordion appTrackSection="faq" [heading]="faq.heading" [items]="faq.items" />
         }
 
         @if (page().stats.length) {
@@ -441,7 +445,7 @@ export type LandingData = {
         }
 
         @if (page().contact; as contact) {
-          <app-contact-footer appDarkZone id="hablemos" [info]="contact" />
+          <app-contact-footer appDarkZone id="hablemos" appTrackSection="hablemos" [info]="contact" />
         }
       }
     </div>

@@ -24,6 +24,7 @@ import {
 import { ContactFooterComponent, ContactInfo, SystemContext } from '../components/contact-footer.component';
 import { FaqAccordionComponent } from '../components/faq-accordion.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
+import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
 import { getSystemDetail } from './systems-content';
 
@@ -38,6 +39,7 @@ import { getSystemDetail } from './systems-content';
     ContactFooterComponent,
     FaqAccordionComponent,
     DarkZoneDirective,
+    TrackSectionDirective,
     LucideCheck,
     LucideCircleCheck,
     LucideCircleOff,
@@ -48,7 +50,7 @@ import { getSystemDetail } from './systems-content';
     @if (d(); as s) {
       <article class="sd">
         <!-- HERO: nombre del sistema sobre el artefacto del shell -->
-        <header class="sd-hero">
+        <header class="sd-hero" appTrackSection="sistema-intro">
           <p class="sd-hero__eyebrow">{{ t().eyebrow }}</p>
           <h1 class="sd-hero__title">{{ s.name }}</h1>
         </header>
@@ -113,7 +115,7 @@ import { getSystemDetail } from './systems-content';
         </section>
 
         <!-- 04 — Qué hace (5 bullets acción + beneficio) -->
-        <section class="sd-section sd-does sd-reveal">
+        <section class="sd-section sd-does sd-reveal" appTrackSection="sistema-funciones">
           <header class="sd-section__head">
             <span class="sd-num">04</span>
             <h2 class="sd-label">{{ t().doFeatures }}</h2>
@@ -194,7 +196,7 @@ import { getSystemDetail } from './systems-content';
 
           <!-- 08 — Verlo funcionando (cierre + CTA): dentro de la zona oscura, así el sitio
                se queda oscuro desde "Qué no es" hasta el footer (un solo cambio de color). -->
-          <section class="sd-section sd-see">
+          <section class="sd-section sd-see" appTrackSection="sistema-cierre">
             <header class="sd-section__head">
               <span class="sd-num">08</span>
               <h2 class="sd-label">{{ t().seeItWork }}</h2>
@@ -216,11 +218,11 @@ import { getSystemDetail } from './systems-content';
 
           <!-- 09 — Preguntas frecuentes (dentro de la zona oscura: el sitio queda oscuro
                desde "Qué no es" hasta el footer, un solo cambio de color). -->
-          <app-faq-accordion [heading]="t().faq" [items]="s.faq" />
+          <app-faq-accordion appTrackSection="faq" [heading]="t().faq" [items]="s.faq" />
         </div>
       </article>
 
-      <app-contact-footer appDarkZone id="hablemos" [info]="info" [systemContext]="systemContext()" />
+      <app-contact-footer appDarkZone id="hablemos" appTrackSection="hablemos" [info]="info" [systemContext]="systemContext()" />
     }
   `,
   styles: `
