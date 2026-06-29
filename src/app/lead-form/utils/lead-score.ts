@@ -1,4 +1,5 @@
 import { LeadPayload } from '../models/lead-payload.model';
+import { SourceLanding } from '../models/lead-form-options';
 
 /**
  * Lead scoring — port fiel de calculateScore() del CRM.
@@ -146,4 +147,102 @@ function deriveCategory(score: number): LeadScoreCategory {
   if (score >= 50) return 'warm';
   if (score >= 20) return 'cold';
   return 'nurture';
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Señales de sesión — subconjunto del scoring disponible SIN formulario
+// ──────────────────────────────────────────────────────────────────────────
+
+/**
+ * Campos mínimos para puntuar la calidad de una sesión sin que el usuario haya
+ * llenado el formulario. Es lo que `LeadTrackingService` puede entregar en
+ * cualquier momento de la visita.
+ */
+export interface SessionSignals {
+  landing: SourceLanding;
+  utm_medium: string | null;
+  gclid: string | null;
+  time_on_site_ms: number;
+  pages_visited: number;
+  country: string | null;
+  country_source: 'timezone' | 'locale' | 'both' | null;
+}
+
+/**
+ * Puntúa SOLO las señales de sesión/atribución/landing — el subconjunto de
+ * factores de `computeLeadScore` que existe aunque no haya formulario.
+ * Función pura. Rango efectivo aprox: -13 (sesión muy pobre) … +56 (ideal).
+ *
+ * Lo usa `AdsService` para modular el value de las conversiones de click
+ * (WhatsApp, copiar correo, agendar) según qué tan caliente viene la sesión,
+ * en vez de un value fijo.
+ *
+ * ⚠ Los pesos replican la porción de sesión/atribución/landing de
+ * `computeLeadScore` (y por ende del CRM). NO es crítico que coincidan al dígito
+ * —el resultado se normaliza a un factor 0.7–1.0— pero sí en signo y orden de
+ * magnitud. Si el CRM retoca esos pesos, conviene reflejarlo aquí para mantener
+ * la idea "una sesión de calidad X vale lo mismo en cualquier evento".
+ * NO incluye los factores que dependen del formulario (email, empresa, needs,
+ * mensaje, anti-spam, interaction_count, form_load_to_submit_ms).
+ */
+export function scoreSessionSignals(
+  s: SessionSignals
+): { score: number; breakdown: LeadScoreFactor[] } {
+  const breakdown: LeadScoreFactor[] = [];
+  const add = (factor: string, points: number): void => {
+    if (points !== 0) breakdown.push({ factor, points });
+  };
+
+  // ----- Source landing -----
+  if (s.landing === 'software') add('landing_software', 10);
+  if (s.landing === 'corporate') add('landing_corporate', 5);
+
+  // ----- Attribution -----
+  if (s.utm_medium === 'cpc') add('utm_cpc', 8);
+  if (s.gclid) add('tiene_gclid', 5);
+
+  // ----- Session -----
+  const timeMs = s.time_on_site_ms ?? 0;
+  if (timeMs > 120_000) add('time_on_site_>2min', 10);
+  if (timeMs < 30_000) add('time_on_site_<30s', -10);
+
+  const pages = s.pages_visited ?? 0;
+  if (pages >= 3) add('pages_visited_>=3', 8);
+  if (pages >= 5) add('pages_visited_>=5', 5);
+  if (pages === 1) add('pages_visited_==1', -8);
+
+  if (s.country === 'CR') add('pais_CR', 8);
+  if (s.country_source === 'both') add('pais_alta_confianza', 2);
+
+  const score = breakdown.reduce((acc, b) => acc + b.points, 0);
+  return { score, breakdown };
+}
+
+/**
+ * Mapea el score de señales de sesión a un factor multiplicador del value base
+ * de una conversión de click.
+ *
+ * Opción A (acordada): solo PENALIZA sesiones flojas; nunca sube por encima del
+ * value base (techo = 1.0). Así el formulario sigue siendo el techo del sitio y
+ * no hay que recalibrar su escala (atada al scoring del CRM).
+ *
+ *   floja      score < 0    → 0.7
+ *   media      0 – 19       → 0.8
+ *   buena      20 – 39      → 0.9
+ *   excelente  ≥ 40         → 1.0
+ */
+export function sessionQualityFactor(score: number): number {
+  if (score < 0) return 0.7;
+  if (score < 20) return 0.8;
+  if (score < 40) return 0.9;
+  return 1.0;
+}
+
+/**
+ * Aplica el factor de calidad de sesión a un value base y redondea a 2 decimales.
+ * Es la fórmula que usa `AdsService` para los clicks de contacto. Pura y testeable.
+ */
+export function modulateValueBySession(base: number, s: SessionSignals): number {
+  const { score } = scoreSessionSignals(s);
+  return Math.round(base * sessionQualityFactor(score) * 100) / 100;
 }

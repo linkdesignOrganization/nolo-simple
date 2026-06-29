@@ -30,6 +30,7 @@ import {
   LeadSource,
   TrackingContext
 } from '../models/lead-payload.model';
+import { SessionSignals } from '../utils/lead-score';
 
 interface StoredUtm {
   utm_source: string | null;
@@ -132,6 +133,30 @@ export class LeadTrackingService {
       source: this.getSource(formLocation),
       attribution: this.getAttribution(),
       session: this.getSessionPartial()
+    };
+  }
+
+  /**
+   * Snapshot mínimo de señales de sesión para modular conversiones de click
+   * (WhatsApp, copiar correo, agendar) sin requerir formLocation ni datos de
+   * formulario. Lo consume AdsService vía `scoreSessionSignals()`. Reusa los
+   * mismos getters que el payload del form, así un click "ve" exactamente la
+   * misma sesión que vería un submit en ese instante. SSR-safe: en server
+   * devuelve defaults inertes (igual no se disparan conversiones).
+   */
+  getSessionSignals(): SessionSignals {
+    const tz = this.getTimezone();
+    const locale = this.getLocale();
+    const countryInfo = this.getCountry(locale, tz);
+    const stored = this.getStoredUtm();
+    return {
+      landing: this.detectLanding(),
+      utm_medium: stored ? stored.utm_medium : null,
+      gclid: stored ? stored.gclid : null,
+      time_on_site_ms: this.getTimeOnSite(),
+      pages_visited: this.pagesVisited,
+      country: countryInfo.country,
+      country_source: countryInfo.source
     };
   }
 
