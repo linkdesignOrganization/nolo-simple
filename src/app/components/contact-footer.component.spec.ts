@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 
 import { ContactFooterComponent, ContactInfo } from './contact-footer.component';
+import { LeadFormService } from '../lead-form/services/lead-form.service';
 
 const info: ContactInfo = {
   email: 'hola@test.com',
@@ -31,7 +33,11 @@ describe('ContactFooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ContactFooterComponent],
-      providers: [provideRouter([])]
+      providers: [
+        provideRouter([]),
+        // El envío real al CRM se prueba aparte; aquí solo confirmamos la integración del form.
+        { provide: LeadFormService, useValue: { submit: () => of({ status: 'success', lead_id: 'test' }) } }
+      ]
     }).compileComponents();
   });
 
