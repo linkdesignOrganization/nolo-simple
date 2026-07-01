@@ -182,7 +182,7 @@ export type LandingData = {
             @if (page().eyebrow) {
               <span class="eyebrow">{{ page().eyebrow }}</span>
             }
-            <h1>{{ page().title }}</h1>
+            <h1>{{ page().title }}<img class="hero-flag" src="/flag.svg" alt="Argentina" /></h1>
           </div>
 
           @if (page().description || page().ctaPrimary || page().ctaSecondary) {
@@ -735,6 +735,15 @@ export type LandingData = {
       align-items: flex-start;
       grid-column: 1;
       padding: var(--software-hero-top-pad) 0 0;
+    }
+
+    /* Banderita argentina al final del título, como parte del texto (refuerza el origen AR). */
+    .hero-flag {
+      display: inline-block;
+      width: auto;
+      height: 0.62em;
+      margin-left: 0.32em;
+      vertical-align: -0.05em;
     }
 
     .hero--software h1 {

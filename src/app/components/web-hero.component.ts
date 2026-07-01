@@ -48,7 +48,7 @@ type Slide = { label: string; src: string; poster: string };
       <div class="wh-columns">
         <div class="wh-inner">
           <div class="wh-left">
-            <h1 class="wh-title">{{ title() }}</h1>
+            <h1 class="wh-title">{{ title() }}<img class="wh-flag" src="/flag.svg" alt="Argentina" /></h1>
             <p class="wh-lead">{{ lead() }}</p>
 
             @if (actions().length) {
@@ -204,13 +204,22 @@ type Slide = { label: string; src: string; poster: string };
 
     .wh-title {
       margin: 0;
-      max-width: 13ch;
+      max-width: 17ch;
       color: var(--ink);
       font-size: var(--hero-title-size);
       font-weight: var(--hero-title-weight);
       letter-spacing: var(--hero-title-tracking);
       line-height: var(--hero-title-leading);
-      text-wrap: balance;
+      text-wrap: pretty;
+    }
+
+    /* Banderita argentina al final del título, como parte del texto (refuerza el origen AR). */
+    .wh-flag {
+      display: inline-block;
+      width: auto;
+      height: 0.62em;
+      margin-left: 0.32em;
+      vertical-align: -0.05em;
     }
 
     .wh-lead {
