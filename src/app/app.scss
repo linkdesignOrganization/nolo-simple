@@ -423,20 +423,36 @@
 }
 
 /* ────────────────────────────────────────────────────────────────────────────
-   Posición fija del botón de contacto (solo internas; el @if del template ya lo
-   excluye de home). Queda fijo al hacer scroll; el spacer invisible hermano
-   reserva su lugar para que el WhatsApp y el resto no se recorran.
+   Par de contacto FIJO: WhatsApp + "Hablemos"/headset se quedan fijos al hacer
+   scroll (solo internas; el @if del template lo excluye de home). En desktop/tablet
+   los dos botones van juntos arriba a la derecha; el clon invisible .cta-pair--ghost
+   queda en el flujo y reserva su ancho para que el resto del topbar no se recorra. El
+   WhatsApp es verde constante; el de contacto invierte con el fondo (reglas
+   .topbar-link / .hs-button de arriba). El resto del topbar scrollea.
    ──────────────────────────────────────────────────────────────────────────── */
-.cbtn {
+.cta-pair {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(0.35rem, 0.7vw, 0.5rem);
+}
+
+/* Fijo solo en internas (desktop/tablet: juntos arriba a la derecha). */
+.topbar:not(.topbar--home) .cta-pair:not(.cta-pair--ghost) {
   position: fixed;
   top: 1.25rem;
   right: clamp(1rem, 3vw, 2.5rem);
   z-index: 5;
 }
 
-.cbtn-spacer {
+.cta-pair--ghost {
   visibility: hidden;
   pointer-events: none;
+}
+
+/* Home: el par se disuelve para que WhatsApp y headset floten al grid del topbar
+   (flanquean el logo centrado), sin fijarse. */
+.topbar--home .cta-pair {
+  display: contents;
 }
 
 .content {
@@ -564,8 +580,25 @@
     color: var(--ink);
   }
 
-  /* El botón fijo (headset) va más arriba: el topbar de mobile es más compacto. */
-  .cbtn {
+  /* Mobile internas: el par se disuelve al grid del topbar (WhatsApp y headset vuelven
+     a ser items sueltos que flanquean el logo). Los reales quedan fijos a las esquinas
+     superiores (WhatsApp izquierda, contacto derecha); el ghost reserva las celdas wa/hs.
+     Van más arriba (0.8rem) porque el topbar de mobile es más compacto. */
+  .topbar:not(.topbar--home) .cta-pair {
+    display: contents;
+  }
+
+  .topbar:not(.topbar--home) .cta-pair:not(.cta-pair--ghost) .wa-button {
+    position: fixed;
     top: 0.8rem;
+    left: clamp(1rem, 3vw, 2.5rem);
+    z-index: 5;
+  }
+
+  .topbar:not(.topbar--home) .cta-pair:not(.cta-pair--ghost) .hs-button {
+    position: fixed;
+    top: 0.8rem;
+    right: clamp(1rem, 3vw, 2.5rem);
+    z-index: 5;
   }
 }
