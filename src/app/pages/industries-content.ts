@@ -7,7 +7,7 @@
 // de systems-content.ts (EN). → INDUSTRIES_CONTENT trae `es` y `en`; getIndustryDetail resuelve
 // por idioma (cae a `es` solo por seguridad). Las rutas /en/industrias SÍ se registran
 // (ver app.routes.ts) y el toggle del header cambia el idioma del contenido.
-// Pendiente: LinkDesign no tiene industrias (su EN + versión "tú" se hará aparte).
+// LinkDesign ya tiene su versión propia (voz "tú" + regionalismos CR) en su industries-content.ts.
 //
 // La sección de los landings usa la card (INDUSTRY_CARDS, derivada de acá → sin duplicar copy);
 // la página /industrias/:slug usa el detalle completo (industry-detail-page.ts), resuelto por slug.

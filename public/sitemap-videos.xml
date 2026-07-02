@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://nolo.ar/software</loc>
+    <lastmod>2026-07-02</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
+      <video:title>Pulso — Sistema de gestión para gimnasios y wellness</video:title>
+      <video:description>Demo navegable de Pulso, un sistema de gestión para gimnasios y wellness a medida.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+    </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
       <video:title>Cumbre — Sistema de gestión de RRHH</video:title>
@@ -35,6 +42,13 @@
   </url>
   <url>
     <loc>https://nolo.ar/en/software</loc>
+    <lastmod>2026-07-02</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
+      <video:title>Pulso — Gym &amp; wellness management system</video:title>
+      <video:description>Working demo of Pulso, a custom gym &amp; wellness management system.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+    </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
       <video:title>Cumbre — HR management system</video:title>

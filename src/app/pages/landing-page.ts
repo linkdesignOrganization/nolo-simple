@@ -127,6 +127,7 @@ export type LandingData = {
       [class.page--software]="page().theme === 'software'"
     >
       @if (page().isHome) {
+        <h1 class="sr-only">{{ page().title }}</h1>
         <section
           class="split reveal reveal--delayed"
           [class.split--software-active]="activeArm() === 'software'"
@@ -459,6 +460,20 @@ export type LandingData = {
       display: flex;
       flex: 1 1 auto;
       min-height: 0;
+    }
+
+    /* h1 del home: oculto visualmente pero presente para SEO/lectores de pantalla.
+       position:absolute lo saca del flex de .page--home — cero impacto en el split. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
 
     .page {

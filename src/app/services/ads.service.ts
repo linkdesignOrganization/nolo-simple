@@ -7,9 +7,10 @@ import { modulateValueBySession } from '../lead-form/utils/lead-score';
 declare var gtag: Function;
 
 /**
- * Conversion actions de Google Ads de SOWE (cuenta AW-16767245191, compartida con LinkDesign).
+ * Conversion actions de Google Ads de Nolo (cuenta AW-16767245191, compartida con LinkDesign;
+ * la cuenta se creó históricamente bajo la marca anterior, Sowe).
  *
- * Acciones PROPIAS de SOWE ("Contacto Argentina" y "Scroll Argentina"), separadas de las de
+ * Acciones PROPIAS de Nolo ("Contacto Argentina" y "Scroll Argentina"), separadas de las de
  * LinkDesign para no mezclar las conversiones de Argentina con las de Costa Rica. El label (lo
  * que va después de la `/`) se copió del tag de cada conversion action en Google Ads.
  * El send_to de CONTACTO se usa también en lead-form/models/lead-form-options.ts (form submit).

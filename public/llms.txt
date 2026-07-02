@@ -9,12 +9,13 @@ Nolo opera dos líneas de trabajo: **software a medida** (sistemas internos cons
 - [Inicio](https://nolo.ar/): Resumen de las dos líneas — software y web a medida.
 - [Software a medida](https://nolo.ar/software): Los sistemas que construimos, con proceso por módulos y discovery previo.
 - [Sitios web](https://nolo.ar/web): Landing pages, sitios corporativos y e-commerce a medida.
+- [Industrias](https://nolo.ar/industrias): Siete industrias con soluciones de software y web pensadas para cada operación; cada una con su página de detalle.
 - [Contacto](https://nolo.ar/contacto): Formulario, WhatsApp, correo y agenda de reuniones.
 - [Política de privacidad](https://nolo.ar/politicas-de-privacidad): Tratamiento de datos personales.
 
 ## Sistemas de software a medida
 
-Cada sistema se construye sobre la operación real del cliente, por módulos, con un discovery previo. No se muestran sistemas de clientes (confidencialidad); se ofrece una versión navegable en una conversación.
+Cada sistema se construye sobre la operación real del cliente, por módulos, con un discovery previo. No se muestran sistemas de clientes (confidencialidad); en la sección «Demos navegables» podés recorrer versiones funcionales de sistemas completos.
 
 - [CRM a medida](https://nolo.ar/software/crm-a-medida): Gestión comercial sobre el proceso de venta real. Centraliza WhatsApp, correo y llamadas por cliente, ordena oportunidades por etapa y arma cotizaciones con criterios propios.
 - [ERP de operación e inventario](https://nolo.ar/software/erp-operacion-inventario): Control de stock y movimientos de mercadería por depósito y sucursal, con trazabilidad de cada movimiento.
@@ -23,6 +24,58 @@ Cada sistema se construye sobre la operación real del cliente, por módulos, co
 - [Plataformas de reservas y agenda](https://nolo.ar/software/reservas-y-agenda): Reservas en línea con disponibilidad real, recordatorios automáticos y pago de seña, integradas a la operación.
 - [Dashboards y reporting](https://nolo.ar/software/dashboards-y-reporting): Métricas en tiempo real alimentadas directo desde los sistemas en producción, con reportes descargables y vistas por rol.
 - [Automatización con IA aplicada](https://nolo.ar/software/automatizacion-ia): Flujos que leen documentos, completan formularios y clasifican datos en segundo plano, para tareas repetitivas con patrón claro.
+
+## Demos navegables
+
+Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.
+
+- [Pulso](https://jolly-stone-0869f530f.7.azurestaticapps.net): Sistema de gestión para gimnasios y wellness.
+- [Cumbre](https://orange-forest-0713c560f.7.azurestaticapps.net): Sistema de gestión de RRHH.
+- [Estudio Dental Mendieta](https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda): Software de gestión clínica.
+- [Tornos del Sur](https://app-tornosops.azurewebsites.net/dashboard): ERP industrial.
+- [Punto Cero](https://victorious-desert-032f8750f.1.azurestaticapps.net/): Sistema de mantenimiento por suscripción.
+- [Vértice Seguridad Industrial](https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home): ERP comercial y de inventario.
+
+## Industrias
+
+Cada sector opera distinto. Entrá al tuyo y mirá qué software y qué sitio web tendrían sentido para tu operación.
+
+- [Industria y producción](https://nolo.ar/industrias/industria-y-produccion): Sistemas que ordenan empresas que producen, transforman o procesan, donde el día a día depende de planificación, costos y despacho a tiempo. Cubre metalúrgicas, manufactureras, textiles, alimenticias, frigoríficos y agroindustria.
+- [Distribución, logística y comercio B2B](https://nolo.ar/industrias/distribucion-y-logistica): Sistemas que ordenan empresas que mueven productos, gestionan stock y venden a otras empresas, donde el día a día depende de pedidos, despachos y cobros que no pueden fallar. Cubre distribuidoras mayoristas, importadoras, operadores logísticos, transporte de cargas, representaciones comerciales y venta B2B.
+- [Salud y bienestar](https://nolo.ar/industrias/salud-y-bienestar): Sistemas que ordenan centros y consultorios donde la operación gira alrededor del paciente, la agenda, los profesionales y la calidad del seguimiento. Cubre clínicas médicas, consultorios odontológicos, kinesiología, estética médica y veterinarias.
+- [Servicios profesionales](https://nolo.ar/industrias/servicios-profesionales): Sistemas que ordenan estudios y empresas donde el activo principal son las personas y las horas, y donde la calidad del trabajo depende de qué tan claro está cada proyecto. Cubre estudios jurídicos, contables, consultoras, empresas de TI, arquitectura e ingeniería.
+- [Servicios técnicos B2B](https://nolo.ar/industrias/servicios-tecnicos): Sistemas que ordenan empresas que prestan servicios técnicos a otras empresas, donde el día a día depende de coordinar técnicos, contratos y respuesta a tiempo. Cubre HVAC, mantenimiento industrial, instalaciones eléctricas, electromecánica, redes y limpieza profesional.
+- [Fitness, wellness y deportes](https://nolo.ar/industrias/fitness-y-wellness): Sistemas que ordenan centros donde la operación gira alrededor de socios, suscripciones recurrentes, agenda de clases y experiencia del cliente. Cubre gimnasios, centros wellness, yoga, pilates, crossfit, boxeo y estética.
+- [Educación y formación](https://nolo.ar/industrias/educacion-y-formacion): Sistemas que ordenan instituciones donde la operación gira alrededor de cohortes, profesores, asistencia y experiencia del alumno. Cubre institutos privados, academias de idiomas, escuelas técnicas, capacitación profesional y formación corporativa.
+
+## Portafolio web (clientes)
+
+Sitios publicados para clientes reales; cada entrada indica la industria y enlaza al sitio en producción.
+
+- [Imperio](https://arrozimperio.net/): Alimentos.
+- [HESA](https://hesa.co.cr/): Veterinaria.
+- [Uga Comediante](https://ugacomediante.com/): Entretenimiento.
+- [AAEC](https://aaec.org/): Legal.
+- [Xceed](https://xceedsportsandtravel.com/): Turismo.
+- [WeDrive CR](https://wedrivecr.com/): Turismo.
+- [R. Loría](https://legalwaycr.com/): Legal.
+- [CEWTEC](https://www.cewtec.com/): Tecnología.
+- [Altura Raíz](https://wonderful-smoke-00f5c7f0f.6.azurestaticapps.net/): Arquitectura.
+- [CEFSA](https://cefsa.cr/): Finanzas.
+- [AMAG](https://amagnr.com/home/inicio): Moda.
+- [Nano](https://nano.cr/): Bienestar.
+- [Haus](https://haus-297eca.webflow.io/): Bienes Raíces.
+- [Espacio CR](https://espaciocr-com.webflow.io/): Arquitectura.
+- [Promaca](https://www.promacaltda.com/): Alimentos.
+- [Evoke](https://evoke-812574.webflow.io/): Audiovisual.
+- [Psicoyng](https://psicoyng.com/): Salud.
+- [Xcelerate](https://xcelerate-93e9f9.webflow.io/): Gimnasio.
+- [TUPSA](https://tupsa.com/): Transporte.
+- [Onigiri](https://ambitious-river-0c4fcd50f.1.azurestaticapps.net/): Restaurante.
+- [Gramas](https://yellow-water-0de5f8f0f.2.azurestaticapps.net): Agroindustria.
+- [CIMED](https://witty-rock-0c57b0910.1.azurestaticapps.net): Legal.
+- [GoNow](https://gentle-grass-0d8c1fd0f.1.azurestaticapps.net/): Automotriz.
+- [Zacate Tierra Fértil](https://zacatetierrafertil.com/): Agroindustria.
 
 ## Contacto
 

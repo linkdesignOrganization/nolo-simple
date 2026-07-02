@@ -98,7 +98,13 @@ export class SeoService {
   // y las páginas de detalle de sistema. Se conecta al Organization/WebSite del index.html por @id.
   private setJsonLd(data: SeoData, url: string): void {
     const inLanguage = (data.locale || 'es_AR').replace('_', '-');
-    const path = (data.canonicalPath ?? '/').split('#')[0].split('?')[0] || '/';
+    // Path base (sin /en) SOLO para las comparaciones: así las rutas EN también reciben
+    // Breadcrumb/Service correctos. `url` y los @id conservan la URL canónica (con /en).
+    const path =
+      ((data.canonicalPath ?? '/').split('#')[0].split('?')[0] || '/').replace(
+        /^\/en(?=\/|$)/,
+        ''
+      ) || '/';
     const shortName = data.title.split('|')[0].trim();
 
     const graph: Record<string, unknown>[] = [
