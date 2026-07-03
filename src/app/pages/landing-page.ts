@@ -1454,12 +1454,22 @@ export class LandingPageComponent {
 
   // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente: usa el video
   // web grande (/media/hero/<slug>.mp4) si la fila tiene video, o el poster como imagen (ej. Asembis).
+  // HERO_EXCLUDED_SLUGS: proyectos SIN render de hero en /media/hero/ — se excluyen del carrusel
+  // para no referenciar un video inexistente (404). Quitar de la lista al generar su variante.
+  private static readonly HERO_EXCLUDED_SLUGS = ['legalway'];
   protected readonly heroSlides = computed<HeroSlide[]>(() => {
     const rows = this.page().portfolio?.rows ?? [];
-    return rows.slice(0, 10).map((row) => {
-      const slug = (row.videoSrc || row.poster).split('/').pop()!.replace(/\.\w+$/, '');
-      return { src: row.videoSrc ? `/media/hero/${slug}.mp4` : '', poster: row.poster };
-    });
+    return rows
+      .map((row) => ({
+        slug: (row.videoSrc || row.poster).split('/').pop()!.replace(/\.\w+$/, ''),
+        row
+      }))
+      .filter(({ slug }) => !LandingPageComponent.HERO_EXCLUDED_SLUGS.includes(slug))
+      .slice(0, 10)
+      .map(({ slug, row }) => ({
+        src: row.videoSrc ? `/media/hero/${slug}.mp4` : '',
+        poster: row.poster
+      }));
   });
 
   protected isHrefLink(link?: string): boolean {
