@@ -1452,24 +1452,19 @@ export class LandingPageComponent {
     () => (this.routeData() as { es: LandingData; en: LandingData })[this.i18n.lang()]
   );
 
-  // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente: usa el video
-  // web grande (/media/hero/<slug>.mp4) si la fila tiene video, o el poster como imagen (ej. Asembis).
-  // HERO_EXCLUDED_SLUGS: proyectos SIN render de hero en /media/hero/ — se excluyen del carrusel
-  // para no referenciar un video inexistente (404). Quitar de la lista al generar su variante.
-  private static readonly HERO_EXCLUDED_SLUGS = ['legalway'];
+  // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente, según el
+  // heroSrc que el prebuild (scripts/generate-portfolio.mjs) resuelve desde el CRM por proyecto:
+  //   path ('/media/hero/<slug>.mp4') → slide de video con el render de hero
+  //   ''                              → proyecto sin video: slide de solo póster, deliberado
+  //   null                            → proyecto SIN render de hero (ej. R. Loría): EXCLUIDO del
+  //     carrusel para no referenciar un video inexistente (regla anti-desconexión, 2ª capa);
+  //     se restituye solo cuando el pipeline del CRM le genere la variante y el prebuild la traiga.
   protected readonly heroSlides = computed<HeroSlide[]>(() => {
     const rows = this.page().portfolio?.rows ?? [];
     return rows
-      .map((row) => ({
-        slug: (row.videoSrc || row.poster).split('/').pop()!.replace(/\.\w+$/, ''),
-        row
-      }))
-      .filter(({ slug }) => !LandingPageComponent.HERO_EXCLUDED_SLUGS.includes(slug))
+      .filter((row): row is PortfolioRow & { heroSrc: string } => typeof row.heroSrc === 'string')
       .slice(0, 10)
-      .map(({ slug, row }) => ({
-        src: row.videoSrc ? `/media/hero/${slug}.mp4` : '',
-        poster: row.poster
-      }));
+      .map((row) => ({ src: row.heroSrc, poster: row.poster }));
   });
 
   protected isHrefLink(link?: string): boolean {

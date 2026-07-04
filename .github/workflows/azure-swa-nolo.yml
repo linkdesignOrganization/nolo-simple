@@ -8,10 +8,15 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+  # "Publicar en los sitios" desde el CRM (POST /api/portfolio/publish):
+  # repository_dispatch corre SIEMPRE sobre el branch default (main) y rebuildea
+  # el sitio con el portafolio actual del CRM (vía el prebuild).
+  repository_dispatch:
+    types: [portfolio-updated]
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.event_name == 'push' || github.event_name == 'repository_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:

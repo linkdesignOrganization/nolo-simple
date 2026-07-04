@@ -1,10 +1,11 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   NgZone,
   OnDestroy,
+  PLATFORM_ID,
   afterNextRender,
   computed,
   inject,
@@ -13,6 +14,7 @@ import {
 } from '@angular/core';
 import { LucideArrowUpRight, LucideArrowDown } from '@lucide/angular';
 
+import { environment } from '../../environments/environment';
 import { LanguageService } from '../services/language.service';
 
 export type PortfolioRow = {
@@ -23,6 +25,14 @@ export type PortfolioRow = {
   link: string;
   videoSrc: string;
   poster: string;
+  /** Slug del proyecto en el CRM — identifica el click en el contador (beacon). */
+  slug?: string;
+  /**
+   * Render de hero del proyecto (media/hero), resuelto por el prebuild desde el CRM:
+   * path → slide de video · '' → slide de solo póster (proyecto sin video) · null →
+   * SIN render de hero: excluido del carrusel (regla anti-desconexión, 2ª capa).
+   */
+  heroSrc?: string | null;
 };
 
 @Component({
@@ -54,6 +64,7 @@ export type PortfolioRow = {
             rel="noopener noreferrer"
             (mouseenter)="onRowEnter(i)"
             (mouseleave)="onRowLeave(i)"
+            (click)="onRowClick(row)"
           >
             <span class="pt-cell pt-num">{{ pad(i + 1) }}/{{ pad(rows().length) }}</span>
             <span class="pt-cell pt-client">
@@ -489,6 +500,7 @@ export class PortfolioTableComponent implements OnDestroy {
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly zone = inject(NgZone);
   private readonly document = inject(DOCUMENT);
+  private readonly platformId = inject(PLATFORM_ID);
 
   private static readonly ENTER_DELAY = 150;
   private static readonly OFFSET = 24;
@@ -729,6 +741,37 @@ export class PortfolioTableComponent implements OnDestroy {
 
   protected pad(n: number): string {
     return String(n).padStart(2, '0');
+  }
+
+  // Click en el link de una fila → beacon al contador de clicks del CRM (POST
+  // /api/public/portfolio/click con el slug; el CRM resuelve el sitio CR/AR por el Origin).
+  // Se manda con fetch + keepalive (el equivalente moderno de sendBeacon: el browser lo
+  // despacha en segundo plano y NUNCA bloquea la navegación al sitio del cliente).
+  // ⚠️ No usar navigator.sendBeacon acá: sendBeacon SIEMPRE manda credenciales (spec) y el
+  // CORS del CRM responde Access-Control-Allow-Origin: * — el preflight de un request con
+  // credenciales rechaza el wildcard; con credentials 'omit' el wildcard es válido.
+  // En dev crmEndpoint está vacío → no se manda nada (igual que el form). Guard SSR: en el
+  // prerender no hay fetch de browser.
+  protected onRowClick(row: PortfolioRow): void {
+    if (!isPlatformBrowser(this.platformId) || !row.slug || !environment.crmEndpoint) {
+      return;
+    }
+    if (typeof fetch !== 'function') {
+      return;
+    }
+    try {
+      const crmOrigin = new URL(environment.crmEndpoint).origin;
+      fetch(`${crmOrigin}/api/public/portfolio/click`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: row.slug }),
+        keepalive: true,
+        credentials: 'omit',
+        mode: 'cors'
+      }).catch(() => {});
+    } catch {
+      // El contador jamás interfiere con la navegación.
+    }
   }
 
   // mouseenter de una fila: activa con leve delay (si el cursor sólo pasa rápido, no aparece).
