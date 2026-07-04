@@ -143,6 +143,18 @@ async function buildRows(items, manifest, stats) {
 
   for (const item of items) {
     const slug = item.slug;
+
+    // Guard: un proyecto visible pero sin ningún media (ni póster ni video web —
+    // p. ej. recién creado en el CRM, con el pipeline todavía sin correr) generaría
+    // una row vacía en la tabla Y un slide sin imagen en el hero (heroSrc '' se
+    // interpreta como "slide de solo póster"). Se excluye del JSON hasta tener media.
+    if (!item.posterUrl && !item.videoWebUrl) {
+      console.warn(
+        `[portfolio] AVISO: ${slug} visible pero sin media — excluido del sitio hasta tener al menos póster`
+      );
+      continue;
+    }
+
     const logo = await resolveAsset(
       item.logoUrl,
       `/media/portfolio/${slug}-logo${extFromUrl(item.logoUrl, '.png')}`,
