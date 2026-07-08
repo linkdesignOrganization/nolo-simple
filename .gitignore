@@ -50,3 +50,8 @@ Thumbs.db
 
 # Playwright MCP artifacts (screenshots, console/snapshot dumps)
 .playwright-mcp/
+
+# Manifest del prebuild del portafolio (artefacto local/CI: registra la URL de
+# origen de cada asset descargado). El portfolio.data.json SÍ va commiteado —
+# es el fallback cuando el CRM no responde.
+/src/app/generated/portfolio.assets.json
