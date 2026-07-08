@@ -10,6 +10,7 @@ import { LanguageService } from './services/language.service';
 import { AdsService } from './services/ads.service';
 import { SeoService } from './services/seo.service';
 import { seoForUrl } from './services/seo-content';
+import { SessionLanguageService } from './services/session-language.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,9 @@ export class App {
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   private readonly seo = inject(SeoService);
+  // Beacon de sesiones por idioma (medición ES/EN para campañas): inyectarlo acá lo arranca
+  // con la app; en SSR/prerender queda inerte (guard de browser en su constructor).
+  private readonly sessionLanguage = inject(SessionLanguageService);
   private readonly doc = inject(DOCUMENT);
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
