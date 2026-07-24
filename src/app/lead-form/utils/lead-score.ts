@@ -35,17 +35,18 @@ export interface LeadScoreResult {
 
 /**
  * Mapa categoría → value en USD a reportar a Google Ads.
+ * Escala ×2 desde jul 2026 para ampliar el contraste contra SCROLL (value 1)
+ * en Smart Bidding — cambio espejo del sitio LinkDesign.
  * - `suspicious` → null: NO disparar conversión (señales muy negativas).
- * - Techo (`hot` = 30) iguala al evento "Agendar" del sitio, considerado
+ * - Techo (`hot` = 60) iguala al evento "Agendar" del sitio, considerado
  *   la conversión más caliente posible.
- * - Piso (`nurture` = 15) iguala al click a teléfono.
  */
 export const LEAD_SCORE_ADS_VALUE: Record<LeadScoreCategory, number | null> = {
   suspicious: null,
-  nurture: 15,
-  cold: 18,
-  warm: 24,
-  hot: 30
+  nurture: 30,
+  cold: 36,
+  warm: 48,
+  hot: 60
 };
 
 const TIMING_OR_BUDGET_RE =

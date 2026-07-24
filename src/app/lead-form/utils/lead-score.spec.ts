@@ -82,20 +82,20 @@ describe('sessionQualityFactor (Opción A: solo penaliza, techo 1.0)', () => {
 });
 
 describe('modulateValueBySession (tabla Opción A acordada)', () => {
-  it('agendar (base 30): floja → 21, excelente → 30', () => {
-    expect(modulateValueBySession(30, poor)).toBe(21);
-    expect(modulateValueBySession(30, ideal)).toBe(30);
+  it('agendar (base 60): floja → 42, excelente → 60', () => {
+    expect(modulateValueBySession(60, poor)).toBe(42);
+    expect(modulateValueBySession(60, ideal)).toBe(60);
   });
-  it('correo (base 25): media → 20, excelente → 25', () => {
-    expect(modulateValueBySession(25, neutral)).toBe(20);
-    expect(modulateValueBySession(25, ideal)).toBe(25);
+  it('correo (base 50): media → 40, excelente → 50', () => {
+    expect(modulateValueBySession(50, neutral)).toBe(40);
+    expect(modulateValueBySession(50, ideal)).toBe(50);
   });
-  it('whatsapp (base 5): floja → 3.5, excelente → 5', () => {
-    expect(modulateValueBySession(5, poor)).toBe(3.5);
-    expect(modulateValueBySession(5, ideal)).toBe(5);
+  it('whatsapp (base 10): floja → 7, excelente → 10', () => {
+    expect(modulateValueBySession(10, poor)).toBe(7);
+    expect(modulateValueBySession(10, ideal)).toBe(10);
   });
   it('nunca supera el value base (techo en la mejor sesión)', () => {
-    expect(modulateValueBySession(30, ideal)).toBeLessThanOrEqual(30);
-    expect(modulateValueBySession(5, ideal)).toBeLessThanOrEqual(5);
+    expect(modulateValueBySession(60, ideal)).toBeLessThanOrEqual(60);
+    expect(modulateValueBySession(10, ideal)).toBeLessThanOrEqual(10);
   });
 });

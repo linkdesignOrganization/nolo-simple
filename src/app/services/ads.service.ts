@@ -29,15 +29,17 @@ export const ADS_CONVERSIONS = {
 /**
  * Values base (USD) de cada click de contacto, ANTES de modular por calidad de
  * sesión. Reflejan la intención intrínseca del canal:
- *   agendar (30) > copiar correo (25) > WhatsApp (5).
+ *   agendar (60) > copiar correo (50) > WhatsApp (10).
+ * Escala ×2 desde jul 2026 para ampliar el contraste contra SCROLL (value 1)
+ * en Smart Bidding — cambio espejo del sitio LinkDesign.
  * El value final se multiplica por `sessionQualityFactor` (0.7–1.0): una sesión
  * floja baja el value, una excelente lo deja en el base (techo = base, para que
  * el formulario siga siendo el techo del sitio). Ver utils/lead-score.ts.
  */
 export const CONTACTO_BASE_VALUE = {
-  whatsapp: 5,
-  emailCopy: 25,
-  scheduleMeeting: 30
+  whatsapp: 10,
+  emailCopy: 50,
+  scheduleMeeting: 60
 } as const;
 
 /**
@@ -79,19 +81,19 @@ export class AdsService {
     return modulateValueBySession(base, this.tracking.getSessionSignals());
   }
 
-  /** Click en WhatsApp (value base 5, modulado por calidad de sesión). */
+  /** Click en WhatsApp (value base 10, modulado por calidad de sesión). */
   whatsapp(): void {
     this.clicks.record('WhatsApp');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp));
   }
 
-  /** Copiar el correo (value base 25, modulado por calidad de sesión). */
+  /** Copiar el correo (value base 50, modulado por calidad de sesión). */
   emailCopy(): void {
     this.clicks.record('Copiar correo');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy));
   }
 
-  /** Click en "Agendar reunión" (value base 30, modulado por calidad de sesión). */
+  /** Click en "Agendar reunión" (value base 60, modulado por calidad de sesión). */
   scheduleMeeting(): void {
     this.clicks.record('Agendar reunión');
     this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting));

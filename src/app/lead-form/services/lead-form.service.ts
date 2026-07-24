@@ -439,7 +439,7 @@ export class LeadFormService {
    *   1. Cuente la conversión con value dinámico según qué tan caliente es el lead.
    *      El value se deriva de la categoría calculada con `computeLeadScore`
    *      (misma fórmula que el CRM aplica en server, ver utils/lead-score.ts):
-   *        hot=30, warm=24, cold=18, nurture=15.
+   *        hot=60, warm=48, cold=36, nurture=30.
    *      Si la categoría es `suspicious` la conversión NO se dispara (defensa
    *      contra leads de bajísima calidad que pasaron el anti-spam local pero
    *      tienen señales muy negativas; Smart Bidding no debe optimizar por ellos).
