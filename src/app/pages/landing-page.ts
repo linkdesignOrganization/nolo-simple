@@ -1,11 +1,14 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { ContactFooterComponent, ContactInfo } from '../components/contact-footer.component';
 import { DevTypeBlock, DevTypesComponent } from '../components/dev-types.component';
 import { FaqAccordionComponent, FaqItem } from '../components/faq-accordion.component';
-import { FeatureShowcaseComponent, ShowcaseFeature } from '../components/feature-showcase.component';
+import {
+  FeatureShowcaseComponent,
+  ShowcaseFeature,
+} from '../components/feature-showcase.component';
 import { FeatureTab, FeatureTabsComponent } from '../components/feature-tabs.component';
 import { PortfolioRow, PortfolioTableComponent } from '../components/portfolio-table.component';
 import { ProjectStage, ProjectStagesComponent } from '../components/project-stages.component';
@@ -14,7 +17,12 @@ import { IndustriesSectionComponent } from '../components/industries-section.com
 import { TechnicalGridSurfaceComponent } from '../components/technical-grid-surface.component';
 import { Viewcase, ViewcasesComponent } from '../components/viewcases.component';
 import { CapabilityCard, WebCapabilitiesComponent } from '../components/web-capabilities.component';
-import { HeroAction, HeroMarquee, HeroSlide, WebHeroComponent } from '../components/web-hero.component';
+import {
+  HeroAction,
+  HeroMarquee,
+  HeroSlide,
+  WebHeroComponent,
+} from '../components/web-hero.component';
 import { Principle, WorkPrinciplesComponent } from '../components/work-principles.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
@@ -24,14 +32,7 @@ import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { IndustryCard } from './industries-content';
 
 export type LandingModuleFigure =
-  | 'arrows'
-  | 'bars'
-  | 'dots'
-  | 'editor'
-  | 'grid'
-  | 'rings'
-  | 'slash'
-  | 'type';
+  'arrows' | 'bars' | 'dots' | 'editor' | 'grid' | 'rings' | 'slash' | 'type';
 
 export type LandingModule = {
   title: string;
@@ -91,14 +92,20 @@ export type LandingData = {
   theme?: 'software' | 'website';
   title: string;
   viewcases?: { intro: string; items: Viewcase[]; title: string };
-  webHero?: { actions: HeroAction[]; lead: string; marquee?: HeroMarquee; slides: string[]; title: string };
+  webHero?: {
+    actions: HeroAction[];
+    lead: string;
+    marquee?: HeroMarquee;
+    slides: string[];
+    title: string;
+  };
   webProcess?: { intro: string; stages: ProjectStage[]; title: string };
 };
 
 @Component({
   selector: 'app-landing-page',
   host: {
-    '[class.landing-page-host--home]': 'page().isHome'
+    '[class.landing-page-host--home]': 'page().isHome',
   },
   imports: [
     RouterLink,
@@ -118,7 +125,7 @@ export type LandingData = {
     WebCapabilitiesComponent,
     WebHeroComponent,
     WorkPrinciplesComponent,
-    LocalizeUrlPipe
+    LocalizeUrlPipe,
   ],
   template: `
     <div
@@ -160,7 +167,9 @@ export type LandingData = {
                   <span>{{ arm.cta }}</span>
                   <span class="button-arrow" aria-hidden="true">→</span>
                 </a>
-                <span class="arm-mark" aria-hidden="true">{{ arm.type === 'software' ? '01' : '02' }}</span>
+                <span class="arm-mark" aria-hidden="true">{{
+                  arm.type === 'software' ? '01' : '02'
+                }}</span>
               </div>
             </article>
           }
@@ -178,74 +187,95 @@ export type LandingData = {
         }
 
         @if (!page().webHero) {
-        <section class="hero" appTrackSection="hero" [class.hero--software]="page().theme === 'software'">
-          <div class="hero-title">
-            @if (page().eyebrow) {
-              <span class="eyebrow">{{ page().eyebrow }}</span>
-            }
-            <h1>{{ page().title }}<img class="hero-flag" src="/flag.svg" alt="Argentina" /></h1>
-          </div>
-
-          @if (page().description || page().ctaPrimary || page().ctaSecondary) {
-            <div class="hero-copy">
-              @if (page().description) {
-                <p>{{ page().description }}</p>
+          <section
+            class="hero"
+            appTrackSection="hero"
+            [class.hero--software]="page().theme === 'software'"
+          >
+            <div class="hero-title">
+              @if (page().eyebrow) {
+                <span class="eyebrow">{{ page().eyebrow }}</span>
               }
-
-              @if (page().ctaPrimary || page().ctaSecondary) {
-                <div class="actions">
-                  @if (page().ctaPrimary) {
-                    @if (isHrefLink(page().ctaPrimaryLink)) {
-                      <a
-                        class="button"
-                        [attr.href]="page().ctaPrimaryLink"
-                        (click)="onCtaClick(page().ctaPrimaryLink)"
-                        [attr.target]="isExternalLink(page().ctaPrimaryLink) ? '_blank' : null"
-                        [attr.rel]="isExternalLink(page().ctaPrimaryLink) ? 'noopener noreferrer' : null"
-                      >
-                        <span>{{ page().ctaPrimary }}</span>
-                        <span class="button-arrow" aria-hidden="true">→</span>
-                      </a>
-                    } @else {
-                      <a class="button" [routerLink]="(page().ctaPrimaryLink ?? '/') | localizeUrl">
-                        <span>{{ page().ctaPrimary }}</span>
-                        <span class="button-arrow" aria-hidden="true">→</span>
-                      </a>
-                    }
-                  }
-
-                  @if (page().ctaSecondary) {
-                    @if (isHrefLink(page().ctaSecondaryLink)) {
-                      <a
-                        class="button"
-                        [attr.href]="page().ctaSecondaryLink"
-                        (click)="onCtaClick(page().ctaSecondaryLink)"
-                        [attr.target]="isExternalLink(page().ctaSecondaryLink) ? '_blank' : null"
-                        [attr.rel]="isExternalLink(page().ctaSecondaryLink) ? 'noopener noreferrer' : null"
-                      >
-                        <span>{{ page().ctaSecondary }}</span>
-                        <span class="button-arrow" aria-hidden="true">→</span>
-                      </a>
-                    } @else {
-                      <a class="button" [routerLink]="(page().ctaSecondaryLink ?? '/') | localizeUrl">
-                        <span>{{ page().ctaSecondary }}</span>
-                        <span class="button-arrow" aria-hidden="true">→</span>
-                      </a>
-                    }
-                  }
-                </div>
-              }
+              <h1>{{ page().title }}<img class="hero-flag" src="/flag.svg" alt="Argentina" /></h1>
             </div>
-          }
-        </section>
+
+            @if (page().description || page().ctaPrimary || page().ctaSecondary) {
+              <div class="hero-copy">
+                @if (page().description) {
+                  <p>{{ page().description }}</p>
+                }
+
+                @if (page().ctaPrimary || page().ctaSecondary) {
+                  <div class="actions">
+                    @if (page().ctaPrimary) {
+                      @if (isHrefLink(page().ctaPrimaryLink)) {
+                        <a
+                          class="button"
+                          [attr.href]="page().ctaPrimaryLink"
+                          (click)="onCtaClick(page().ctaPrimaryLink)"
+                          [attr.target]="isExternalLink(page().ctaPrimaryLink) ? '_blank' : null"
+                          [attr.rel]="
+                            isExternalLink(page().ctaPrimaryLink) ? 'noopener noreferrer' : null
+                          "
+                        >
+                          <span>{{ page().ctaPrimary }}</span>
+                          <span class="button-arrow" aria-hidden="true">→</span>
+                        </a>
+                      } @else {
+                        <a class="button" [routerLink]="page().ctaPrimaryLink ?? '/' | localizeUrl">
+                          <span>{{ page().ctaPrimary }}</span>
+                          <span class="button-arrow" aria-hidden="true">→</span>
+                        </a>
+                      }
+                    }
+
+                    @if (page().ctaSecondary) {
+                      @if (isHrefLink(page().ctaSecondaryLink)) {
+                        <a
+                          class="button"
+                          [attr.href]="page().ctaSecondaryLink"
+                          (click)="onCtaClick(page().ctaSecondaryLink)"
+                          [attr.target]="isExternalLink(page().ctaSecondaryLink) ? '_blank' : null"
+                          [attr.rel]="
+                            isExternalLink(page().ctaSecondaryLink) ? 'noopener noreferrer' : null
+                          "
+                        >
+                          <span>{{ page().ctaSecondary }}</span>
+                          <span class="button-arrow" aria-hidden="true">→</span>
+                        </a>
+                      } @else {
+                        <a
+                          class="button"
+                          [routerLink]="page().ctaSecondaryLink ?? '/' | localizeUrl"
+                        >
+                          <span>{{ page().ctaSecondary }}</span>
+                          <span class="button-arrow" aria-hidden="true">→</span>
+                        </a>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </section>
         }
 
         @if (page().capabilities; as cap) {
-          <app-web-capabilities id="capacidades" appTrackSection="capacidades" [heading]="cap.heading" [cards]="cap.cards" />
+          <app-web-capabilities
+            id="capacidades"
+            appTrackSection="capacidades"
+            [heading]="cap.heading"
+            [cards]="cap.cards"
+          />
         }
 
         @if (page().devTypes; as dt) {
-          <app-dev-types id="servicios" appTrackSection="servicios" appDarkZone [blocks]="dt.blocks" />
+          <app-dev-types
+            id="servicios"
+            appTrackSection="servicios"
+            appDarkZone
+            [blocks]="dt.blocks"
+          />
         }
 
         @if (page().portfolio; as pf) {
@@ -253,7 +283,13 @@ export type LandingData = {
         }
 
         @if (page().webProcess; as wp) {
-          <app-project-stages [light]="true" appTrackSection="proceso" [title]="wp.title" [intro]="wp.intro" [stages]="wp.stages" />
+          <app-project-stages
+            [light]="true"
+            appTrackSection="proceso"
+            [title]="wp.title"
+            [intro]="wp.intro"
+            [stages]="wp.stages"
+          />
         }
 
         @if ((page().featureTabs ?? []).length) {
@@ -277,21 +313,44 @@ export type LandingData = {
         @if (page().showcase || page().process) {
           <div appDarkZone>
             @if (page().showcase; as showcase) {
-              <app-feature-showcase id="showcases" appTrackSection="showcases" [title]="showcase.title" [features]="showcase.features" />
+              <app-feature-showcase
+                id="showcases"
+                appTrackSection="showcases"
+                [title]="showcase.title"
+                [features]="showcase.features"
+              />
             }
 
             @if (page().process; as process) {
-              <app-project-stages id="proceso" appTrackSection="proceso" [title]="process.title" [intro]="process.intro" [stages]="process.stages" />
+              <app-project-stages
+                id="proceso"
+                appTrackSection="proceso"
+                [title]="process.title"
+                [intro]="process.intro"
+                [stages]="process.stages"
+              />
             }
           </div>
         }
 
         @if (page().viewcases; as v) {
-          <app-viewcases id="casos" appTrackSection="casos" [title]="v.title" [intro]="v.intro" [items]="v.items" />
+          <app-viewcases
+            id="casos"
+            appTrackSection="casos"
+            [title]="v.title"
+            [intro]="v.intro"
+            [items]="v.items"
+          />
         }
 
         @if (page().industries; as ind) {
-          <app-industries id="industrias" appTrackSection="industrias" [heading]="ind.heading" [intro]="ind.intro" [items]="ind.items" />
+          <app-industries
+            id="industrias"
+            appTrackSection="industrias"
+            [heading]="ind.heading"
+            [intro]="ind.intro"
+            [items]="ind.items"
+          />
         }
 
         @if (page().faq; as faq) {
@@ -404,7 +463,9 @@ export type LandingData = {
                   <p>{{ module.body }}</p>
 
                   @if (module.link && module.linkLabel) {
-                    <a class="inline-link" [routerLink]="module.link | localizeUrl">{{ module.linkLabel }}</a>
+                    <a class="inline-link" [routerLink]="module.link | localizeUrl">{{
+                      module.linkLabel
+                    }}</a>
                   }
                 </div>
               </article>
@@ -438,7 +499,7 @@ export type LandingData = {
               <h2>{{ page().closingTitle }}</h2>
               <p>{{ page().closingText }}</p>
             </div>
-            <a class="button" [routerLink]="(page().closingLink ?? '/') | localizeUrl">
+            <a class="button" [routerLink]="page().closingLink ?? '/' | localizeUrl">
               <span>{{ page().closingLinkLabel }}</span>
               <span class="button-arrow" aria-hidden="true">→</span>
             </a>
@@ -446,11 +507,17 @@ export type LandingData = {
         }
 
         @if (page().contact; as contact) {
-          <app-contact-footer appDarkZone id="hablemos" appTrackSection="hablemos" [info]="contact" />
+          <app-contact-footer
+            appDarkZone
+            id="hablemos"
+            appTrackSection="hablemos"
+            [info]="contact"
+          />
         }
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: `
     :host {
       display: block;
@@ -595,7 +662,8 @@ export type LandingData = {
       grid-template-rows: auto 1fr auto;
       gap: 1.5rem;
       min-height: 34rem;
-      padding: clamp(1.8rem, 2.4vw, 2.4rem) clamp(1.8rem, 2.4vw, 2.4rem) clamp(2.1rem, 2.8vw, 2.8rem);
+      padding: clamp(1.8rem, 2.4vw, 2.4rem) clamp(1.8rem, 2.4vw, 2.4rem)
+        clamp(2.1rem, 2.8vw, 2.8rem);
       border: 1px solid var(--line-strong);
       border-radius: 1.5rem;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.3));
@@ -1007,8 +1075,18 @@ export type LandingData = {
       border-radius: 0.35rem;
       background:
         linear-gradient(90deg, rgba(17, 17, 19, 0.24) 0 1rem, transparent 1rem 100%),
-        linear-gradient(90deg, transparent 0 1.55rem, rgba(17, 17, 19, 0.24) 1.55rem 2.05rem, transparent 2.05rem 100%),
-        linear-gradient(90deg, transparent 0 2.55rem, rgba(17, 17, 19, 0.24) 2.55rem 3.05rem, transparent 3.05rem 100%);
+        linear-gradient(
+          90deg,
+          transparent 0 1.55rem,
+          rgba(17, 17, 19, 0.24) 1.55rem 2.05rem,
+          transparent 2.05rem 100%
+        ),
+        linear-gradient(
+          90deg,
+          transparent 0 2.55rem,
+          rgba(17, 17, 19, 0.24) 2.55rem 3.05rem,
+          transparent 3.05rem 100%
+        );
     }
 
     .editor-word {
@@ -1435,21 +1513,21 @@ export type LandingData = {
         min-width: 0;
       }
     }
-  `
+  `,
 })
 export class LandingPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly i18n = inject(LanguageService);
   private readonly ads = inject(AdsService);
   private readonly routeData = toSignal(this.route.data, {
-    initialValue: this.route.snapshot.data
+    initialValue: this.route.snapshot.data,
   });
 
   protected readonly activeArm = signal<'software' | 'web' | null>(null);
   // La data de la ruta es bilingüe ({ es, en }); resolvemos según el idioma activo, así el
   // contenido cambia sin recargar al alternar el toggle.
   protected readonly page = computed(
-    () => (this.routeData() as { es: LandingData; en: LandingData })[this.i18n.lang()]
+    () => (this.routeData() as { es: LandingData; en: LandingData })[this.i18n.lang()],
   );
 
   // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente, según el

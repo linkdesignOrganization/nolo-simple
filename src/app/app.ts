@@ -1,5 +1,12 @@
 import { DOCUMENT, Location } from '@angular/common';
-import { Component, HostListener, computed, effect, inject } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  computed,
+  effect,
+  inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LucideArrowLeft, LucideHeadset } from '@lucide/angular';
@@ -14,9 +21,16 @@ import { SessionLanguageService } from './services/session-language.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, TechnicalGridSurfaceComponent, LucideHeadset, LucideArrowLeft],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    TechnicalGridSurfaceComponent,
+    LucideHeadset,
+    LucideArrowLeft,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './app.scss',
 })
 export class App {
   private readonly router = inject(Router);
@@ -32,9 +46,9 @@ export class App {
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       startWith(null),
-      map(() => this.router.url)
+      map(() => this.router.url),
     ),
-    { initialValue: this.router.url }
+    { initialValue: this.router.url },
   );
 
   // Idioma global (ES/EN). El toggle del nav lo alterna; todo el sitio reacciona sin recargar.
@@ -55,17 +69,21 @@ export class App {
   protected readonly isSoftware = computed(() => this.pathNoLang() === '/software');
   protected readonly isSystemDetail = computed(() => /^\/software\/[^/]+$/.test(this.pathNoLang()));
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
-  protected readonly isPrivacy = computed(() => this.pathNoLang().startsWith('/politicas-de-privacidad'));
+  protected readonly isPrivacy = computed(() =>
+    this.pathNoLang().startsWith('/politicas-de-privacidad'),
+  );
   protected readonly isNotFound = computed(() => this.pathNoLang().startsWith('/404'));
   // /industrias es el índice (header normal, sin links de nav); /industrias/<slug> es el detalle
   // (terminal, back-only). Ambos muestran la grilla del shell en su hero.
   protected readonly isIndustries = computed(() => this.pathNoLang() === '/industrias');
-  protected readonly isIndustryDetail = computed(() => /^\/industrias\/[^/]+$/.test(this.pathNoLang()));
+  protected readonly isIndustryDetail = computed(() =>
+    /^\/industrias\/[^/]+$/.test(this.pathNoLang()),
+  );
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
   // (contacto, privacidad y el detalle de un sistema).
   protected readonly backOnly = computed(
-    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail()
+    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail(),
   );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
@@ -74,7 +92,7 @@ export class App {
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV
+    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV,
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
@@ -164,20 +182,20 @@ type NavLink = { label: NavLabel; href: string };
 const SOFTWARE_NAV: NavLink[] = [
   { label: { es: 'Sistemas', en: 'Systems' }, href: '/software#sistemas' },
   { label: { es: 'Proceso', en: 'Process' }, href: '/software#proceso' },
-  { label: { es: 'Casos', en: 'Work' }, href: '/software#casos' }
+  { label: { es: 'Casos', en: 'Work' }, href: '/software#casos' },
 ];
 
 const WEB_NAV: NavLink[] = [
   { label: { es: 'Capacidades', en: 'Capabilities' }, href: '/web#capacidades' },
   { label: { es: 'Servicios', en: 'Services' }, href: '/web#servicios' },
-  { label: { es: 'Portafolio', en: 'Portfolio' }, href: '/web#portfolio' }
+  { label: { es: 'Portafolio', en: 'Portfolio' }, href: '/web#portfolio' },
 ];
 
 // El índice /industrias es un hub (no una landing larga con secciones): su nav apunta a los dos
 // brazos del sitio para que se sienta integrado. (En el detalle /industrias/:slug el header es back-only.)
 const INDUSTRIES_NAV: NavLink[] = [
   { label: { es: 'Software', en: 'Software' }, href: '/software' },
-  { label: { es: 'Web', en: 'Web' }, href: '/web' }
+  { label: { es: 'Web', en: 'Web' }, href: '/web' },
 ];
 
 const TOPBAR_TEXT = {
@@ -185,12 +203,12 @@ const TOPBAR_TEXT = {
     talk: 'Hablemos',
     back: 'Volver',
     switchLang: 'Cambiar idioma',
-    whatsapp: 'Escribinos por WhatsApp'
+    whatsapp: 'Escribinos por WhatsApp',
   },
   en: {
     talk: "Let's talk",
     back: 'Back',
     switchLang: 'Switch language',
-    whatsapp: 'Message us on WhatsApp'
-  }
+    whatsapp: 'Message us on WhatsApp',
+  },
 } as const;
