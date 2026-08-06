@@ -123,12 +123,16 @@ export const STORAGE_KEYS = {
   SUBMIT_HISTORY: 'ld_submit_history',
   LAST_SUBMIT: 'ld_last_submit',
   FIRST_LOAD: 'ld_first_load_at',
+  // Referrer first-touch (v1.5.0): document.referrer se pierde con un F5 —
+  // este se captura en el primer load externo y persiste como el first-touch UTM.
+  ENTRY_REFERRER: 'ld_entry_referrer',
 };
 
 /**
  * Schema version del payload — bumpear cuando haya breaking changes.
+ * 1.5.0: + source.entry_referrer (referrer first-touch persistido).
  */
-export const PAYLOAD_SCHEMA_VERSION = '1.4.0' as const;
+export const PAYLOAD_SCHEMA_VERSION = '1.5.0' as const;
 
 /**
  * Configuración del evento de conversión de Google Ads que se dispara

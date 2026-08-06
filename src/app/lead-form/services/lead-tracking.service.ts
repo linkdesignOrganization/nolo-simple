@@ -90,6 +90,9 @@ export class LeadTrackingService {
 
       // Capturar UTM al cargar (incluye la primera visita)
       this.persistUtmParams();
+      // Capturar el referrer first-touch (v1.5.0): document.referrer solo es confiable
+      // en el primer load — persistirlo antes de que un F5 lo borre.
+      this.persistEntryReferrer();
 
       // Contar páginas visitadas + acumular recorrido
       this.router.events.subscribe((event) => {
@@ -170,6 +173,7 @@ export class LeadTrackingService {
       form_location: formLocation,
       page_url: this.isBrowser ? this.document.location.href : '',
       referrer: this.isBrowser ? (this.document.referrer || null) : null,
+      entry_referrer: this.getEntryReferrer(),
       language: this.getLanguage()
     };
   }
@@ -238,6 +242,37 @@ export class LeadTrackingService {
     if (!existingFirst) {
       lsSetJsonWithTtl(STORAGE_KEYS.FIRST_TOUCH_UTM, utm, UTM_TTL_MS);
     }
+  }
+
+  /**
+   * Persiste el referrer EXTERNO del primer load (first-touch, mismo criterio que
+   * FIRST_TOUCH_UTM: solo si no existe ya uno vigente). Los referrers del propio
+   * sitio (navegación interna / recarga) no cuentan.
+   */
+  private persistEntryReferrer(): void {
+    if (!this.isBrowser) return;
+
+    const raw = (this.document.referrer || '').trim();
+    if (!raw) return;
+    try {
+      const host = new URL(raw).hostname.toLowerCase();
+      if (host === this.document.location.hostname.toLowerCase()) return;
+    } catch {
+      // referrer no parseable como URL: raro, pero es señal externa — se guarda igual
+    }
+
+    const existing = lsGetJsonWithTtl<string>(STORAGE_KEYS.ENTRY_REFERRER);
+    if (!existing) {
+      lsSetJsonWithTtl(STORAGE_KEYS.ENTRY_REFERRER, raw.slice(0, 2048), UTM_TTL_MS);
+    }
+  }
+
+  /** Referrer first-touch persistido; fallback al document.referrer vivo si no hay. */
+  private getEntryReferrer(): string | null {
+    if (!this.isBrowser) return null;
+    const stored = lsGetJsonWithTtl<string>(STORAGE_KEYS.ENTRY_REFERRER);
+    if (stored) return stored;
+    return this.document.referrer || null;
   }
 
   private getStoredUtm(): StoredUtm | null {
