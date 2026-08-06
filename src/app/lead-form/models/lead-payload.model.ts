@@ -92,6 +92,13 @@ export interface LeadSource {
   page_url: string;
   /** Referrer (de dónde llegó al sitio). Null si es directo. */
   referrer: string | null;
+  /**
+   * v1.5.0 — Referrer first-touch: el `referrer` de arriba se lee al momento del
+   * submit y una recarga lo borra; este se captura en el PRIMER load con referrer
+   * externo y persiste 30 días (localStorage). Es la señal estable para clasificar
+   * el canal (IA / orgánico / redes) en el CRM. Null si nunca hubo referrer externo.
+   */
+  entry_referrer: string | null;
   /** Idioma activo al momento del submit. */
   language: Language;
 }

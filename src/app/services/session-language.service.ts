@@ -50,6 +50,44 @@ interface StoredSessionState {
   pagesEn: number;
   usedToggle: boolean;
   hadInteraction: boolean;
+  // — Atribución de entrada (beacon v2; fijada SOLO en el primer load, como entryLang) —
+  // El CRM clasifica el canal (IA/pago/orgánico/…) al leer — acá va todo CRUDO.
+  entryReferrer: string | null;
+  entryPath: string;
+  entryUtmSource: string | null;
+  entryUtmMedium: string | null;
+  entryUtmCampaign: string | null;
+  entryGclid: string | null;
+}
+
+// Topes espejo del zod del CRM (payload fuera de rango → 400; mejor recortar acá).
+const MAX_REFERRER_LEN = 2048;
+const MAX_PATH_LEN = 512;
+const MAX_UTM_LEN = 200;
+const MAX_GCLID_LEN = 500;
+
+/**
+ * Referrer EXTERNO del primer load: null si viene vacío o del propio sitio
+ * (navegación interna / recarga). El referrer de un clic desde ChatGPT/Claude/
+ * Perplexity llega acá — es la señal principal de «vino de una IA».
+ */
+function externalReferrer(): string | null {
+  const raw = (document.referrer || '').trim();
+  if (!raw) return null;
+  try {
+    if (new URL(raw).hostname.toLowerCase() === location.hostname.toLowerCase()) {
+      return null;
+    }
+  } catch {
+    // raro pero posible (referrer no-URL): se manda igual, el CRM lo tolera
+  }
+  return raw.slice(0, MAX_REFERRER_LEN);
+}
+
+/** Parámetro de la URL de entrada, recortado; null si no viene. */
+function entryParam(params: URLSearchParams, key: string, maxLen: number): string | null {
+  const value = (params.get(key) || '').trim();
+  return value ? value.slice(0, maxLen) : null;
 }
 
 function createSessionId(): string {
@@ -107,6 +145,13 @@ export class SessionLanguageService {
   private sessionId = '';
   private entryLang: Lang = 'es';
   private enteredViaEnUrl = false;
+  // — Atribución de entrada (beacon v2; crudos, fijados SOLO en el primer load) —
+  private entryReferrer: string | null = null;
+  private entryPath = '/';
+  private entryUtmSource: string | null = null;
+  private entryUtmMedium: string | null = null;
+  private entryUtmCampaign: string | null = null;
+  private entryGclid: string | null = null;
 
   // — Acumuladores crudos (los «bolsillos» por idioma) —
   private activeMsEs = 0;
@@ -240,12 +285,33 @@ export class SessionLanguageService {
       this.pagesEn = sanitizeCount(stored.pagesEn);
       this.usedToggle = stored.usedToggle === true;
       this.hadInteraction = stored.hadInteraction === true;
+      // Retrocompat: blobs de sesiones que arrancaron antes de este deploy no traen los
+      // campos de atribución — quedan en sus defaults (entryPath '/' los marca v2 igual:
+      // la sesión ES de la era medida, solo que su primer load fue pre-deploy).
+      this.entryReferrer = typeof stored.entryReferrer === 'string' ? stored.entryReferrer : null;
+      this.entryPath = typeof stored.entryPath === 'string' && stored.entryPath.startsWith('/')
+        ? stored.entryPath
+        : '/';
+      this.entryUtmSource = typeof stored.entryUtmSource === 'string' ? stored.entryUtmSource : null;
+      this.entryUtmMedium = typeof stored.entryUtmMedium === 'string' ? stored.entryUtmMedium : null;
+      this.entryUtmCampaign =
+        typeof stored.entryUtmCampaign === 'string' ? stored.entryUtmCampaign : null;
+      this.entryGclid = typeof stored.entryGclid === 'string' ? stored.entryGclid : null;
       return;
     }
 
     this.sessionId = createSessionId();
     this.entryLang = /^\/en(?=\/|$)/.test(location.pathname) ? 'en' : 'es';
     this.enteredViaEnUrl = this.entryLang === 'en';
+    // Atribución de entrada: SOLO acá (primer load de la sesión) — un clic desde una IA,
+    // un buscador o un anuncio trae acá su referrer/UTM; las navegaciones internas no pisan.
+    this.entryReferrer = externalReferrer();
+    this.entryPath = (location.pathname || '/').slice(0, MAX_PATH_LEN);
+    const params = new URLSearchParams(location.search);
+    this.entryUtmSource = entryParam(params, 'utm_source', MAX_UTM_LEN);
+    this.entryUtmMedium = entryParam(params, 'utm_medium', MAX_UTM_LEN);
+    this.entryUtmCampaign = entryParam(params, 'utm_campaign', MAX_UTM_LEN);
+    this.entryGclid = entryParam(params, 'gclid', MAX_GCLID_LEN);
     this.persistState();
   }
 
@@ -261,7 +327,13 @@ export class SessionLanguageService {
         pagesEs: this.pagesEs,
         pagesEn: this.pagesEn,
         usedToggle: this.usedToggle,
-        hadInteraction: this.hadInteraction
+        hadInteraction: this.hadInteraction,
+        entryReferrer: this.entryReferrer,
+        entryPath: this.entryPath,
+        entryUtmSource: this.entryUtmSource,
+        entryUtmMedium: this.entryUtmMedium,
+        entryUtmCampaign: this.entryUtmCampaign,
+        entryGclid: this.entryGclid
       };
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
@@ -354,7 +426,16 @@ export class SessionLanguageService {
       pagesEn: Math.min(this.pagesEn, MAX_PAGES),
       enteredViaEnUrl: this.enteredViaEnUrl,
       usedToggle: this.usedToggle,
-      browserLang: (navigator.language || '').slice(0, 16)
+      browserLang: (navigator.language || '').slice(0, 16),
+      // Atribución de entrada (crudos; el CRM clasifica el canal al leer).
+      // `entryPath` va SIEMPRE (mínimo '/'): es el marcador de beacon v2 — sin él, el CRM
+      // trata el doc como anterior a la medición («untracked») y no como tráfico directo.
+      entryReferrer: this.entryReferrer,
+      entryPath: this.entryPath,
+      entryUtmSource: this.entryUtmSource,
+      entryUtmMedium: this.entryUtmMedium,
+      entryUtmCampaign: this.entryUtmCampaign,
+      entryGclid: this.entryGclid
     };
 
     if (!environment.crmEndpoint) {
