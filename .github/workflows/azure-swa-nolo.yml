@@ -13,6 +13,10 @@ on:
   # el sitio con el portafolio actual del CRM (vía el prebuild).
   repository_dispatch:
     types: [portfolio-updated]
+  # Disparo manual: permite redesplegar sin tener que hacer un commit
+  # (p. ej. si un push no llegó a disparar el workflow, o para reintentar un
+  # deploy fallido). El CRM ya lo tenía; los sitios no.
+  workflow_dispatch:
 
 jobs:
   build_and_deploy_job:
