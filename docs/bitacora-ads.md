@@ -81,8 +81,62 @@ de Costa Rica, cualquier medición de desenlace en Argentina va a tardar bastant
 Si se prueba la subida por identificadores, conviene empezar por Costa Rica y traerlo a Nolõ recién
 cuando haya dado resultado.
 
+## Search Console (7 ago 2026): montado, pero el contador arranca hoy
+
+LinkDesign lee su Search Console por API desde el 7 ago 2026 (montaje completo en
+`docs/bitacora-google-ads-api-basic.md` del repo `LinkDesign-simple`). Se replicó acá el mismo día.
+**Nolõ no tenía propiedad en Search Console**: se creó tipo **Dominio**, se verificó por DNS y la
+service account quedó con permiso **Completo**. `gsc.NOLO` ya funciona.
+
+**El dominio es `nolo.ar`.** No existe `nolo.cr` — conviene dejarlo escrito porque la confusión con
+el `.cr` de LinkDesign es fácil y verificar el dominio equivocado no da ningún error útil.
+
+### Cómo se verificó
+
+DNS en **DNSimple** (cuenta `147334`), donde viven ambos dominios. Se **agregó** un TXT en la raíz:
+
+```
+"google-site-verification=H6k8J_ZgfIwYLlPrAoIjT-BdreKTYMY8UfQF3roQ0LQ"
+```
+
+> **Se agregó, no se reemplazó**, y esto importa para el futuro: `nolo.ar` ya tenía otro
+> `google-site-verification=z011Cqngh…`, y como el dominio lleva el correo en **Google Workspace**
+> (MX → `SMTP.GOOGLE.COM`, SPF, DKIM en `google._domainkey`, DMARC), ese registro viejo es su
+> verificación. **Pisarlo habría podido romper el correo.** Un dominio admite varios TXT
+> `google-site-verification` conviviendo. Control post-cambio: 15 → 16 registros, ninguno eliminado y
+> ninguno modificado salvo el serial del SOA, que se incrementa solo.
+
+Detalle operativo: los TXT de esta zona están almacenados **con comillas literales** en el valor, así
+que el registro nuevo se creó igual para no quedar disparejo con los que ya funcionaban.
+
+### El dato que condiciona el 13 ago: no hay histórico
+
+Verificado el mismo día, y conviene no olvidarlo: **Search Console no rellena hacia atrás**. Empieza
+a acumular datos desde que se crea la propiedad, así que las consultas contra `nolo.ar` devuelven
+**cero en cualquier ventana** — 16 meses, 30 días o 7 días, incluso con `dataState='all'`.
+
+No es un problema del sitio ni del montaje:
+
+- La URL Inspection API sobre `https://nolo.ar/` da **PASS · "Enviada e indexada"**, último rastreo
+  el 4 ago 2026 y canónica correcta. Google conoce y rastrea el sitio.
+- El mismo método contra `linkdesign.cr` devuelve 31 días con datos. La vía funciona.
+
+Simplemente **la serie de Nolõ arranca el 7 ago 2026**. Es el mismo patrón que
+`paid_organic_search_term_view` tras vincular Search Console con Ads: sin backfill.
+
+**Para el 13 ago habrá ~6 días de datos.** No bloquea la revisión —el criterio del plan de tROAS se
+calcula solo con datos de Ads— pero conviene no esperar de acá un panorama de demanda argentina
+todavía. Eso llega hacia septiembre, con algunas semanas acumuladas.
+
+Contexto de por qué vale la pena igual: en LinkDesign el hallazgo fue que **no hay canibalización
+pago/orgánico**. La contraparte argentina era un punto ciego real, porque el orgánico que se estaba
+midiendo es el de `linkdesign.cr`, que en Argentina casi no existe (12 consultas y 46 impresiones en
+16 meses) — el dominio equivocado para esa pregunta.
+
 ## Pendientes
 
+- [ ] **~Sept 2026** — Primera lectura con sentido de Search Console de Nolõ, cuando haya varias
+      semanas acumuladas. Repetir el análisis de canibalización que se hizo para LinkDesign.
 - [ ] **13 ago 2026** — Revisión conjunta con LinkDesign (misma cita del plan de tROAS). Para Nolõ:
       primer análisis con datos comparables de "Búsqueda #2", que quedó pospuesto en julio por
       insuficiencia de datos (~4 días hábiles post-cambio). Ventana útil: desde el 19 jul.
