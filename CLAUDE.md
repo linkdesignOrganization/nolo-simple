@@ -50,3 +50,14 @@ sobraría.
 
 La zona horaria de la cuenta de Ads es **Costa Rica (UTC−6)** y Argentina va +3h: al cargar horarios
 de campaña hay que restar 3 horas.
+
+
+## Memoria del proyecto
+
+@.claude/memory/MEMORY.md
+
+Ese índice viaja con el repo: está en cualquier máquina donde lo clones, sin configurar nada. Los
+archivos que lista no se cargan solos — leerlos cuando el tema aparezca.
+
+Cuando aprendas algo duradero de este proyecto, escribilo ahí: un archivo por tema y una línea en
+`MEMORY.md`. El índice se carga entero en cada sesión, así que va corto.
