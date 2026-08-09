@@ -55,3 +55,6 @@ Thumbs.db
 # origen de cada asset descargado). El portfolio.data.json SÍ va commiteado —
 # es el fallback cuando el CRM no responde.
 /src/app/generated/portfolio.assets.json
+
+# Lo genera un hook con la ruta absoluta de esta maquina: no debe versionarse.
+.claude/settings.local.json
