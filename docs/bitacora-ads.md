@@ -873,6 +873,27 @@ en las ~12 que usan los rivales**, porque para la nota de Ads manda lo que se bu
 el vecino. Las dos son decisiones, no olvidos: si alguna vez se quiere ir a los números del mercado,
 está medido cuánto falta.
 
+## 14 ago 2026 (cierre) — Botones táctiles a 44 px, sin tocar el diseño
+
+Espejo del cambio del gemelo, mismos selectores: de los 27 elementos tocables por debajo de 44 px se
+corrigieron **sólo los ocho que no se ven crecer** —los que no tienen fondo ni borde propio y tienen
+hueco libre alrededor— con `padding` más `margin` negativo del mismo valor bajo
+`@media (pointer: coarse)`. El área táctil crece, el elemento ocupa el mismo lugar y no hay fondo que
+delate el padding.
+
+`.brand` · `.ind-card__title-link` ×5 · `.cf-copy` · `.cf-legal__link`. En producción los tocables
+chicos bajaron de 27 a **20**.
+
+Quedaron fuera los chips del formulario, el selector ES/EN, los campos, el botón de envío y las
+pestañas: todos tienen fondo y crecerían a la vista. Tampoco se tocó la separación entre chips,
+aunque bastaría con el `gap`.
+
+> **La regla:** no hay autorización para cambiar el aspecto visual. Un arreglo de accesibilidad o de
+> SEO que altere el diseño se propone y se espera; no se aplica.
+
+La verificación píxel a píxel y el análisis de los videos están en la entrada gemela de
+`docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`.
+
 ## Pendientes
 
 - [x] ~~**El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.~~
@@ -881,9 +902,18 @@ está medido cuánto falta.
 - [ ] **~4 sep 2026 — Leer la nota de página de destino**, que es lo único que ese cambio toca y por
       lo tanto se puede leer limpia. El efecto en *leads* no: ahí se superponen las conversiones
       separadas del 13 ago, las extensiones del 14 y el copy.
-- [ ] **Recodificar los clips del portafolio.** Hoy pesan entre 1 y 2,9 MB y en 3G no llegan a tiempo
-      ni con la precarga por proximidad (0 de 5 listos; el poster cubre). Con ~400 KB por clip
-      funcionaría también ahí. Es trabajo de medios, no de código.
+- [x] ~~**Recodificar los clips del portafolio.**~~ **Descartado el 14 ago con medición**: están a
+      309–362 kbps en 720×384 (700–960 KB), o sea al límite; bajar más se ve. El «1 a 2,9 MB» que yo
+      había anotado era de los clips del **encabezado**, no del portafolio. Detalle y correcciones en
+      la bitácora de `LinkDesign-simple`.
+- [ ] **Opcional, sin hacer: subir el `rootMargin` de la precarga de 1,5 a ~3,5 pantallas.** Con
+      clips de 700–960 KB son 3,5–4,8 s en 3G, así que alcanzaría para que lleguen a tiempo también
+      ahí. Es una línea. No afecta a quien no baja: el portafolio está a ocho pantallas del inicio.
+- [ ] **Decisión de Robert: variante móvil de los clips del encabezado.** Son los únicos que se bajan
+      siempre (6,4 MB) y no tienen versión chica; pasarían a ~2,3 MB. No están mal comprimidos —por
+      bits/píxel valen lo mismo que los del portafolio—, pesan porque tienen 2,8× más píxeles. En
+      móvil se pintan a 1068 px de ancho y el archivo trae 1280. Se propuso decidirlo mirando una
+      comparación lado a lado, no por cálculo.
 - [ ] **~3 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
       **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
