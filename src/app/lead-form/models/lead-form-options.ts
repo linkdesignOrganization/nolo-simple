@@ -164,18 +164,15 @@ export const PAYLOAD_SCHEMA_VERSION = '1.5.0' as const;
  *   - Click WhatsApp      → 5
  *   - Scroll 50%          → 1
  *
- * ── TODO PARA EL EQUIPO DE ADS ────────────────────────────────────────────
- * Recomendación: crear una conversion action DEDICADA en Google Ads para
- * "Form Submit" (categoría: "Submit lead form" o "Sign-up") y reemplazar
- * SEND_TO con el nuevo ID. Hoy reutilizamos el send_to de contacto (CONTACTO).
- *
- * Beneficios de una conversion action dedicada:
- *   1. Smart Bidding puede optimizar específicamente por form-submits.
- *   2. Reporting más limpio (no se diluye con clicks de bajo intent).
- *   3. Permite establecer la "primary conversion" del sitio en Ads.
+ * ── ACCIÓN DEDICADA (hecho el 13 ago 2026) ────────────────────────────────
+ * El envío del formulario tiene su propia conversion action en Ads
+ * ("Contacto Formulario Argentina"), separada de los clicks de WhatsApp, correo
+ * y agendar. Antes las cuatro compartían el send_to de "Contacto Argentina".
+ * Cambio espejo del sitio LinkDesign — ver docs/bitacora-ads.md.
  */
 export const GA_CONVERSION = {
-  SEND_TO: 'AW-16767245191/-7YECOqL7b8cEIe3n7s-',
+  /** "Contacto Formulario Argentina" — mismo label que ADS_CONVERSIONS.CONTACTO_FORMULARIO. */
+  SEND_TO: 'AW-16767245191/ZAj_CMqXquEcEIe3n7s-',
   CURRENCY: 'USD',
   EVENT_NAME: 'conversion' as const
 };

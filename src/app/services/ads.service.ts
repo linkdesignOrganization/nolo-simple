@@ -10,18 +10,32 @@ declare var gtag: Function;
  * Conversion actions de Google Ads de Nolo (cuenta AW-16767245191, compartida con LinkDesign;
  * la cuenta se creó históricamente bajo la marca anterior, Sowe).
  *
- * Acciones PROPIAS de Nolo ("Contacto Argentina" y "Scroll Argentina"), separadas de las de
- * LinkDesign para no mezclar las conversiones de Argentina con las de Costa Rica. El label (lo
- * que va después de la `/`) se copió del tag de cada conversion action en Google Ads.
- * El send_to de CONTACTO se usa también en lead-form/models/lead-form-options.ts (form submit).
+ * Acciones PROPIAS de Nolo, separadas de las de LinkDesign para no mezclar las conversiones de
+ * Argentina con las de Costa Rica. El label (lo que va después de la `/`) sale del tag de cada
+ * conversion action en Google Ads.
  *
- * Mismo modelo que LinkDesign: solo DOS acciones de conversión vienen del sitio:
- *   - CONTACTO: WhatsApp, copiar correo, agendar reunión y formulario (value variable).
- *   - SCROLL: scroll al 50% de la página (value 1).
+ * Un canal, una acción. Hasta el 13 ago 2026 los cuatro canales de contacto compartían una sola
+ * acción ("Contacto Argentina"), así que ningún informe podía decir si un contacto era un WhatsApp
+ * o un formulario — ni Smart Bidding distinguirlos al pujar. Cambio espejo del sitio LinkDesign,
+ * donde esa mezcla escondió que la campaña de Costa Rica había dejado de traer formularios.
+ * Ver docs/bitacora-ads.md acá y docs/bitacora-ads-values-troas.md en LinkDesign-simple.
+ *
+ * Las cuatro nuevas son DEFAULT/WEBSITE igual que la vieja: las campañas argentinas usan los
+ * objetivos de conversión de la cuenta, donde DEFAULT/WEBSITE sí puja. Cambiar la categoría las
+ * habría dejado fuera de la puja sin ningún aviso.
+ *
+ * "Contacto Argentina" queda ENABLED en la cuenta pero ya no se dispara desde acá: conserva su
+ * histórico en los informes y deja de acumular.
  */
 export const ADS_CONVERSIONS = {
-  /** "Contacto Argentina" en Ads: WhatsApp, copiar correo, agendar reunión y formulario. */
-  CONTACTO: 'AW-16767245191/-7YECOqL7b8cEIe3n7s-',
+  /** "Contacto WhatsApp Argentina": click en WhatsApp (value base 10, modulado). */
+  CONTACTO_WHATSAPP: 'AW-16767245191/zxm7CMGXquEcEIe3n7s-',
+  /** "Contacto Correo Argentina": click en copiar el correo (value base 50, modulado). */
+  CONTACTO_CORREO: 'AW-16767245191/tU5ZCMSXquEcEIe3n7s-',
+  /** "Contacto Reunión Argentina": click en agendar reunión (value base 60, modulado). */
+  CONTACTO_REUNION: 'AW-16767245191/GPuTCMeXquEcEIe3n7s-',
+  /** "Contacto Formulario Argentina": envío del formulario (lo dispara LeadFormService). */
+  CONTACTO_FORMULARIO: 'AW-16767245191/ZAj_CMqXquEcEIe3n7s-',
   /** "Scroll Argentina" en Ads: scroll al 50% de la página. */
   SCROLL: 'AW-16767245191/P_8YCIf4878cEIe3n7s-'
 } as const;
@@ -50,7 +64,7 @@ export const CONTACTO_BASE_VALUE = {
  * sesión que usa el lead scoring, normalizada a un factor 0.7–1.0. Así Smart
  * Bidding distingue un click de una sesión profunda de uno de un rebote.
  * (La conversión del envío del formulario se dispara desde LeadFormService, con
- *  value por scoring completo, también a CONTACTO.)
+ *  value por scoring completo, a CONTACTO_FORMULARIO.)
  * No-op seguro si gtag no está disponible (SSR, dev sin script, ad-blocker).
  */
 @Injectable({ providedIn: 'root' })
@@ -84,19 +98,28 @@ export class AdsService {
   /** Click en WhatsApp (value base 10, modulado por calidad de sesión). */
   whatsapp(): void {
     this.clicks.record('WhatsApp');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_WHATSAPP,
+      this.modulatedValue(CONTACTO_BASE_VALUE.whatsapp)
+    );
   }
 
   /** Copiar el correo (value base 50, modulado por calidad de sesión). */
   emailCopy(): void {
     this.clicks.record('Copiar correo');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_CORREO,
+      this.modulatedValue(CONTACTO_BASE_VALUE.emailCopy)
+    );
   }
 
   /** Click en "Agendar reunión" (value base 60, modulado por calidad de sesión). */
   scheduleMeeting(): void {
     this.clicks.record('Agendar reunión');
-    this.fireConversion(ADS_CONVERSIONS.CONTACTO, this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting));
+    this.fireConversion(
+      ADS_CONVERSIONS.CONTACTO_REUNION,
+      this.modulatedValue(CONTACTO_BASE_VALUE.scheduleMeeting)
+    );
   }
 
   /**

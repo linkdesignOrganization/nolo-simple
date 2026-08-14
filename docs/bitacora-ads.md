@@ -133,20 +133,92 @@ pago/orgánico**. La contraparte argentina era un punto ciego real, porque el or
 midiendo es el de `linkdesign.cr`, que en Argentina casi no existe (12 consultas y 46 impresiones en
 16 meses) — el dominio equivocado para esa pregunta.
 
+## 13 ago 2026 — Revisión conjunta: Argentina es el mercado que funciona
+
+Primer análisis de "Búsqueda #2" con datos comparables (desde el 19 jul, cuando cambió el régimen de
+puja). Rango: 24 jul – 12 ago, 20 días.
+
+### El número que importa
+
+Separando los contactos por canal —se infiere del value unitario: WhatsApp cae siempre en 7–10 y
+cualquier formulario arranca en 30— aparece el costo por **lead serio** (formulario, copiar correo o
+agendar; no WhatsApp):
+
+| | 1–22 jul | 24 jul – 12 ago |
+|---|---:|---:|
+| Búsqueda #2 | 91,09 USD | **24,85 USD** · 11 serios de 16 contactos (68,8 %) |
+| Software #2 | 68,31 USD | **57,34 USD** · 4,97 de 8,97 (55,4 %) |
+
+AR consolidado: **34,98 USD por lead serio y ~24 al mes**. Costa Rica, gastando casi lo mismo
+(559 contra 510 USD): **254,97 USD y 3,0 al mes**. Siete veces más barato y ocho veces más volumen.
+"Búsqueda #2" es además la **única campaña de la cuenta con ratio > 1** (1,42).
+
+El mix de valor argentino (81,2 %) cruza el umbral del 80 % que pedía el plan de tROAS, pero el
+contrafactual aritmético del ×2 da 80,3 %: ahí el umbral está midiendo sobre todo el cambio de
+escala, no comportamiento. **No se activó ningún tROAS** — en Argentina tampoco, y menos habiendo
+cambiado hoy las acciones de conversión.
+
+### Aplicado: un canal, una acción
+
+Se ejecutó la separación que este documento tenía agendada para hoy. Cuatro acciones nuevas propias
+de Nolõ, creadas por API:
+
+| Canal | Label |
+|---|---|
+| WhatsApp | `zxm7CMGXquEc…` |
+| Copiar correo | `tU5ZCMSXquEc…` |
+| Agendar reunión | `GPuTCMeXquEc…` |
+| Formulario | `ZAj_CMqXquEc…` |
+
+Todas `WEBPAGE`, `ONE_PER_CLICK`, primarias, lookback 30 días. **Categoría DEFAULT**, igual que
+"Contacto Argentina": las campañas argentinas usan los objetivos de conversión de la cuenta, donde
+`DEFAULT/WEBSITE` puja. Poner otra categoría las habría dejado fuera de la puja sin aviso. Los values
+no se tocaron. "Contacto Argentina" queda ENABLED pero ya no se dispara: conserva su histórico.
+
+En el código: `ADS_CONVERSIONS` pasa de dos entradas a cinco en `services/ads.service.ts`, más
+`GA_CONVERSION.SEND_TO` en `lead-form/models/lead-form-options.ts`. Cambio espejo de LinkDesign.
+46 tests pasan.
+
+**El motivo de urgencia vino de Costa Rica**, y conviene tenerlo presente acá: allá la acción
+agrupada escondió durante semanas que la campaña principal había dejado de traer formularios —
+seguía marcando "contactos" mientras el 100 % eran clics de WhatsApp. El CRM lo confirmó: el último
+formulario de CR es del 7 jul. Argentina no muestra ese patrón (68,8 % de leads serios y un
+formulario el 12 ago), pero hasta hoy tampoco había forma de verificarlo sin inferencias. Detalle
+completo en `docs/bitacora-ads-values-troas.md` de LinkDesign-simple.
+
+### El pendiente de aislamiento, verificado (y no estaba cumplido)
+
+Se comprobó por API lo que este documento pedía revisar:
+
+- **"Scroll Argentina (2)" NO es secundaria**: está `primary_for_goal = True` y cuenta en la columna
+  de conversiones, con categoría DEFAULT (no "Otras").
+- **Las campañas argentinas NO tienen objetivo propio a nivel campaña.** `campaign_conversion_goal`
+  existe sólo para "Búsqueda" y "Software" (CONTACT/WEBSITE, las de Costa Rica); "Búsqueda #2" y
+  "Software #2" usan los objetivos de la **cuenta**, que hacen pujar tanto DEFAULT/WEBSITE como
+  CONTACT/WEBSITE.
+
+O sea: son las campañas de **Costa Rica** las que están aisladas, no las argentinas. En la práctica
+el riesgo es acotado —una conversión se atribuye al clic que la originó, y nadie llega por un anuncio
+argentino para convertir en `linkdesign.cr`— pero la configuración no es la que este pendiente
+describía, y ahora hay ocho acciones más en juego. Queda abierto, con el estado real documentado.
+
 ## Pendientes
 
+- [ ] **~27 ago 2026** — Recalibrar los values con datos propios por canal, ya con dos semanas de las
+      acciones nuevas. Hoy la escala (WhatsApp 10 contra formulario 30–60) es un supuesto sin
+      evidencia; el CRM de LinkDesign sugiere que la brecha real es **mayor**.
+- [ ] **24–48 h** — Verificar que las cuatro acciones nuevas registran conversiones. Si una queda en
+      cero mientras las otras se mueven, el label quedó mal copiado: es el modo de fallo silencioso
+      de este cambio.
+- [ ] **No tocar pujas por al menos dos semanas.** Separar las acciones reinicia el aprendizaje de
+      Smart Bidding; encimar un tROAS haría imposible atribuir el efecto de nada.
 - [ ] **~Sept 2026** — Primera lectura con sentido de Search Console de Nolõ, cuando haya varias
       semanas acumuladas. Repetir el análisis de canibalización que se hizo para LinkDesign.
-- [ ] **13 ago 2026** — Revisión conjunta con LinkDesign (misma cita del plan de tROAS). Para Nolõ:
-      primer análisis con datos comparables de "Búsqueda #2", que quedó pospuesto en julio por
-      insuficiencia de datos (~4 días hábiles post-cambio). Ventana útil: desde el 19 jul.
-- [ ] **13 ago 2026** — Separar las acciones de conversión por canal (WhatsApp, copiar correo,
-      agendar, formulario), todas primarias con sus values. Es lo que destraba saber el mix por
-      keyword. Aplicar después del corte para no perturbar el aprendizaje en curso.
-- [ ] Verificar en Google Ads que "Scroll Argentina" quedó en categoría **Otras** y marcada
-      **secundaria**, y que el objetivo personalizado "Contacto Argentina" está asignado **a nivel de
-      campaña** (no como predeterminado de cuenta), para que los datos de Costa Rica no contaminen la
-      optimización argentina.
+- [ ] Aislamiento de la optimización argentina: ver arriba el estado real verificado el 13 ago.
+      Decidir si se le asigna a "Búsqueda #2" y "Software #2" un `campaign_conversion_goal` propio
+      con las acciones de Nolõ, y si "Scroll Argentina (2)" pasa a secundaria.
+- [x] ~~**13 ago 2026** — Revisión conjunta con LinkDesign; primer análisis de "Búsqueda #2".~~ Hecho.
+- [x] ~~**13 ago 2026** — Separar las acciones de conversión por canal.~~ Hecho, ver arriba.
 
 ## Nota operativa
 
