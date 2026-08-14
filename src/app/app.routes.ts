@@ -139,9 +139,9 @@ const softwarePageEs: LandingData = {
     }
   ],
   systems: {
-    heading: 'Sistemas que construimos a la medida',
+    heading: 'Software a medida: los sistemas que construimos',
     intro:
-      'Cada categoría representa una capacidad real, con sistemas en producción. No vendemos un producto empaquetado.',
+      'Cada categoría representa una capacidad real, con software a medida en producción en empresas de Argentina. No vendemos un producto empaquetado.',
     items: [
       {
         title: 'CRM a la medida',
@@ -204,7 +204,7 @@ const softwarePageEs: LandingData = {
         icon: 'circle-check',
         title: 'Lo que sí hacemos',
         body:
-          'Construimos software interno para recuperar control operativo. Aplicaciones a medida con datos centralizados, integraciones sin romper la operación existente y trazabilidad clara.'
+          'Hacemos desarrollo de software interno para empresas de Argentina que necesitan recuperar control operativo. Aplicaciones a medida con datos centralizados, integraciones sin romper la operación existente y trazabilidad clara.'
       },
       {
         icon: 'route',
@@ -242,7 +242,7 @@ const softwarePageEs: LandingData = {
   process: {
     title: 'Así trabajamos un proyecto de desarrollo de software.',
     intro:
-      'De la primera conversación al sistema funcionando. Cuatro etapas con tiempos reales, sin promesas vacías.',
+      'De la primera conversación al software funcionando. Cuatro etapas de desarrollo de software con tiempos reales, sin promesas vacías.',
     stages: [
       {
         order: '01',
@@ -260,7 +260,7 @@ const softwarePageEs: LandingData = {
       },
       {
         order: '03',
-        name: 'Desarrollo',
+        name: 'Desarrollo de software',
         duration: '5 a 8 semanas',
         description:
           'Construimos el sistema por módulos con pruebas continuas y validaciones reales de tu equipo.'
@@ -270,14 +270,14 @@ const softwarePageEs: LandingData = {
         name: 'Lanzamiento',
         duration: '1 semana',
         description:
-          'Implementamos en producción, acompañamos la adopción y dejamos el sistema funcionando en operación.'
+          'Implementamos en producción, acompañamos la adopción y dejamos el software funcionando en la operación de tu empresa.'
       }
     ]
   },
   viewcases: {
-    title: 'Probá un sistema hecho a medida.',
+    title: 'Probá un software a medida.',
     intro:
-      'Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
+      'Cada demo es una versión funcional de un software a medida que construimos en Argentina, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.',
     items: [
       { label: 'Pulso', category: 'Sistema de gestión para gimnasios y wellness', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
       { label: 'Cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
@@ -293,7 +293,7 @@ const softwarePageEs: LandingData = {
       {
         question: '¿Cómo aseguran que el software pueda escalar a futuro?',
         answer:
-          'Definimos arquitectura, reglas y estructura desde el inicio. El sistema se construye por módulos, permitiendo crecer, ajustar o integrar nuevas funcionalidades sin tener que rehacer todo.'
+          'Como empresa de software a medida, definimos arquitectura, reglas y estructura desde el inicio. El sistema se construye por módulos, permitiendo crecer, ajustar o integrar nuevas funcionalidades sin tener que rehacer todo.'
       },
       {
         question: '¿Qué medidas de seguridad implementan?',
@@ -301,14 +301,14 @@ const softwarePageEs: LandingData = {
           'Definimos roles, permisos, validaciones y controles según la operación real. Aplicamos buenas prácticas de seguridad desde la arquitectura, no como un agregado al final.'
       },
       {
-        question: '¿Cómo es el soporte después de entregar el sistema?',
+        question: '¿Cómo es el soporte después de entregar el software?',
         answer:
           'Ofrecemos planes de soporte con SLA definido. Cubre consultas, corrección de errores, ajustes operativos y nuevas funcionalidades según evoluciona la operación. El alcance y modelo se acuerdan al cierre del proyecto. El software interno no se entrega y se abandona: se acompaña en el tiempo.'
       },
       {
         question: '¿Cómo es el esquema de pago del proyecto?',
         answer:
-          'El esquema se define en la primera conversación según el proyecto y lo que mejor encaje a ambas partes. Los modelos más usados son pago 30/70 con anticipo y entrega, pagos por hitos según etapas, pagos mensuales con SLA, o suscripción mensual cuando el cliente prefiere modelo SaaS. Nos adaptamos al esquema, no al revés.'
+          'Como empresa de software en Argentina, definimos el esquema en la primera conversación, según el proyecto y lo que mejor encaje a ambas partes. Los modelos más usados son pago 30/70 con anticipo y entrega, pagos por hitos según etapas, pagos mensuales con SLA, o suscripción mensual cuando el cliente prefiere modelo SaaS. Nos adaptamos al esquema, no al revés.'
       },
       {
         question: '¿Cómo arranca el proyecto?',
@@ -333,7 +333,7 @@ const softwarePageEs: LandingData = {
       {
         question: '¿Cómo manejan los plazos y la entrega del proyecto?',
         answer:
-          'Trabajamos con alcance definido y entregas por etapas. Eso permite avanzar con visibilidad, controlar tiempos y ajustar prioridades sin perder control del proyecto.'
+          'En cada proyecto de desarrollo de software trabajamos con alcance definido y entregas por etapas. Eso permite avanzar con visibilidad, controlar tiempos y ajustar prioridades sin perder control del proyecto.'
       }
     ]
   },
