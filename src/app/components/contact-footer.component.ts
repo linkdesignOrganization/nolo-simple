@@ -791,7 +791,7 @@ export class ContactFooterComponent {
 
   protected readonly NEEDS: NeedChip[] = [
     { key: 'software', es: 'Software a medida', en: 'Custom software' },
-    { key: 'web', es: 'Sitio web', en: 'Website' },
+    { key: 'web', es: 'Página web', en: 'Website' },
     { key: 'ecommerce', es: 'E-commerce', en: 'E-commerce' },
     { key: 'other', es: 'Otro', en: 'Other' }
   ];

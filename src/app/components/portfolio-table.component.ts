@@ -544,6 +544,10 @@ export class PortfolioTableComponent implements OnDestroy {
   private inlineMutation: MutationObserver | null = null;
   private inlineActive: HTMLVideoElement | null = null;
 
+  // Precarga por proximidad (ver setupNearbyPreload): reemplaza al prefetch de todos los clips.
+  private preloadObserver: IntersectionObserver | null = null;
+  private preloadMutation: MutationObserver | null = null;
+
   private readonly onPointerMove = (event: PointerEvent): void => {
     this.pointerX = event.clientX;
     this.pointerY = event.clientY;
@@ -586,7 +590,7 @@ export class PortfolioTableComponent implements OnDestroy {
       if (!reduced) {
         this.setupInlineAutoplay();
         // Precarga los clips (chicos) también en mobile/tablet → reproducen al instante al scrollear.
-        this.preloadVideos();
+        this.setupNearbyPreload();
       }
       return;
     }
@@ -601,51 +605,65 @@ export class PortfolioTableComponent implements OnDestroy {
     win?.addEventListener('resize', this.onResize, { passive: true });
     this.document.addEventListener('visibilitychange', this.onVisibility);
 
-    this.preloadVideos();
+    this.setupNearbyPreload();
   }
 
-  // Precarga (prefetch) todos los videos del portafolio cuando el navegador está ocioso, para que al
-  // interactuar (hover en desktop, autoplay por scroll en mobile/tablet) el clip esté listo al instante.
-  private preloadVideos(): void {
-    const win = this.document.defaultView;
-    // Prefetch de los videos con prioridad BAJA: no deben competir con los logos (que llenan la fila).
-    const run = (): void => {
-      for (const row of this.rows()) {
-        if (!row.videoSrc) {
-          continue;
-        }
-        const link = this.document.createElement('link');
-        link.rel = 'prefetch';
-        link.as = 'video';
-        link.href = row.videoSrc;
-        link.setAttribute('fetchpriority', 'low');
-        this.document.head.appendChild(link);
-      }
-    };
-    const schedule = (): void => {
-      const idle = (win as Window & {
-        requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => void;
-      })?.requestIdleCallback;
-      if (typeof idle === 'function') {
-        idle(run, { timeout: 2000 });
-      } else {
-        win?.setTimeout(run, 1200);
-      }
-    };
-    // Primero los logos: esperamos a que TODOS carguen antes de prefetchar los videos, para que la
-    // fila nunca quede vacía esperando un video. Los logos van con fetchpriority="high" en el template.
-    const logos = [...this.host.querySelectorAll<HTMLImageElement>('img.pt-logo')];
-    Promise.all(
-      logos.map((img) =>
-        img.complete
-          ? Promise.resolve()
-          : new Promise<void>((resolve) => {
-              img.addEventListener('load', () => resolve(), { once: true });
-              img.addEventListener('error', () => resolve(), { once: true });
-            })
-      )
-    ).then(schedule);
+  // Precarga por PROXIMIDAD.
+  //
+  // Antes se hacía un `<link rel="prefetch">` de todos los clips apenas cargaban los logos: megas que
+  // se descargaban siempre, aunque el visitante nunca bajara hasta el portafolio, y con todos los
+  // pedidos compitiendo entre sí por las ~6 conexiones del navegador — así que el clip que hacía falta
+  // en dos segundos podía quedar último en la cola. Justo en conexión lenta, que es cuando importaba.
+  //
+  // Ahora cada clip se descarga cuando su fila está a ~1,5 pantallas de entrar. Recorrer esa distancia
+  // scrolleando lleva 1-3 s y un clip de ~1 MB tarda menos de 1 s en 4G, así que llega listo igual que
+  // antes. En mobile/tablet el <video> de la fila es el que se reproduce; en desktop está oculto y el
+  // que se ve es el flotante, pero comparten URL: precargarlo acá deja el archivo en caché para el
+  // hover. Si el visitante no llega al portafolio, no se descarga ningún video.
+  private setupNearbyPreload(): void {
+    if (typeof IntersectionObserver !== 'function') {
+      return; // sin observer queda el comportamiento del navegador: preload="none" + poster
+    }
+    this.preloadObserver = new IntersectionObserver(this.onNearby, {
+      rootMargin: '150% 0px 150% 0px',
+      threshold: 0
+    });
+    this.observePreloadRows();
+
+    // Las filas que aparecen con "Ver más trabajos" también entran al observer.
+    const rows = this.host.querySelector('.pt-rows');
+    if (rows && typeof MutationObserver === 'function') {
+      this.preloadMutation = new MutationObserver(() => this.observePreloadRows());
+      this.preloadMutation.observe(rows, { childList: true });
+    }
   }
+
+  private observePreloadRows(): void {
+    // Se observa la fila, no el <video>: en desktop el video está oculto y un elemento sin caja nunca
+    // dispara el IntersectionObserver.
+    this.host.querySelectorAll<HTMLElement>('a.pt-row').forEach((row) => {
+      this.preloadObserver?.observe(row);
+    });
+  }
+
+  private readonly onNearby = (entries: IntersectionObserverEntry[]): void => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) {
+        continue;
+      }
+      const row = entry.target as HTMLElement;
+      this.preloadObserver?.unobserve(row); // una sola vez por fila
+      const video = row.querySelector<HTMLVideoElement>('video.pt-media');
+      if (!video || video.preload === 'auto') {
+        continue;
+      }
+      video.preload = 'auto';
+      // load() sólo si no empezó a cargar: si ya está reproduciéndose, reiniciaría el clip.
+      if (video.readyState === 0) {
+        video.load();
+      }
+    }
+  };
 
   // Reproduce solo el video que cruza el centro de la pantalla y pausa el anterior. El MutationObserver
   // re-observa los videos que aparecen al "Ver más trabajos".
@@ -736,6 +754,8 @@ export class PortfolioTableComponent implements OnDestroy {
     this._floatVideo?.pause();
     this.inlineObserver?.disconnect();
     this.inlineMutation?.disconnect();
+    this.preloadObserver?.disconnect();
+    this.preloadMutation?.disconnect();
     this.inlineActive?.pause();
   }
 

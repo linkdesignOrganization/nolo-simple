@@ -52,6 +52,7 @@ Cada sector opera distinto. Entrá al tuyo y mirá qué software y qué sitio we
 
 Sitios publicados para clientes reales; cada entrada indica la industria y enlaza al sitio en producción.
 
+- [Facio & Cañas](https://fayca.com/): Legal.
 - [Imperio](https://arrozimperio.net/): Alimentos.
 - [HESA](https://hesa.co.cr/): Veterinaria.
 - [Uga Comediante](https://ugacomediante.com/): Entretenimiento.
@@ -70,7 +71,6 @@ Sitios publicados para clientes reales; cada entrada indica la industria y enlaz
 - [Evoke](https://evoke-812574.webflow.io/): Audiovisual.
 - [Psicoyng](https://psicoyng.com/): Salud.
 - [Xcelerate](https://xcelerate-93e9f9.webflow.io/): Gimnasio.
-- [TUPSA](https://tupsa.com/): Transporte.
 - [Onigiri](https://ambitious-river-0c4fcd50f.1.azurestaticapps.net/): Restaurante.
 - [Gramas](https://yellow-water-0de5f8f0f.2.azurestaticapps.net): Agroindustria.
 - [CIMED](https://witty-rock-0c57b0910.1.azurestaticapps.net): Legal.
