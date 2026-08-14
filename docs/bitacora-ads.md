@@ -750,19 +750,95 @@ dónde está el cuello de botella:
 
 Las dos están limitadas por presupuesto, no por ranking ni por falta de keywords.
 
+## 14 ago 2026 (cierre del día) — El copy de `/web`: mismo diagnóstico que LinkDesign, tres palabras distintas
+
+El pendiente del copy preguntaba si se replicaba en `linkdesign.cr`, «que tiene el mismo problema
+pero **otro orden de familias**». Se midieron los dos sitios el mismo día, con el mismo método.
+**Respuesta: un solo documento sirve para los dos.**
+
+### `nolo.ar/web` y `linkdesign.cr/web` son literalmente el mismo texto
+
+Contado sobre el texto visible que devuelven hoy en producción — 1.650 palabras acá, 1.661 allá:
+
+| | nolo.ar/web | linkdesign.cr/web |
+|---|---:|---:|
+| `h1` | «Sitios web hechos en serio.» | «Sitios web hechos en serio.» |
+| los cinco `h2` | idénticos | idénticos |
+| «páginas web» | **0** | **0** |
+| «diseño web» / «desarrollo web» | **0** y **0** (sólo los verbos, 1 vez cada uno) | **0** y **0** |
+| «sitios web» | 4 | 4 |
+| «empresa(s)» | 20 | 20 |
+| «agencia» | 0 | 0 |
+
+Sólo difieren el `title` —«Desarrollo web a medida | Nolo», sin país— y la `description`.
+
+### El gasto argentino por familia
+
+"Búsqueda #2", todos los términos del 1 ene 2025 al 13 ago 2026: **1.160,75 USD y 552 clics**,
+familias excluyentes.
+
+| familia | % gasto | % clics |
+|---|---:|---:|
+| páginas web | 36,3 % | 30,6 % |
+| **diseño web** | 33,4 % | **37,1 %** |
+| desarrollo web | 20,9 % | 20,7 % |
+| fuera de toda familia | 5,9 % | 6,9 % |
+| landing page | 2,4 % | 2,7 % |
+| **sitios web** — *lo único que el `h1` dice* | **1,0 %** | 1,6 % |
+
+> **Ojo con el orden, y no es una contradicción con el apartado anterior.** Allá quedó anotado
+> «diseño web › páginas web › desarrollo web»; acá sale páginas web primero. Son **dos formas de
+> contar**, las dos correctas. La de aquel apartado es **solapada** —«diseño de páginas web» cuenta
+> en las dos familias— y sobre 2026 devuelve diseño 47,5 % › páginas 39,2 % › desarrollo 23,0 %, con
+> «sitios web» en 3,1 %: **reproduce exactamente lo que dice arriba**. La de esta tabla es
+> **excluyente**, cada término en una sola familia, y suma 100 %.
+>
+> Para escribir copy conviene la solapada («¿qué palabras tiene que contener la página?»); para
+> priorizar el titular, la excluyente («¿cómo se reparte el dinero?»). **La conclusión argentina no
+> cambia con ninguna de las dos: «diseño» es imprescindible acá** — entre 33 % y 47 % según cómo se
+> cuente, contra 13–23 % en Costa Rica.
+
+### Lo que Nolõ tiene que decir distinto
+
+| | Costa Rica | Argentina |
+|---|---:|---:|
+| nombrar el país | 42,7 % | **9,3 %** — casi nadie escribe «Argentina» |
+| «diseño» | 13,4 % | **33,4 %** |
+| «empresa» | 7,4 % | 2,2 % |
+| «agencia» | 2,6 % | **7,0 %** |
+| precio / cotización | 2,3 % | **6,6 %** |
+
+**Tres decisiones, tres palabras:** acá el titular **no lleva el país**, la palabra con la que buscan
+al proveedor es **«agencia»** —justo al revés que en Costa Rica, donde es «empresa»— y **«diseño» va
+adelante**, no en segunda línea. Todo lo demás del plan es común: los seis lugares donde entra cada
+palabra son los mismos porque el texto es el mismo.
+
+Dato lateral sin acción: en Argentina buscan **precio y cotización tres veces más** que en Costa
+Rica. No cambia el copy por ahora, pero es candidato a probar.
+
+> **La ventana argentina es más chica.** "Búsqueda #2" acumula **75 días con impresiones contra 414**
+> de "Búsqueda". Las tres diferencias se verificaron también sobre los **últimos doce meses** de las
+> dos, que es la única ventana en que ambas corrieron a la vez, y se sostienen: geo 11,9 % contra
+> 39,7 %, agencia 6,4 % contra 2,4 %, empresa 1,1 % contra 9,1 %.
+
+**Dónde vive el detalle**: artefacto «Por qué Google baja la nota» —actualizado el 14 ago con la
+tabla de familias, los seis lugares y un bloque propio de Nolõ— y la entrada gemela en
+`docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`.
+
 ## Pendientes
 
 - [ ] **El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.
       Es lo único que toca la nota BELOW_AVERAGE de las **cuatro** campañas a la vez. El insumo
-      correcto **no es el Keyword Planner sino el gasto real por familia** (ver arriba): en
-      `/web` argentino el orden es diseño web › páginas web › desarrollo web, y «sitios web» —lo
-      único que la página dice— es el 3,1 %. Preguntar si se replica en `linkdesign.cr`, que tiene el
-      mismo problema pero **otro orden de familias**, y respetar el voseo argentino en Nolõ.
-      > Pensado para pasárselo a un desarrollador: falta armar la especificación —frase por frase,
-      > con el campo exacto de `app.routes.ts` donde va cada una—. El diagnóstico del 13 ago
-      > (artefacto «Por qué Google baja la nota») sirve como el *por qué*, pero **sus frases son una
-      > muestra y no están priorizadas**: cita «creadores de paginas web», que no tiene volumen
-      > medible, y omite «páginas web», que es el 44,7 % del gasto en Costa Rica.
+      correcto **no es el Keyword Planner sino el gasto real por familia** (ver arriba).
+      > **El diagnóstico y la priorización ya están** (entrada del 14 ago, cierre del día). La
+      > pregunta de si se replicaba en `linkdesign.cr` quedó respondida: **el texto de los dos sitios
+      > es el mismo**, así que el documento es común y Nolõ sólo cambia tres palabras —sin país,
+      > «agencia» en vez de «empresa», «diseño» adelante—. El artefacto «Por qué Google baja la nota»
+      > ya no cita frases sueltas: trae la tabla de familias por gasto y los seis lugares exactos
+      > donde entra cada palabra.
+      >
+      > **Lo que falta es sólo la redacción**, frase por frase, con el campo de `app.routes.ts` donde
+      > va cada una — y respetando el voseo argentino en Nolõ.
 - [ ] **~3 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
       **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
