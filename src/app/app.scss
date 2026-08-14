@@ -134,6 +134,17 @@
   outline: none;
 }
 
+/* Objetivo táctil de 44 px sin tocar el aspecto: el padding agranda el área que responde al
+   dedo y el margen negativo la devuelve al mismo lugar, así que el layout no se mueve ni un
+   píxel. Funciona porque el elemento no tiene fondo ni borde que delaten el padding. Sólo en
+   pantallas táctiles, que es donde Google mide esto. */
+@media (pointer: coarse) {
+  .brand {
+    padding-block: 9px;
+    margin-block: -9px;
+  }
+}
+
 .brand {
   display: inline-flex;
   align-items: center;

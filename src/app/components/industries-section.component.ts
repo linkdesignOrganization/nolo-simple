@@ -259,6 +259,16 @@ const STEP = 26;
       text-decoration: none;
     }
 
+    /* Objetivo táctil de 44 px sin tocar el aspecto: el padding agranda el área que responde
+       al dedo y el margen negativo la devuelve al mismo lugar. El enlace no tiene fondo ni
+       borde, así que el crecimiento es invisible. */
+    @media (pointer: coarse) {
+      .ind-card__title-link {
+        padding-block: 10px;
+        margin-block: -10px;
+      }
+    }
+
     .ind-card__title-text {
       position: relative;
       font-size: clamp(1.5rem, 3.2vw, 2.1rem);

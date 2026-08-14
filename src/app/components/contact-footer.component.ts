@@ -374,6 +374,16 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       transition: color 180ms ease;
     }
 
+    /* Objetivo táctil de 44 px sin tocar el aspecto: el padding agranda el área que responde
+       al dedo y el margen negativo la devuelve al mismo lugar. El botón no tiene fondo ni
+       borde (background: none), así que no se ve crecer. */
+    @media (pointer: coarse) {
+      .cf-copy {
+        padding: calc(0.3rem + 9px);
+        margin: -9px;
+      }
+    }
+
     .cf-copy:hover,
     .cf-copy:focus-visible {
       color: #ffffff;
@@ -682,6 +692,16 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       font-size: 0.92rem;
       text-decoration: none;
       transition: color 180ms ease;
+    }
+
+    /* Objetivo táctil de 44 px sin tocar el aspecto: mismo truco de padding + margen negativo.
+       Necesita inline-block para que el padding vertical cuente en el área del enlace. */
+    @media (pointer: coarse) {
+      .cf-legal__link {
+        display: inline-block;
+        padding-block: 13px;
+        margin-block: -13px;
+      }
     }
 
     .cf-legal__link:hover,
