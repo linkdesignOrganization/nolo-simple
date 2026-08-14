@@ -38,6 +38,7 @@ propia cuenta argentina, pasaría a `google.com.ar` y esto sobraría.
 | 24 jul 2026 | **Réplica del ×2 de values** (commit `e860ca1`), espejo de LinkDesign. Timing deliberado: el aprendizaje ya estaba reseteado por el cambio del 19 jul, así que ambos cambios se absorben en una sola ventana. |
 | 30 jul 2026 | Se consolida esta bitácora y se registra el análisis de atribución del embudo. |
 | 13 ago 2026 | Separación de las acciones de conversión por canal (cuatro nuevas). Misma tarde: **presupuesto de "Búsqueda #2" 15 → 20 USD/día** por API. Se evaluó y **descartó**, para **las dos** campañas argentinas, pasar la keyword a concordancia amplia y limitar la segmentación a Buenos Aires; "Software #2" queda además con su presupuesto sin cambios. |
+| 14 ago 2026 | Revisión rehecha de esas dos preguntas con datos frescos: **ambas conclusiones se sostienen**, pero la geográfica estaba medida con la métrica equivocada (ver la corrección de método abajo). De ahí salió el diagnóstico del **CPC caro** y **siete correcciones ejecutadas por API**: en "Software #2" dos títulos, seis extensiones y dos negativas; después, textos destacados y fragmento de web fuera de **las dos** campañas de software (con reemplazo propio en ambas) y los dos títulos con "CR" de "Búsqueda #2". Todas son correcciones de errores heredados del fork, no experimentos: por eso no esperaron a que cerrara la ventana de medición. Además se verificó, y **descartó**, cambiar las keywords: en amplia y en frase el volumen nominal de la keyword no dice nada, y la actual ya cubre las familias genéricas. |
 
 **Advertencia para cualquier comparación**: el historial anterior al 19 jul **no es comparable** en
 comportamiento de puja (era otro régimen de optimización). De ese período solo sirven las métricas de
@@ -425,8 +426,343 @@ Sólo afecta al período posterior al ×2 del 24 jul; las ventanas anteriores ve
 Cuando las cuatro acciones separadas acumulen datos, esta inferencia deja de hacer falta: el canal
 vendrá dado.
 
+## 14 ago 2026 — El clic está caro, y por qué: siete correcciones ejecutadas
+
+Se rehízo con datos frescos la revisión del día anterior. **Las dos respuestas del 13 ago se
+sostienen** —la keyword sigue en frase, la segmentación sigue en Argentina (país)— pero una de las
+dos estaba medida con la métrica equivocada, y de corregirla salió el diagnóstico que importa.
+
+### Corrección de método: para decisiones geográficas, contar contactos y no mirar el ratio
+
+El 13 ago la pregunta geográfica se resolvió con el ratio valor/costo, que daba AMBA 0,51 contra un
+promedio de 0,49 — "dos centésimas". Ese número está **diluido**: los scrolls son 91 de las 109
+conversiones y valen 1 punto cada uno, así que dominan el ratio y aplastan la señal de los contactos.
+Contando contactos reales (1 jun – 13 ago, 843,07 USD, 176 clics, 18 contactos, 5 serios):
+
+| zona | gasto | clics | CPC | contactos | serios | USD/contacto |
+|---|---:|---:|---:|---:|---:|---:|
+| **AMBA** | 460,33 | 84 | 5,48 | 12 | 3 | **38,36** |
+| Resto del país | 382,74 | 92 | 4,16 | 6 | 2 | 63,79 |
+
+AMBA sale **40 % más barato por contacto**, no "dos centésimas mejor". **La conclusión no cambia** y
+el recorte sigue sin convenir, pero por tres razones que el ratio no mostraba:
+
+1. **Los contactos porteños son de peor calidad**: 3 de 12 serios (25 %) contra 2 de 6 (33 %) afuera.
+   En leads serios por clic la brecha es 3,6 % contra 2,2 %.
+2. **Nada de eso resiste la prueba**: contactos por clic p = 0,09; leads serios por clic **p = 0,58**.
+   Con cinco leads serios en total, mover uno cambia el ranking.
+3. **La cuenta completa del recorte**: el mismo dinero a CPC porteño compra 154 clics en vez de 176 →
+   ≈ 22 contactos y ≈ 5,5 serios contra 18 y 5. Media décima de lead serio en dos meses y medio, y
+   asumiendo que la tasa aguanta al comprar las subastas de AMBA que hoy se pierden, que son las más
+   caras.
+
+Detalle que confirma que es ruido: en "Software #2" la **Provincia** rinde mejor que **CABA**
+(31,61 contra 47,82 USD por contacto); en "Búsqueda #2" es exactamente al revés. Dos campañas del
+mismo mercado contradiciéndose sobre la misma zona.
+
+### Dos datos que refuerzan lo de la concordancia, y una corrección al 13 ago
+
+**Qué universo abriría realmente la amplia.** El Keyword Planner, partiendo de
+`empresa de desarrollo de software` en Argentina, devuelve 101 ideas que suman **9.140 búsquedas al
+mes** contra las 210 de la keyword actual. Suena enorme hasta que se mira de qué está hecho:
+**7.200 de esas 9.140 —el 79 %— son `desarrollador de software`, `desarrolladores de software` y
+`desarrollo de soft`**, que es gente buscando qué es un programador o buscando trabajo de programador.
+
+El precio lo delata: para esos términos el mercado paga **0,42 – 1,37 USD** por clic, contra
+**0,91 – 3,72** por la keyword actual. Cuando media industria paga un tercio por un término, es
+porque no le vende a nadie. La amplia multiplicaría el volumen por diez comprando sobre todo eso.
+
+**El tamaño del mercado argentino, completo** (búsquedas/mes, Keyword Planner, español). Confirma con
+más margen la premisa que motivó elegir frase:
+
+| palabra | Argentina | Costa Rica |
+|---|---:|---:|
+| empresas de software | 720 | 50 |
+| **empresa de desarrollo de software** — la de la campaña | **210** | **50** |
+| software a medida | 140 | 10 |
+| desarrollo de software a medida | 70 | 10 |
+
+> **Corrección al 13 ago: el ruido de la frase no es 7,5 %, es 13,9 %.** Aquella entrada contó
+> 5 términos de marca por 26,95 USD. Barriendo 1 jun – 13 ago con criterio más amplio aparecen
+> **12 marcas de competidor con clic pagado** —Flexxus, Codemized, Cobaires, Bitor, Abasto, Epidata,
+> Software del Plata, Patagonian, Vinta, ASF, Eleks, Luxoft— por **51,42 USD**, que es el **13,9 %**
+> del gasto rastreable. Produjeron 7 scrolls y **cero contactos**.
+>
+> **No cambia la decisión**, por dos motivos: la mayoría ya estaba bloqueada (ver punto 3) y en
+> "Software" de Costa Rica la amplia lleva ese ruido al 18–35 %. Pero deja escrito que **la frase de
+> hoy ya se estira sola**: Google la interpreta con manga ancha y trae `software a medida`,
+> `empresa de programación`, `desarrolladores de app en argentina` y nombres de competidores. El
+> gasto rastreable, además, es sólo **371 de los 843 USD** — Google oculta el resto por privacidad,
+> así que ese 13,9 % es un piso, no el valor real.
+
+### De dónde sale el CPC de 4,79: el gasto está concentrado en los clics caros
+
+Reparto del gasto rastreable de "Software #2" por precio del clic (1 jun – 13 ago, 75 clics
+visibles):
+
+| precio del clic | clics | % del gasto | CPC | ratio |
+|---|---:|---:|---:|---:|
+| 0 – 3 USD | 13 (17 %) | 7,6 % | 2,17 | **1,27** |
+| 3 – 5 USD | 39 (52 %) | 39,5 % | 3,76 | 0,95 |
+| 5 – 8 USD | 13 (17 %) | 22,0 % | 6,29 | 0,71 |
+| **8 USD o más** | **10 (13 %)** | **30,8 %** | **11,45** | **0,32** |
+
+Diez clics se llevan casi un tercio del gasto y son los que peor rinden; los baratos rinden cuatro
+veces mejor. Sin esos diez el CPC medio caería de 4,95 a **3,95**. No todos son excluibles —
+`empresas de sistemas en argentina` a 18,14 o `empresa de programacion` a 14,94 son términos
+legítimos, y con Maximizar valor la puja la decide Google—, pero marca dónde está el dinero.
+
+**Y el móvil está flojo, al revés que en Costa Rica.** 1 jun – 13 ago: escritorio **CTR 5,71 %**
+(2.538 impresiones, 145 clics, CPC 4,85) contra móvil **CTR 3,32 %** (933 impresiones, sólo 31 clics,
+CPC 4,51). En "Software" (CR) el móvil rinde igual que el escritorio y con el clic más barato, así
+que **no es la plantilla compartida**: es algo de esta campaña. Con Smart Bidding no se puede ajustar
+puja por dispositivo (los ajustes se ignoran salvo el −100 %), así que queda anotado sin acción,
+para mirarlo cuando los títulos nuevos hayan rodado.
+
+### El diagnóstico real: la página nunca dice lo que la gente busca
+
+Software #2 paga **4,79 USD** por clic (4,09–6,23 según el mes) cuando el Keyword Planner pide
+**0,91–3,72** para el tope de página. Con la pérdida por ranking en un dígito, no se están comprando
+posiciones caras: **cada posición cuesta de más**, y eso es Quality Score. El QS es 5 y se descompone
+en anuncio ABOVE_AVERAGE, CTR esperado AVERAGE y **página de destino BELOW_AVERAGE** — la misma
+dimensión floja en las cuatro campañas de la cuenta.
+
+Se descargó `nolo.ar/software` y se contaron apariciones en el texto real (1.501 palabras):
+
+| frase | apariciones |
+|---|---:|
+| «empresa de desarrollo de software» *(la keyword)* | **0** |
+| «desarrollo de software» | **0** |
+| «empresa de software» | **0** |
+| «software a medida» | 2 |
+
+El `h1` dice *«Software construido alrededor de tu operación.»* y el `title`, *«Software a medida para
+empresas | Nolo»*. **El patrón es total**: `nolo.ar/web` tampoco contiene «desarrollo de sitios web»
+(0 apariciones), que es la keyword de "Búsqueda #2". No es *keyword stuffing* lo que falta: es que el
+texto habla en el idioma del estudio y no en el del cliente.
+
+> **Esto no es un problema argentino, es de la arquitectura compartida.** Las dos páginas de
+> `linkdesign.cr` dan exactamente el mismo resultado, y las cuatro campañas de la cuenta tienen
+> `landing page = BELOW_AVERAGE`. El caso de Costa Rica, con sus propios números y su tabla de QS
+> comparada, está en `docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`, entrada del
+> 14 ago 2026. Si se decide reescribir el copy, hay que decidir también si se replica allá.
+
+> **Medición de velocidad — corregida el mismo día.** Primero se anotó que `/software` pesaba
+> «360 KB y no parece ser el problema». **Estaba mal**: ese script sólo seguía `<script src>` y
+> `<link rel=stylesheet>`, así que no contaba los medios. Contando lo que el HTML referencia,
+> `nolo.ar/software` arrastra **16,8 MB en 9 vídeos** (pulso 2,83 · tornos 2,58 · dental 2,08…) y
+> `nolo.ar/web` **42,4 MB en 20 vídeos**. Los 360 KB son sólo el esqueleto.
+>
+> El diagnóstico del 13 ago (artefacto «Por qué Google baja la nota») ya lo había medido bien y con
+> carga real de navegador: **27,3 MB en `linkdesign.cr/web`**, de los cuales 18,5 MB son vídeos del
+> portafolio que se precargan siempre por `preloadVideos()` en `portfolio-table.component.ts`.
+> Referenciado no es lo mismo que descargado —un `<video>` sin precarga no baja hasta que hace
+> falta—, así que las cifras de acá son un techo y las de aquel diagnóstico, el consumo real. **La
+> conclusión correcta es la de aquel documento: el peso sí es un problema, aunque no la causa raíz**
+> (la nota ya estaba baja cuando la página era liviana).
+
+### Ejecutado por API el 14 ago 2026
+
+Decisión de Robert: son errores heredados del fork, no experimentos, así que **no se esperan las tres
+semanas de la ventana de medición**. Pagar por un error conocido es peor que ensuciar la lectura.
+Los tres cambios con `validate_only` previo y verificación posterior contra el servidor.
+
+**1 · Dos títulos del RSA** (anuncio `813097373240`). La frase exacta **no cabe**: «empresa de
+desarrollo de software» tiene 33 caracteres y el límite de un título es 30. Se cubre con dos títulos
+contiguos que sí entran y que no existían:
+
+| se quitó | por qué | se agregó |
+|---|---|---|
+| «Sistemas de Alta Demanda» | 623 imp, 16 clics, **CTR 2,57 %** (campaña: 5,05 %) | «Desarrollo de Software» (22 car.) |
+| «Software Escalable y Robusto» | 32 imp, **0 clics** — Google casi no lo servía | «Empresa de Software a Medida» (28 car.) |
+
+El anuncio tenía los 15 títulos ocupados, así que era reemplazo y no agregado; se eligió por CTR
+propio porque el `performance_label` de Google viene `NOT_APPLICABLE` en todos (sin datos
+suficientes). El precedente que sostiene el cambio: "Búsqueda #2" tiene **QS 7 y CTR esperado
+ABOVE_AVERAGE**, y su segundo título es literalmente su keyword, «Desarrollo de sitios web».
+
+**2 · Seis extensiones propias de software.** Se pensaba copiarlas de "Software" (Costa Rica), pero
+**esa campaña tiene exactamente los mismos assets** —mismos IDs, `183496529445` y siguientes—: los
+cinco textos destacados hablan de sitios web en las **cuatro** campañas de la cuenta. Se crearon
+nuevos, con el vocabulario de la landing:
+
+- Textos destacados: `Software a medida` · `CRM, ERP e inventario` · `Integraciones y APIs` ·
+  `Sistemas internos` · `Código propio`
+- Fragmento estructurado: **Tipos**: CRM, ERP, Inventario, E-commerce, Ticketing, Reservas
+
+Los sitelinks **no se tocaron**: ya son propios de software y correctos en ambos mercados.
+
+**3 · Dos negativas.** Se verificó la sospecha de Robert y era correcta: hay **3.837 negativas**
+aplicando a "Software #2" (156 de campaña + 3.681 de grupo; **ninguna lista compartida**), y **10 de
+los 12 competidores ya estaban bloqueados** — los clics observados son anteriores a esas negativas.
+Faltaban dos, agregadas en **FRASE** y no en amplia: `abasto software` y `software del plata`. La
+convención existente es amplia de una palabra, pero `-abasto` suelto habría bloqueado «mercado de
+abasto» y usos legítimos. Total recuperado: 7,28 USD, no los ~51 que sugería el primer cálculo.
+
+### Segunda tanda del 14 ago: limpieza de extensiones y de "Búsqueda #2"
+
+**4 · Los textos destacados de web salieron de "Software #2".** Los cinco
+(`Expertos en servicios web`, `Sitios web inigualables`, `Últimas tecnologías web`,
+`Presencia digital`, `Desarrollo sin plantillas`) estaban en las **cuatro** campañas de la cuenta. Se
+quitó la asociación acá; **siguen intactos en "Búsqueda #2"**, que es donde corresponden. Quitar la
+asociación no borra el asset.
+
+> **La misma limpieza se hizo en "Software" (Costa Rica) el mismo día**, porque el error era idéntico
+> allá. Eso —y el criterio de darle los de software para no dejarla sin ninguno— está registrado en
+> `docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`, entrada del 14 ago 2026.
+
+**5 · Los dos títulos con "CR" de "Búsqueda #2"** (anuncio `813096165257`), reemplazados por el
+espejo mínimo — se corrige el país sin cambiar el mensaje:
+
+| decía | dice |
+|---|---|
+| «Diseño Web Corporativo CR» | «Diseño Web Corporativo» |
+| «Hecho en CR: 100% Código» | «Hecho en Argentina» |
+
+El «100 % Código» no se pierde: ya estaba en otro título de la misma lista.
+
+**6 · El fragmento estructurado, misma operación que los textos destacados.** «Servicios: Desarrollo
+de sitios web, Actualización digital, Asesoría tecnológica, Desarrollo sin plantillas» salió de
+"Software #2" (y de "Software" en Costa Rica, ver su bitácora).
+
+**7 · Un segundo fragmento**, con encabezado «Servicios» —espejo del que se le quitó, pero con
+contenido propio— porque Google admite dos encabezados y muestra hasta dos. Se creó una sola vez y se
+comparte con la campaña de Costa Rica: son sustantivos genéricos, sin país ni voseo.
+
+Estado final de las cuatro campañas de la cuenta, verificado contra el servidor:
+
+| campaña | textos destacados | fragmentos |
+|---|---|---|
+| Búsqueda · **Búsqueda #2** | los 5 de web | **Servicios**: Desarrollo de sitios web, Actualización digital, Asesoría tecnológica, Desarrollo sin plantillas |
+| Software · **Software #2** | Software a medida · CRM, ERP e inventario · Integraciones y APIs · Sistemas internos · Código propio | **Servicios**: Desarrollo a medida, Aplicaciones internas, Automatización con IA, Integración de sistemas, Software de gestión, Desarrollo backend · **Tipos**: CRM, ERP, Inventario, E-commerce, Ticketing, Reservas |
+
+Las cuatro quedan con extensiones de su propio tema, y ninguna quedó sin extensiones. Los sitelinks
+**no se tocaron**: ya eran propios de software y correctos en los dos mercados.
+
+**Cada valor del fragmento nuevo está respaldado por la página `/software`**, que es idéntica en los
+dos sitios — el criterio fue no listar servicios que no se prestan:
+
+| valor | de dónde sale |
+|---|---|
+| Desarrollo a medida | `title` de la página · `systems` «a la medida» |
+| Aplicaciones internas | `principles` «software interno», «Aplicaciones a medida con datos centralizados» |
+| Automatización con IA | `systems.items` «Automatización con IA aplicada» |
+| Integración de sistemas | `principles` «integraciones sin romper la operación existente» |
+| Software de gestión | `viewcases` «Sistema de gestión para gimnasios», «…de RRHH» |
+| Desarrollo backend | título del anuncio «Desarrollo Backend Complejo» |
+
+Se descartó «Dashboards y reporting», que **está comentado en `app.routes.ts`** desde el 15 jun 2026 y
+por lo tanto no se muestra en la página. Ninguno de los seis repite un texto destacado ni un valor
+del fragmento «Tipos», y todos son sustantivos: no hay tuteo/voseo que ajustar entre mercados.
+
+### Falso positivo que conviene no volver a levantar: el nombre de negocio duplicado
+
+Se reportó que "Búsqueda #2" tenía **dos** nombres de negocio activos, `LinkDesign AR` y `Nolõ`. **Es
+falso, y el error fue de la consulta.** Hay **dos campañas llamadas "Búsqueda #2"**:
+
+| id | estado | nombre de negocio |
+|---|---|---|
+| `22111386447` | **REMOVED** | `LinkDesign AR` |
+| `23949699115` | ENABLED — la que corre | `Nolõ` |
+
+La consulta filtraba por `campaign_asset.status` pero **no por `campaign.status`**, así que mezcló
+una campaña eliminada con la activa. Regla para la próxima: **en `campaign_asset` hay que filtrar por
+los dos estados**, el de la asociación y el de la campaña; si no, reaparecen restos de campañas
+muertas. Las cuatro campañas activas tienen el nombre correcto: Link Design en las de Costa Rica,
+Nolõ en las argentinas.
+
+### Qué cubre de verdad cada keyword — y por qué NO se tocan
+
+Salió de una propuesta equivocada que conviene dejar escrita para no repetirla. Mirando el Keyword
+Planner se armó una tabla que decía que las campañas pujaban «por la palabra menos buscada de su
+familia»: `desarrollo de sitios web` tiene **30 búsquedas/mes en Argentina** contra **6.600** de
+`paginas web`. La conclusión aparente era cambiar las keywords.
+
+**Robert la objetó y tenía razón.** Dos motivos, los dos confirmados con datos:
+
+> **La regla, para no volver a caer**: el volumen del Keyword Planner mide búsquedas **exactas** de
+> esa cadena. En amplia —y en frase, que Google interpreta con manga muy ancha— el texto de la
+> keyword es apenas una semilla, no un límite. **Comparar volúmenes nominales de keywords que no
+> corren en concordancia exacta no significa nada sobre el alcance real.**
+
+**1 · La keyword actual ya abarca esas búsquedas.** Repartiendo todos los términos de 2026 por
+familia (1 ene – 13 ago):
+
+| Búsqueda #2 (AR) · frase `desarrollo de sitios web` | % impresiones | % gasto |
+|---|---:|---:|
+| diseño web | 53,7 % | **47,5 %** |
+| páginas web | 23,4 % | 39,2 % |
+| desarrollo web | 20,8 % | 23,0 % |
+| sitios web | 2,7 % | 3,1 % |
+| *la keyword literal* | *0,1 %* | *0,5 %* |
+| fuera de toda familia | 9,4 % | **4,6 %** |
+
+| Software #2 (AR) · frase `empresa de desarrollo de software` | % impresiones | % gasto |
+|---|---:|---:|
+| empresa(s) de software | 34,0 % | **50,3 %** |
+| desarrollo de software | 17,8 % | 26,5 % |
+| software a medida | 9,2 % | 14,8 % |
+| apps / aplicaciones | 3,2 % | 8,3 % |
+| ERP / CRM / sistemas | 2,8 % | 5,7 % |
+| *la keyword literal* | *2,8 %* | *6,2 %* |
+| fuera de toda familia | 45,1 % | 20,9 % |
+
+**La keyword literal genera el 0,1 % de las impresiones de "Búsqueda #2".** Agregar `paginas web`
+sería agregar algo que ya llega —y que ya se lleva el 39,2 % del gasto—, compitiendo contra sí misma
+en la subasta.
+
+**2 · Y las genéricas sí traerían basura.** El gasto que cae fuera de cualquier familia relevante,
+comparando las cuatro campañas de la cuenta:
+
+| campaña | concordancia | gasto fuera de familia |
+|---|---|---:|
+| **Búsqueda #2 (AR)** | **frase** | **4,6 %** |
+| Búsqueda (CR) | amplia | 20,0 % |
+| **Software #2 (AR)** | **frase** | 20,9 % |
+| Software (CR) | amplia | 39,6 % |
+
+> **Evidencia nueva a favor de la frase, y es fuerte.** En `/web` la frase filtra **cuatro veces
+> mejor** que la amplia (4,6 % contra 20,0 % de ruido) **capturando exactamente las mismas
+> familias**. Refuerza por una vía independiente lo decidido el 13 ago para "Búsqueda #2" y el 14
+> para "Software #2".
+
+**Lo que sí cambia: el insumo para reescribir el copy.** La lista de frases no debe salir del
+Keyword Planner —volumen teórico de mercado— sino de **lo que la gente escribió y por lo que ya se
+pagó**. Con ese orden el argumento se vuelve mucho más filoso:
+
+- **`/web` argentino**: diseño web (47,5 %) › páginas web (39,2 %) › desarrollo web (23,0 %) ›
+  **sitios web (3,1 %)** — y «sitios web» es justamente el único vocabulario que la página usa.
+- **`/software` argentino**: empresas de software (50,3 %) › desarrollo de software (26,5 %) ›
+  software a medida (14,8 %).
+
+Y los dos mercados piden copy distinto: en Argentina **«diseño web» le gana a «páginas web»**, en
+Costa Rica es al revés, y allá aparece una familia que acá casi no existe —«empresa tecnológica / de
+informática / de TI», 18,1 % de su gasto—. Detalle del lado costarricense en la bitácora de
+`LinkDesign-simple`.
+
+**Cuota de impresiones de las argentinas** (1 jun – 13 ago, ponderada por impresiones), que confirma
+dónde está el cuello de botella:
+
+| campaña | cuota | perdida por presupuesto | perdida por ranking |
+|---|---:|---:|---:|
+| Búsqueda #2 | 45,3 % | **37,4 %** | 17,3 % |
+| Software #2 | 58,5 % | 32,3 % | **9,2 %** |
+
+Las dos están limitadas por presupuesto, no por ranking ni por falta de keywords.
+
 ## Pendientes
 
+- [ ] **El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.
+      Es lo único que toca la nota BELOW_AVERAGE de las **cuatro** campañas a la vez. El insumo
+      correcto **no es el Keyword Planner sino el gasto real por familia** (ver arriba): en
+      `/web` argentino el orden es diseño web › páginas web › desarrollo web, y «sitios web» —lo
+      único que la página dice— es el 3,1 %. Preguntar si se replica en `linkdesign.cr`, que tiene el
+      mismo problema pero **otro orden de familias**, y respetar el voseo argentino en Nolõ.
+      > Pensado para pasárselo a un desarrollador: falta armar la especificación —frase por frase,
+      > con el campo exacto de `app.routes.ts` donde va cada una—. El diagnóstico del 13 ago
+      > (artefacto «Por qué Google baja la nota») sirve como el *por qué*, pero **sus frases son una
+      > muestra y no están priorizadas**: cita «creadores de paginas web», que no tiene volumen
+      > medible, y omite «páginas web», que es el 44,7 % del gasto en Costa Rica.
 - [ ] **~3 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
       **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
@@ -435,6 +771,12 @@ vendrá dado.
       CPC baja hacia la puja que sugiere el Planner (0,91–3,72 contra 4,15–6,23 actuales)**; si sigue
       en 4+ con QS 5, la palanca es la página de destino y no el presupuesto. No mover las dos
       campañas argentinas a la vez: sería imposible atribuir el efecto de cualquiera.
+      > **La ventana ya no es limpia, y fue deliberado.** El 14 ago se le sumaron dos títulos nuevos
+      > y seis extensiones. Así que el 3 de septiembre "Software #2" mezcla tres cosas: acciones
+      > separadas (13 ago), títulos y extensiones (14 ago), y lo que pase con el QS. **El CPC y el
+      > CTR sí son legibles** —responden al cambio del 14 ago casi de inmediato— y son justamente lo
+      > que ese cambio buscaba mover. Lo que queda contaminado es leer el *volumen* de leads serios
+      > como efecto de una sola causa. "Búsqueda #2" sigue con su ventana limpia.
 - [ ] **3 sep 2026 — o después, nunca antes** ~~(27 ago)~~ — Recalibrar los values con datos propios
       por canal. Hoy la escala (WhatsApp 10 contra formulario 30–60) es un supuesto sin evidencia; el
       CRM de LinkDesign sugiere que la brecha real es **mayor**.
