@@ -825,20 +825,65 @@ Rica. No cambia el copy por ahora, pero es candidato a probar.
 tabla de familias, los seis lugares y un bloque propio de Nolõ— y la entrada gemela en
 `docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`.
 
+## 14 ago 2026 (noche) — El copy argentino y los videos, EN PRODUCCIÓN
+
+Publicado en `main` (merge `af7eb8a`), workflow de Azure en verde, verificado sobre `nolo.ar/web` y
+`nolo.ar/software`. El detalle del método y de los números de Costa Rica está en la entrada gemela de
+`docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`; acá va lo que es propio de acá.
+
+### Lo que Nolõ dice distinto, y por qué
+
+| decisión | el dato que la sostiene |
+|---|---|
+| la bajada de `/web` dice **«Una agencia de diseño web…»** | «agencia» vale **7,0 %** del gasto argentino y «empresa» 2,2 % — al revés que en Costa Rica. Y **cuatro de los siete rivales medidos la llevan en el `h1`** |
+| el titular de `/web` **no nombra el país** | sólo el **9,3 %** de las búsquedas argentinas dice «Argentina», contra 42,7 % de «Costa Rica» allá |
+| el de `/software` **sí lo nombra** | ahí el geo pesa **46,2 %**: el mismo país, distinto peso según la página |
+| **«diseño web» va adelante** de «desarrollo» | se lleva el **37,1 % de los clics**, la proporción más alta de todas las familias del mercado argentino |
+| `/software` sube **«software a medida»** | vale **14,8 %** del gasto acá y **0,0 %** en Costa Rica |
+| **no** se tocó la FAQ de tecnologías | «empresa de tecnología / informática» es 19,1 % del gasto costarricense y **0,0 %** del argentino |
+
+Resultado medido sobre el HTML de producción:
+
+| | antes | ahora |
+|---|---:|---:|
+| `/web` — peso temático | 0,48 % | **2,39 %** |
+| `/web` — «páginas web» · «diseño web» | 4 · 2 | **16 · 13** |
+| `/software` — peso temático | 2,52 % | **3,03 %** |
+| `/software` — «desarrollo de software» · «Argentina» | 3 · 2 | **7 · 6** |
+
+El mercado argentino, para no volver a medirlo: `/web` mediana **4,26 %** con rango 1,94–9,40 %;
+`/software` mediana **2,54 %** con rango 2,29–3,36 %. Es **más denso y más disperso** que el
+costarricense — grupowebargentina repite «páginas web» 56 veces en 926 palabras y rankea. Se apuntó
+al piso del rango, no a la mediana.
+
+Voseo respetado en todo lo tocado («Probá un software a medida», «No adaptás tu empresa al software»).
+
+### Videos
+
+Mismo cambio que el gemelo: precarga por proximidad en vez del prefetch de todos los clips.
+`nolo.ar/web` pasa de bajar el portafolio entero al cargar a **9,32 MB en 4G móvil**, y los tres
+clips que quedan son los del encabezado. El detalle de las mediciones está en la bitácora de
+LinkDesign.
+
+### Dónde quedó lo que se descartó
+
+**«Agencia» quedó en 2 menciones y no en las ~7 de la mediana argentina.** Llegar ahí obliga a
+autodefinirse como agencia en casi cada sección, y eso sí sería repetitivo. **El geo quedó en 6 y no
+en las ~12 que usan los rivales**, porque para la nota de Ads manda lo que se busca y no lo que hace
+el vecino. Las dos son decisiones, no olvidos: si alguna vez se quiere ir a los números del mercado,
+está medido cuánto falta.
+
 ## Pendientes
 
-- [ ] **El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.
-      Es lo único que toca la nota BELOW_AVERAGE de las **cuatro** campañas a la vez. El insumo
-      correcto **no es el Keyword Planner sino el gasto real por familia** (ver arriba).
-      > **El diagnóstico y la priorización ya están** (entrada del 14 ago, cierre del día). La
-      > pregunta de si se replicaba en `linkdesign.cr` quedó respondida: **el texto de los dos sitios
-      > es el mismo**, así que el documento es común y Nolõ sólo cambia tres palabras —sin país,
-      > «agencia» en vez de «empresa», «diseño» adelante—. El artefacto «Por qué Google baja la nota»
-      > ya no cita frases sueltas: trae la tabla de familias por gasto y los seis lugares exactos
-      > donde entra cada palabra.
-      >
-      > **Lo que falta es sólo la redacción**, frase por frase, con el campo de `app.routes.ts` donde
-      > va cada una — y respetando el voseo argentino en Nolõ.
+- [x] ~~**El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.~~
+      **Hecho y publicado el 14 ago 2026** (merge `af7eb8a`); ver la entrada de esa noche. Era lo
+      único que tocaba la nota BELOW_AVERAGE de las cuatro campañas a la vez.
+- [ ] **~4 sep 2026 — Leer la nota de página de destino**, que es lo único que ese cambio toca y por
+      lo tanto se puede leer limpia. El efecto en *leads* no: ahí se superponen las conversiones
+      separadas del 13 ago, las extensiones del 14 y el copy.
+- [ ] **Recodificar los clips del portafolio.** Hoy pesan entre 1 y 2,9 MB y en 3G no llegan a tiempo
+      ni con la precarga por proximidad (0 de 5 listos; el poster cubre). Con ~400 KB por clip
+      funcionaría también ahí. Es trabajo de medios, no de código.
 - [ ] **~3 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
       **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
