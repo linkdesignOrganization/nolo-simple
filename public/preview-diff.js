@@ -145,7 +145,9 @@
           if (!t.nodeValue || !t.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
           var p = t.parentNode;
           while (p && p !== document.body) {
-            if (VETADOS[p.nodeName]) return NodeFilter.FILTER_REJECT;
+            // ...y la propia herramienta no se marca a sí misma: el panel de la lista
+            // contiene los textos nuevos y si no, se pinta entero de amarillo.
+            if (VETADOS[p.nodeName] || (p.id && p.id.indexOf('pvd-') === 0)) return NodeFilter.FILTER_REJECT;
             p = p.parentNode;
           }
           return NodeFilter.FILTER_ACCEPT;
