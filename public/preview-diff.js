@@ -18,66 +18,60 @@
 
   /** Cada entrada: `de` (producción) → `a` (este branch). `meta` = no es texto visible. */
   var CAMBIOS = [
-    // ── /web · español ────────────────────────────────────────────────────────
-    { pag: '/web', de: 'Sitios web hechos en serio.', a: 'Páginas web hechas en serio.' },
-    {
-      pag: '/web · «agencia» 7,0% acá contra 2,6% en CR',
-      de: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye a medida de verdad.',
-      a: 'Sin plantillas, sin atajos, sin constructores genéricos. Una agencia de diseño web que trabaja a medida de verdad.'
-    },
-    { pag: '/web', de: 'Lo que hay detrás de cada sitio.', a: 'Lo que hay detrás de cada página web.' },
-    { pag: '/web', de: 'Cada diseño, desde cero.', a: 'Cada diseño web, desde cero.' },
-    { pag: '/web', de: 'Así trabajamos un proyecto.', a: 'Así trabajamos un proyecto de desarrollo web.' },
-    { pag: '/web', de: '¿Cuánto tiempo tarda un sitio web?', a: '¿Cuánto tiempo tarda una página web?' },
-    { pag: 'formulario', de: 'Sitio web', a: 'Página web' },
-
-    // ── /software · español (acá el país SÍ pesa: 46,2% del gasto) ────────────
-    { pag: '/software', de: 'Software construido alrededor de tu operación.', a: 'Desarrollo de software alrededor de tu operación.' },
-    {
-      pag: '/software',
-      de: 'No adaptás tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.',
-      a: 'No adaptás tu empresa al software. Somos una empresa de desarrollo de software en Argentina y lo construimos alrededor de cómo ya funciona tu operación.'
-    },
-    { pag: '/software', de: 'Así trabajamos un proyecto.', a: 'Así trabajamos un proyecto de desarrollo de software.' },
-
-    // ── home · español ────────────────────────────────────────────────────────
-    {
-      pag: 'home',
-      de: 'Dos brazos. Un mismo criterio para construir software y webs a medida.',
-      a: 'Dos brazos. Un mismo criterio para construir software y páginas web a medida.'
-    },
-    { pag: 'home', de: 'Website a la medida', a: 'Páginas web a la medida' },
-    {
-      pag: 'home',
-      de: 'Diseñamos webs a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll.',
-      a: 'Diseñamos páginas web a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll.'
-    },
-
-    // ── inglés ────────────────────────────────────────────────────────────────
-    { pag: '/en/web', de: 'Real websites. Real code.', a: 'Real web design. Real code.' },
-    {
-      pag: '/en/web',
-      de: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
-      a: 'No templates. No shortcuts. No generic builders. Custom web design and development, every site built from code.'
-    },
-    { pag: '/en/web', de: "What's behind every site.", a: "What's behind every website." },
-    { pag: '/en/web', de: 'Every design, from scratch.', a: 'Every web design, from scratch.' },
-    { pag: '/en/web', de: 'How we run a project.', a: 'How we run a web development project.' },
-    { pag: '/en/software', de: 'Software built around your operation.', a: 'Custom software development around your operation.' },
-    {
-      pag: '/en/software',
-      de: "You don't adapt your company to the software. We build the software around how your operation already works.",
-      a: "You don't adapt your company to the software. We're a custom software development company in Argentina, and we build it around how your operation already works."
-    },
-    { pag: '/en/software', de: 'How we run a project.', a: 'How we run a software development project.' },
-
-    // ── metadatos: no se ven en la página, se listan en el panel ──────────────
-    { pag: '/web', meta: 'Título del navegador', de: 'Desarrollo web a medida | Nolo', a: 'Diseño y desarrollo de páginas web | Nolo' },
-    { pag: '/web', meta: 'Descripción para buscadores', de: 'Sitios web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas.', a: 'Páginas web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas.' },
-    { pag: '/software', meta: 'Título del navegador', de: 'Software a medida para empresas | Nolo', a: 'Desarrollo de software a medida en Argentina | Nolo' },
-    { pag: '/software', meta: 'Descripción para buscadores', de: 'Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA.', a: 'Empresa de desarrollo de software en Argentina. Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA.' },
-    { pag: '/en/web', meta: 'Título del navegador', de: 'Custom web development | Nolo', a: 'Web design and development | Nolo' },
-    { pag: '/en/software', meta: 'Título del navegador', de: 'Custom software for companies | Nolo', a: 'Custom software development in Argentina | Nolo' }
+    { pag: "home", de: "Dos brazos. Un mismo criterio para construir software y webs a medida.", a: "Dos brazos. Un mismo criterio para construir software y páginas web a medida." },
+    { pag: "home", de: "Website a la medida", a: "Páginas web a la medida" },
+    { pag: "home", de: "Diseñamos webs a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll.", a: "Diseñamos páginas web a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll." },
+    { pag: "/software", de: "Software construido alrededor de tu operación.", a: "Desarrollo de software alrededor de tu operación." },
+    { pag: "/software", de: "No adaptás tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.", a: "No adaptás tu empresa al software. Somos una empresa de desarrollo de software en Argentina y lo construimos alrededor de cómo ya funciona tu operación." },
+    { pag: "/software", de: "Así trabajamos un proyecto.", a: "Así trabajamos un proyecto de desarrollo de software." },
+    { pag: "/en/software", de: "Software built around your operation.", a: "Custom software development around your operation." },
+    { pag: "/en/software", de: "You don't adapt your company to the software. We build the software around how your operation already works.", a: "You don't adapt your company to the software. We're a custom software development company in Argentina, and we build it around how your operation already works." },
+    { pag: "/en/software", de: "How we run a project.", a: "How we run a software development project." },
+    { pag: "/web", de: "Sitios web hechos en serio.", a: "Páginas web hechas en serio." },
+    { pag: "/web", de: "Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye a medida de verdad.", a: "Sin plantillas, sin atajos, sin constructores genéricos. Una agencia de diseño web que trabaja a medida de verdad." },
+    { pag: "/web", de: "Lo que hay detrás de cada sitio.", a: "Lo que hay detrás de cada diseño web." },
+    { pag: "/web", de: "Desarrollamos con el mismo stack que usamos en sistemas empresariales en producción: Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita.", a: "Hacemos desarrollo web con el mismo stack que usamos en sistemas empresariales en producción: Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita." },
+    { pag: "/web", de: "Cada sitio se diseña primero para móvil y se construye con métricas de carga verificables. No solo se ve bien en distintos dispositivos, anda igual de rápido en cada uno.", a: "Cada página web se diseña primero para móvil y se construye con métricas de carga verificables. No solo se ve bien en distintos dispositivos, anda igual de rápido en cada uno." },
+    { pag: "/web", de: "Cada diseño, desde cero.", a: "Cada diseño web, desde cero." },
+    { pag: "/web", de: "Cada sitio parte de tu operación, no de una plantilla reciclada. Marca, jerarquía, ritmo y estructura se diseñan para tu empresa, no se eligen de un catálogo de temas. Si la marca o el negocio cambian con el tiempo, el sitio acompaña sin necesidad de rehacerlo entero.", a: "Cada diseño web parte de tu operación, no de una plantilla reciclada. Marca, jerarquía, ritmo y estructura se diseñan para tu empresa, no se eligen de un catálogo de temas. Si la marca o el negocio cambian con el tiempo, el diseño web acompaña sin necesidad de rehacerlo entero." },
+    { pag: "/web", de: "Empresas que necesitan capturar leads de una campaña antes de tener un sitio completo", a: "Empresas que necesitan capturar leads de una campaña antes de tener una página web completa" },
+    { pag: "/web", de: "Profesionales independientes que quieren un punto de contacto digital sin mantener un sitio extenso", a: "Profesionales independientes que quieren un punto de contacto digital sin mantener un sitio web extenso" },
+    { pag: "/web", de: "Sitio corporativo", a: "Sitio web corporativo" },
+    { pag: "/web", de: "Sitio con varias secciones pensado para empresas consolidadas que necesitan mostrar la operación completa: servicios, casos, equipo, novedades y canales de contacto. Estructura clara para representar la empresa con seriedad y darle al lead toda la información que necesita antes de tomar contacto.", a: "Página web con varias secciones pensada para empresas consolidadas que necesitan mostrar la operación completa: servicios, casos, equipo, novedades y canales de contacto. Estructura clara para representar la empresa con seriedad y darle al lead toda la información que necesita antes de tomar contacto." },
+    { pag: "/web", de: "Empresas en expansión que necesitan un sitio profesional para apuntar a nuevos mercados", a: "Empresas en expansión que necesitan un diseño web profesional para apuntar a nuevos mercados" },
+    { pag: "/web", de: "Tienda en línea desarrollada a medida, con catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada.", a: "Tienda en línea con desarrollo web a medida: catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada." },
+    { pag: "/web", de: "Así trabajamos un proyecto.", a: "Así trabajamos un proyecto de diseño web." },
+    { pag: "/web", de: "De la primera conversación al sitio publicado. Cuatro etapas con tiempos reales, sin promesas vacías.", a: "De la primera conversación a la página web publicada. Cuatro etapas de diseño web y programación, con tiempos reales y sin promesas vacías." },
+    { pag: "/web", de: "Entendemos qué necesita comunicar tu empresa, a quién apunta y qué tipo de sitio le sirve. Salimos con un primer alcance estimado y plazos tentativos.", a: "Entendemos qué necesita comunicar tu empresa, a quién apunta y qué tipo de página web le sirve. Salimos con un primer alcance estimado y plazos tentativos." },
+    { pag: "/web", de: "Mapeamos la audiencia, definimos arquitectura del sitio, dirección de diseño y estructura del contenido. Cerramos el alcance final y los criterios técnicos antes de tocar código.", a: "Mapeamos la audiencia, definimos la arquitectura del sitio web, la dirección del diseño web y la estructura del contenido. Cerramos el alcance final y los criterios técnicos antes de tocar código." },
+    { pag: "/web", de: "Desarrollo", a: "Diseño y desarrollo web" },
+    { pag: "/web", de: "Diseñamos, programamos y revisamos el sitio por etapas. Validás cada avance antes de seguir, sin sorpresas al final ni entregas de último momento.", a: "Diseñamos, programamos y revisamos la página web por etapas. Validás cada avance antes de seguir, sin sorpresas al final ni entregas de último momento." },
+    { pag: "/web", de: "Configuramos dominio, hosting y métricas, publicamos el sitio y dejamos todo listo para empezar a captar tráfico y aparecer en buscadores.", a: "Configuramos dominio, hosting y métricas, publicamos la página web y dejamos todo listo para empezar a captar tráfico y aparecer en las búsquedas de Argentina." },
+    { pag: "/web", de: "¿Cuánto tiempo tarda un sitio web?", a: "¿Cuánto tiempo tarda una página web?" },
+    { pag: "/web", de: "El plazo depende del alcance. Una landing puede estar lista en 3 a 4 semanas. Un sitio corporativo entre 6 y 10 semanas. Un e-commerce o sistema con integraciones entre 3 y 5 meses. El plazo exacto se define en la primera conversación y se respeta durante el proyecto. Avisamos antes si algo lo afecta, no después.", a: "El plazo depende del alcance. Una landing puede estar lista en 3 a 4 semanas. Un sitio web corporativo entre 6 y 10 semanas. Un e-commerce o sistema con integraciones entre 3 y 5 meses. El plazo exacto se define en la primera conversación y se respeta durante el proyecto. Avisamos antes si algo lo afecta, no después." },
+    { pag: "/web", de: "¿Quién hace los textos y las imágenes del sitio?", a: "¿Quién hace los textos y las imágenes de la página web?" },
+    { pag: "/web", de: "Cuando el cliente tiene contenido propio, lo usamos. Cuando no, podemos producir los textos a partir de entrevistas con tu equipo y conseguir o generar las imágenes según el tono del sitio. El contenido es parte del proyecto y se define al inicio, no se deja para último momento.", a: "Cuando el cliente tiene contenido propio, lo usamos. Cuando no, podemos producir los textos a partir de entrevistas con tu equipo y conseguir o generar las imágenes según el tono del diseño web. El contenido es parte del proyecto y se define al inicio, no se deja para último momento." },
+    { pag: "/web", de: "¿Cómo funciona el soporte después de entregar el sitio?", a: "¿Cómo funciona el soporte después de entregar la página web?" },
+    { pag: "/web", de: "Cada sitio se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitás un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que un sitio a medida no necesita.", a: "Cada página web se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitás un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que una agencia suele facturar y una página web a medida no necesita." },
+    { pag: "/web", de: "Sí. Los sitios incluyen un panel propio para que tu equipo actualice textos, imágenes, productos, novedades y lo que corresponda según el tipo de sitio. El panel se diseña para ser claro, sin necesidad de conocimientos técnicos. Para cambios estructurales o de diseño, nos encargamos nosotros.", a: "Sí. Las páginas web incluyen un panel propio para que tu equipo actualice textos, imágenes, productos, novedades y lo que corresponda según el tipo de sitio. El panel se diseña para ser claro, sin necesidad de conocimientos técnicos. Para cambios estructurales o de diseño web, nos encargamos nosotros." },
+    { pag: "/web", de: "¿Cómo aseguran que el sitio aparezca bien en Google?", a: "¿Cómo aseguran que la página web aparezca bien en Google?" },
+    { pag: "/web", de: "Aplicamos buenas prácticas de SEO técnico desde la arquitectura del sitio: velocidad de carga, estructura HTML semántica, metadatos, sitemap y datos estructurados. Esa base deja al sitio en condiciones óptimas para ser indexado. La estrategia de contenido y el posicionamiento por palabras clave son un servicio aparte que coordinamos con especialistas cuando el cliente lo necesita.", a: "Aplicamos buenas prácticas de SEO técnico desde la arquitectura del sitio web: velocidad de carga, estructura HTML semántica, metadatos, sitemap y datos estructurados. Esa base deja al diseño web en condiciones óptimas para ser indexado y competir en las búsquedas de Argentina. La estrategia de contenido y el posicionamiento por palabras clave son un servicio aparte que coordinamos con especialistas cuando el cliente lo necesita." },
+    { pag: "/web", de: "¿Pueden integrar el sitio con sistemas que ya usamos?", a: "¿Pueden integrar el sitio web con sistemas que ya usamos?" },
+    { pag: "/web", de: "Sí. Conectamos el sitio con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Cuando el sitio se construye a medida, corre sobre código propio (sin plugins de plataformas cerradas), así las integraciones quedan estables a largo plazo.", a: "Sí. Conectamos el sitio web con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Cuando el diseño web se hace a medida, corre sobre código propio (sin plugins de plataformas cerradas), así las integraciones quedan estables a largo plazo." },
+    { pag: "/en/web", de: "Real websites. Real code.", a: "Real web design. Real code." },
+    { pag: "/en/web", de: "No templates. No shortcuts. No generic builders. Every site is built from code.", a: "No templates. No shortcuts. No generic builders. Custom web design and development, every site built from code." },
+    { pag: "/en/web", de: "What's behind every site.", a: "What's behind every website." },
+    { pag: "/en/web", de: "Every design, from scratch.", a: "Every web design, from scratch." },
+    { pag: "/en/web", de: "How we run a project.", a: "How we run a web development project." },
+    { pag: "formulario", de: "Sitio web", a: "Página web" },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Software a medida para empresas | Nolo", a: "Desarrollo de software a medida en Argentina | Nolo" },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA.", a: "Empresa de desarrollo de software en Argentina. Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA." },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Custom software for companies | Nolo", a: "Custom software development in Argentina | Nolo" },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Internal systems built on your real operation: CRM, ERP and inventory, e-commerce, ticketing, booking, dashboards and AI automation.", a: "Custom software development company in Argentina. Internal systems built on your real operation: CRM, ERP and inventory, e-commerce, ticketing, booking, dashboards and AI automation." },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Desarrollo web a medida | Nolo", a: "Diseño y desarrollo de páginas web | Nolo" },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Sitios web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas.", a: "Páginas web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas." },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Custom web development | Nolo", a: "Web design and development | Nolo" },
+    { pag: "metadatos", meta: "no se ve en la página", de: "Custom websites with their own identity, performance and SEO: landing pages, corporate sites and e-commerce, no generic templates.", a: "Custom web design and development with its own identity, performance and SEO: landing pages, corporate sites and e-commerce, no generic templates." }
   ];
 
   var VISIBLES = CAMBIOS.filter(function (c) { return !c.meta; })

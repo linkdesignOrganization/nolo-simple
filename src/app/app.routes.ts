@@ -601,12 +601,12 @@ const webPageEs: LandingData = {
     }
   },
   capabilities: {
-    heading: 'Lo que hay detrás de cada página web.',
+    heading: 'Lo que hay detrás de cada diseño web.',
     cards: [
       {
         index: '01',
         title: 'Construido con tecnología seria.',
-        body: 'Desarrollamos con el mismo stack que usamos en sistemas empresariales en producción: Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita.',
+        body: 'Hacemos desarrollo web con el mismo stack que usamos en sistemas empresariales en producción: Angular para frontend, Node para backend, Azure para infraestructura. La pila final se ajusta a la integración que tu empresa necesita.',
         payload: {
           kind: 'logos',
           logos: [
@@ -620,7 +620,7 @@ const webPageEs: LandingData = {
       {
         index: '02',
         title: 'Rápidos en cualquier pantalla.',
-        body: 'Cada sitio se diseña primero para móvil y se construye con métricas de carga verificables. No solo se ve bien en distintos dispositivos, anda igual de rápido en cada uno.',
+        body: 'Cada página web se diseña primero para móvil y se construye con métricas de carga verificables. No solo se ve bien en distintos dispositivos, anda igual de rápido en cada uno.',
         payload: {
           kind: 'rows',
           rows: [
@@ -633,7 +633,7 @@ const webPageEs: LandingData = {
       {
         index: '03',
         title: 'Cada diseño web, desde cero.',
-        body: 'Cada sitio parte de tu operación, no de una plantilla reciclada. Marca, jerarquía, ritmo y estructura se diseñan para tu empresa, no se eligen de un catálogo de temas. Si la marca o el negocio cambian con el tiempo, el sitio acompaña sin necesidad de rehacerlo entero.',
+        body: 'Cada diseño web parte de tu operación, no de una plantilla reciclada. Marca, jerarquía, ritmo y estructura se diseñan para tu empresa, no se eligen de un catálogo de temas. Si la marca o el negocio cambian con el tiempo, el diseño web acompaña sin necesidad de rehacerlo entero.',
         payload: {
           kind: 'rows',
           rows: [
@@ -661,16 +661,16 @@ const webPageEs: LandingData = {
           'Configuración lista para campañas de Ads'
         ],
         cases: [
-          'Empresas que necesitan capturar leads de una campaña antes de tener un sitio completo',
-          'Profesionales independientes que quieren un punto de contacto digital sin mantener un sitio extenso'
+          'Empresas que necesitan capturar leads de una campaña antes de tener una página web completa',
+          'Profesionales independientes que quieren un punto de contacto digital sin mantener un sitio web extenso'
         ]
       },
       {
         icon: 'monitor-dot',
-        tab: 'Sitio corporativo',
-        title: 'Sitio corporativo',
+        tab: 'Sitio web corporativo',
+        title: 'Sitio web corporativo',
         description:
-          'Sitio con varias secciones pensado para empresas consolidadas que necesitan mostrar la operación completa: servicios, casos, equipo, novedades y canales de contacto. Estructura clara para representar la empresa con seriedad y darle al lead toda la información que necesita antes de tomar contacto.',
+          'Página web con varias secciones pensada para empresas consolidadas que necesitan mostrar la operación completa: servicios, casos, equipo, novedades y canales de contacto. Estructura clara para representar la empresa con seriedad y darle al lead toda la información que necesita antes de tomar contacto.',
         highlights: [
           'Gestión de contenido propio para que tu equipo actualice sin depender del desarrollador',
           'Sección de novedades o blog integrada',
@@ -679,7 +679,7 @@ const webPageEs: LandingData = {
         ],
         cases: [
           'Empresas industriales o de servicios que necesitan mostrar capacidad operativa, cartera y casos',
-          'Empresas en expansión que necesitan un sitio profesional para apuntar a nuevos mercados'
+          'Empresas en expansión que necesitan un diseño web profesional para apuntar a nuevos mercados'
         ]
       },
       {
@@ -687,7 +687,7 @@ const webPageEs: LandingData = {
         tab: 'E-commerce',
         title: 'E-commerce',
         description:
-          'Tienda en línea desarrollada a medida, con catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada.',
+          'Tienda en línea con desarrollo web a medida: catálogo, carrito, pagos integrados y panel propio para gestionar productos, stock y ventas. Construida para escalar con el negocio y adaptarse a las reglas comerciales reales, sin las limitaciones de una plataforma enlatada.',
         highlights: [
           'Gestión propia de productos, precios y stock',
           'Pagos integrados con las pasarelas que usás (Mercado Pago, transferencia, tarjeta)',
@@ -726,37 +726,37 @@ const webPageEs: LandingData = {
     rows: portfolioData.es
   },
   webProcess: {
-    title: 'Así trabajamos un proyecto de desarrollo web.',
+    title: 'Así trabajamos un proyecto de diseño web.',
     intro:
-      'De la primera conversación al sitio publicado. Cuatro etapas con tiempos reales, sin promesas vacías.',
+      'De la primera conversación a la página web publicada. Cuatro etapas de diseño web y programación, con tiempos reales y sin promesas vacías.',
     stages: [
       {
         order: '01',
         name: 'Primer contacto',
         duration: 'Hoy mismo',
         description:
-          'Entendemos qué necesita comunicar tu empresa, a quién apunta y qué tipo de sitio le sirve. Salimos con un primer alcance estimado y plazos tentativos.'
+          'Entendemos qué necesita comunicar tu empresa, a quién apunta y qué tipo de página web le sirve. Salimos con un primer alcance estimado y plazos tentativos.'
       },
       {
         order: '02',
         name: 'Discovery',
         duration: '1 a 3 semanas',
         description:
-          'Mapeamos la audiencia, definimos arquitectura del sitio, dirección de diseño y estructura del contenido. Cerramos el alcance final y los criterios técnicos antes de tocar código.'
+          'Mapeamos la audiencia, definimos la arquitectura del sitio web, la dirección del diseño web y la estructura del contenido. Cerramos el alcance final y los criterios técnicos antes de tocar código.'
       },
       {
         order: '03',
-        name: 'Desarrollo',
+        name: 'Diseño y desarrollo web',
         duration: '3 a 8 semanas',
         description:
-          'Diseñamos, programamos y revisamos el sitio por etapas. Validás cada avance antes de seguir, sin sorpresas al final ni entregas de último momento.'
+          'Diseñamos, programamos y revisamos la página web por etapas. Validás cada avance antes de seguir, sin sorpresas al final ni entregas de último momento.'
       },
       {
         order: '04',
         name: 'Lanzamiento',
         duration: '1 semana',
         description:
-          'Configuramos dominio, hosting y métricas, publicamos el sitio y dejamos todo listo para empezar a captar tráfico y aparecer en buscadores.'
+          'Configuramos dominio, hosting y métricas, publicamos la página web y dejamos todo listo para empezar a captar tráfico y aparecer en las búsquedas de Argentina.'
       }
     ]
   },
@@ -766,7 +766,7 @@ const webPageEs: LandingData = {
       {
         question: '¿Cuánto tiempo tarda una página web?',
         answer:
-          'El plazo depende del alcance. Una landing puede estar lista en 3 a 4 semanas. Un sitio corporativo entre 6 y 10 semanas. Un e-commerce o sistema con integraciones entre 3 y 5 meses. El plazo exacto se define en la primera conversación y se respeta durante el proyecto. Avisamos antes si algo lo afecta, no después.'
+          'El plazo depende del alcance. Una landing puede estar lista en 3 a 4 semanas. Un sitio web corporativo entre 6 y 10 semanas. Un e-commerce o sistema con integraciones entre 3 y 5 meses. El plazo exacto se define en la primera conversación y se respeta durante el proyecto. Avisamos antes si algo lo afecta, no después.'
       },
       {
         question: '¿Cómo es el esquema de pago?',
@@ -774,19 +774,19 @@ const webPageEs: LandingData = {
           'El esquema se define en la primera conversación según el alcance del proyecto y lo que mejor encaje a ambas partes. Los modelos más usados son pago 30/70 con anticipo y entrega, o pagos por hitos según etapas. Nos adaptamos al esquema, no al revés.'
       },
       {
-        question: '¿Quién hace los textos y las imágenes del sitio?',
+        question: '¿Quién hace los textos y las imágenes de la página web?',
         answer:
-          'Cuando el cliente tiene contenido propio, lo usamos. Cuando no, podemos producir los textos a partir de entrevistas con tu equipo y conseguir o generar las imágenes según el tono del sitio. El contenido es parte del proyecto y se define al inicio, no se deja para último momento.'
+          'Cuando el cliente tiene contenido propio, lo usamos. Cuando no, podemos producir los textos a partir de entrevistas con tu equipo y conseguir o generar las imágenes según el tono del diseño web. El contenido es parte del proyecto y se define al inicio, no se deja para último momento.'
       },
       {
-        question: '¿Cómo funciona el soporte después de entregar el sitio?',
+        question: '¿Cómo funciona el soporte después de entregar la página web?',
         answer:
-          'Cada sitio se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitás un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que un sitio a medida no necesita.'
+          'Cada página web se entrega con un año de garantía funcional. Durante ese período corregimos sin costo cualquier error que aparezca. Como el sitio se desarrolla, se prueba y se valida antes de salir, no necesita mantenimiento constante para seguir funcionando. Si más adelante necesitás un cambio o una nueva funcionalidad, cotizamos ese trabajo puntual. No tenemos cobros recurrentes por servicios que una agencia suele facturar y una página web a medida no necesita.'
       },
       {
         question: '¿Puedo actualizar el contenido yo mismo?',
         answer:
-          'Sí. Los sitios incluyen un panel propio para que tu equipo actualice textos, imágenes, productos, novedades y lo que corresponda según el tipo de sitio. El panel se diseña para ser claro, sin necesidad de conocimientos técnicos. Para cambios estructurales o de diseño, nos encargamos nosotros.'
+          'Sí. Las páginas web incluyen un panel propio para que tu equipo actualice textos, imágenes, productos, novedades y lo que corresponda según el tipo de sitio. El panel se diseña para ser claro, sin necesidad de conocimientos técnicos. Para cambios estructurales o de diseño web, nos encargamos nosotros.'
       },
       {
         question: '¿Qué pasa con el dominio y el hosting?',
@@ -794,14 +794,14 @@ const webPageEs: LandingData = {
           'El dominio es siempre del cliente, registrado a su nombre. Si ya tenés uno, lo seguimos usando. Si no, te ayudamos a registrarlo. Para el hosting hay dos opciones: lo alojamos nosotros en Azure con un costo mensual, o configuramos un hosting a nombre del cliente que paga directo al proveedor. En cualquier caso, ni el dominio ni el sitio quedan atados a nosotros.'
       },
       {
-        question: '¿Cómo aseguran que el sitio aparezca bien en Google?',
+        question: '¿Cómo aseguran que la página web aparezca bien en Google?',
         answer:
-          'Aplicamos buenas prácticas de SEO técnico desde la arquitectura del sitio: velocidad de carga, estructura HTML semántica, metadatos, sitemap y datos estructurados. Esa base deja al sitio en condiciones óptimas para ser indexado. La estrategia de contenido y el posicionamiento por palabras clave son un servicio aparte que coordinamos con especialistas cuando el cliente lo necesita.'
+          'Aplicamos buenas prácticas de SEO técnico desde la arquitectura del sitio web: velocidad de carga, estructura HTML semántica, metadatos, sitemap y datos estructurados. Esa base deja al diseño web en condiciones óptimas para ser indexado y competir en las búsquedas de Argentina. La estrategia de contenido y el posicionamiento por palabras clave son un servicio aparte que coordinamos con especialistas cuando el cliente lo necesita.'
       },
       {
-        question: '¿Pueden integrar el sitio con sistemas que ya usamos?',
+        question: '¿Pueden integrar el sitio web con sistemas que ya usamos?',
         answer:
-          'Sí. Conectamos el sitio con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Cuando el sitio se construye a medida, corre sobre código propio (sin plugins de plataformas cerradas), así las integraciones quedan estables a largo plazo.'
+          'Sí. Conectamos el sitio web con CRM, ERP, plataformas de email marketing, herramientas de analytics y otros sistemas según la integración que necesites. Cuando el diseño web se hace a medida, corre sobre código propio (sin plugins de plataformas cerradas), así las integraciones quedan estables a largo plazo.'
       }
     ]
   },
