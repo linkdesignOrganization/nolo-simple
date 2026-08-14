@@ -30,17 +30,17 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   '/software': {
     es: {
-      title: 'Software a medida para empresas | Nolo',
+      title: 'Desarrollo de software a medida en Argentina | Nolo',
       description:
-        'Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA.',
+        'Empresa de desarrollo de software en Argentina. Sistemas internos construidos sobre tu operación real: CRM, ERP e inventario, e-commerce, ticketing, reservas, dashboards y automatización con IA.',
       keywords:
         'software a medida, sistemas internos, crm, erp, e-commerce, ticketing, reservas, dashboards, automatización, argentina',
       canonicalPath: '/software'
     },
     en: {
-      title: 'Custom software for companies | Nolo',
+      title: 'Custom software development in Argentina | Nolo',
       description:
-        'Internal systems built on your real operation: CRM, ERP and inventory, e-commerce, ticketing, booking, dashboards and AI automation.',
+        'Custom software development company in Argentina. Internal systems built on your real operation: CRM, ERP and inventory, e-commerce, ticketing, booking, dashboards and AI automation.',
       keywords:
         'custom software, internal systems, crm, erp, e-commerce, ticketing, booking, dashboards, automation, argentina',
       canonicalPath: '/software',
@@ -49,17 +49,17 @@ export const SEO_CONTENT: Record<string, Record<Lang, SeoData>> = {
   },
   '/web': {
     es: {
-      title: 'Desarrollo web a medida | Nolo',
+      title: 'Diseño y desarrollo de páginas web | Nolo',
       description:
-        'Sitios web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas.',
+        'Páginas web a medida con identidad propia, performance y SEO: landing pages, sitios corporativos y e-commerce, sin plantillas genéricas.',
       keywords:
         'desarrollo web, sitios a medida, landing page, sitio corporativo, e-commerce, diseño web, argentina',
       canonicalPath: '/web'
     },
     en: {
-      title: 'Custom web development | Nolo',
+      title: 'Web design and development | Nolo',
       description:
-        'Custom websites with their own identity, performance and SEO: landing pages, corporate sites and e-commerce, no generic templates.',
+        'Custom web design and development with its own identity, performance and SEO: landing pages, corporate sites and e-commerce, no generic templates.',
       keywords:
         'web development, custom websites, landing page, corporate site, e-commerce, web design, argentina',
       canonicalPath: '/web',

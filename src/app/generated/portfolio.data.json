@@ -1,6 +1,17 @@
 {
   "es": [
     {
+      "client": "Facio & Cañas",
+      "logo": "/media/portfolio/faciosycanas-logo.svg",
+      "industry": "Legal",
+      "projectType": "Corporativo + IA",
+      "link": "https://fayca.com/",
+      "videoSrc": "/media/portfolio/faciosycanas-web.mp4",
+      "poster": "/media/portfolio/faciosycanas-poster.jpg",
+      "slug": "faciosycanas",
+      "heroSrc": "/media/hero/faciosycanas.mp4"
+    },
+    {
       "client": "Imperio",
       "logo": "/media/portfolio/imperio-logo.svg",
       "industry": "Alimentos",
@@ -199,17 +210,6 @@
       "heroSrc": "/media/hero/xcelerate.mp4"
     },
     {
-      "client": "TUPSA",
-      "logo": "/media/portfolio/tupsa-logo.png",
-      "industry": "Transporte",
-      "projectType": "Corporativo + gestión interna",
-      "link": "https://tupsa.com/",
-      "videoSrc": "/media/portfolio/tupsa-web.mp4",
-      "poster": "/media/portfolio/tupsa-poster.jpg",
-      "slug": "tupsa",
-      "heroSrc": "/media/hero/tupsa.mp4"
-    },
-    {
       "client": "Onigiri",
       "logo": "/media/portfolio/onigiri-logo.svg",
       "industry": "Restaurante",
@@ -266,6 +266,17 @@
     }
   ],
   "en": [
+    {
+      "client": "Facio & Cañas",
+      "logo": "/media/portfolio/faciosycanas-logo.svg",
+      "industry": "Legal",
+      "projectType": "Corporate + AI",
+      "link": "https://fayca.com/",
+      "videoSrc": "/media/portfolio/faciosycanas-web.mp4",
+      "poster": "/media/portfolio/faciosycanas-poster.jpg",
+      "slug": "faciosycanas",
+      "heroSrc": "/media/hero/faciosycanas.mp4"
+    },
     {
       "client": "Imperio",
       "logo": "/media/portfolio/imperio-logo.svg",
@@ -465,17 +476,6 @@
       "heroSrc": "/media/hero/xcelerate.mp4"
     },
     {
-      "client": "TUPSA",
-      "logo": "/media/portfolio/tupsa-logo.png",
-      "industry": "Transport",
-      "projectType": "Corporate + internal management",
-      "link": "https://tupsa.com/",
-      "videoSrc": "/media/portfolio/tupsa-web.mp4",
-      "poster": "/media/portfolio/tupsa-poster.jpg",
-      "slug": "tupsa",
-      "heroSrc": "/media/hero/tupsa.mp4"
-    },
-    {
       "client": "Onigiri",
       "logo": "/media/portfolio/onigiri-logo.svg",
       "industry": "Restaurant",
@@ -532,6 +532,7 @@
     }
   ],
   "slugs": [
+    "faciosycanas",
     "imperio",
     "hesa",
     "uga",
@@ -550,7 +551,6 @@
     "evoke",
     "psicoyng",
     "xcelerate",
-    "tupsa",
     "onigiri",
     "gramas",
     "cimed",

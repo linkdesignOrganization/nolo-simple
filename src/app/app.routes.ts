@@ -26,7 +26,7 @@ const contactInfo = {
 const homePageEs: LandingData = {
   isHome: true,
   eyebrow: 'Nolõ / 001',
-  title: 'Dos brazos. Un mismo criterio para construir software y webs a medida.',
+  title: 'Dos brazos. Un mismo criterio para construir software y páginas web a medida.',
   description:
     'Nolõ separa su oferta en dos entradas claras. Un brazo para software a medida y otro para webs a medida, dentro de una interfaz viva, precisa y con mucho peso tipográfico.',
   homeArms: [
@@ -41,9 +41,9 @@ const homePageEs: LandingData = {
     },
     {
       eyebrow: '/web',
-      title: 'Website a la medida',
+      title: 'Páginas web a la medida',
       body:
-        'Diseñamos webs a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll.',
+        'Diseñamos páginas web a medida con identidad propia, performance, SEO y una experiencia visual clara desde el primer scroll.',
       cta: 'Entrar a Web',
       route: '/web',
       type: 'web'
@@ -111,9 +111,9 @@ const industriasSectionEn = {
 
 const softwarePageEs: LandingData = {
   eyebrow: '',
-  title: 'Software construido alrededor de tu operación.',
+  title: 'Desarrollo de software alrededor de tu operación.',
   description:
-    'No adaptás tu empresa al software. Construimos el software alrededor de cómo ya funciona tu operación.',
+    'No adaptás tu empresa al software. Somos una empresa de desarrollo de software en Argentina y lo construimos alrededor de cómo ya funciona tu operación.',
   ctaPrimary: 'Agendar reunión',
   ctaPrimaryLink: contactInfo.calendarLink,
   ctaSecondary: 'Mandar mensaje',
@@ -240,7 +240,7 @@ const softwarePageEs: LandingData = {
     ]
   },
   process: {
-    title: 'Así trabajamos un proyecto.',
+    title: 'Así trabajamos un proyecto de desarrollo de software.',
     intro:
       'De la primera conversación al sistema funcionando. Cuatro etapas con tiempos reales, sin promesas vacías.',
     stages: [
@@ -345,9 +345,9 @@ const softwarePageEs: LandingData = {
 
 const softwarePageEn: LandingData = {
   eyebrow: '',
-  title: 'Software built around your operation.',
+  title: 'Custom software development around your operation.',
   description:
-    "You don't adapt your company to the software. We build the software around how your operation already works.",
+    "You don't adapt your company to the software. We're a custom software development company in Argentina, and we build it around how your operation already works.",
   ctaPrimary: 'Book a meeting',
   ctaPrimaryLink: contactInfo.calendarLinkEn,
   ctaSecondary: 'Send a message',
@@ -474,7 +474,7 @@ const softwarePageEn: LandingData = {
     ]
   },
   process: {
-    title: 'How we run a project.',
+    title: 'How we run a software development project.',
     intro:
       'From the first conversation to a working system. Four stages with real timelines, no empty promises.',
     stages: [
@@ -583,13 +583,13 @@ const softwarePageEn: LandingData = {
 
 const webPageEs: LandingData = {
   eyebrow: '',
-  title: 'Sitios web hechos en serio.',
+  title: 'Páginas web hechas en serio.',
   description: '',
   stats: [],
   theme: 'website',
   webHero: {
-    title: 'Sitios web hechos en serio.',
-    lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Cada sitio se construye a medida de verdad.',
+    title: 'Páginas web hechas en serio.',
+    lead: 'Sin plantillas, sin atajos, sin constructores genéricos. Una agencia de diseño web que trabaja a medida de verdad.',
     actions: [
       { label: 'Agendar reunión', link: contactInfo.calendarLink },
       { label: 'Mandar mensaje', link: '#hablemos' }
@@ -601,7 +601,7 @@ const webPageEs: LandingData = {
     }
   },
   capabilities: {
-    heading: 'Lo que hay detrás de cada sitio.',
+    heading: 'Lo que hay detrás de cada página web.',
     cards: [
       {
         index: '01',
@@ -632,7 +632,7 @@ const webPageEs: LandingData = {
       },
       {
         index: '03',
-        title: 'Cada diseño, desde cero.',
+        title: 'Cada diseño web, desde cero.',
         body: 'Cada sitio parte de tu operación, no de una plantilla reciclada. Marca, jerarquía, ritmo y estructura se diseñan para tu empresa, no se eligen de un catálogo de temas. Si la marca o el negocio cambian con el tiempo, el sitio acompaña sin necesidad de rehacerlo entero.',
         payload: {
           kind: 'rows',
@@ -726,7 +726,7 @@ const webPageEs: LandingData = {
     rows: portfolioData.es
   },
   webProcess: {
-    title: 'Así trabajamos un proyecto.',
+    title: 'Así trabajamos un proyecto de desarrollo web.',
     intro:
       'De la primera conversación al sitio publicado. Cuatro etapas con tiempos reales, sin promesas vacías.',
     stages: [
@@ -764,7 +764,7 @@ const webPageEs: LandingData = {
     heading: '/preguntas frecuentes',
     items: [
       {
-        question: '¿Cuánto tiempo tarda un sitio web?',
+        question: '¿Cuánto tiempo tarda una página web?',
         answer:
           'El plazo depende del alcance. Una landing puede estar lista en 3 a 4 semanas. Un sitio corporativo entre 6 y 10 semanas. Un e-commerce o sistema con integraciones entre 3 y 5 meses. El plazo exacto se define en la primera conversación y se respeta durante el proyecto. Avisamos antes si algo lo afecta, no después.'
       },
@@ -811,13 +811,13 @@ const webPageEs: LandingData = {
 
 const webPageEn: LandingData = {
   eyebrow: '',
-  title: 'Real websites. Real code.',
+  title: 'Real web design. Real code.',
   description: '',
   stats: [],
   theme: 'website',
   webHero: {
-    title: 'Real websites. Real code.',
-    lead: 'No templates. No shortcuts. No generic builders. Every site is built from code.',
+    title: 'Real web design. Real code.',
+    lead: 'No templates. No shortcuts. No generic builders. Custom web design and development, every site built from code.',
     actions: [
       { label: 'Book a meeting', link: contactInfo.calendarLinkEn },
       { label: 'Send a message', link: '#hablemos' }
@@ -829,7 +829,7 @@ const webPageEn: LandingData = {
     }
   },
   capabilities: {
-    heading: "What's behind every site.",
+    heading: "What's behind every website.",
     cards: [
       {
         index: '01',
@@ -860,7 +860,7 @@ const webPageEn: LandingData = {
       },
       {
         index: '03',
-        title: 'Every design, from scratch.',
+        title: 'Every web design, from scratch.',
         body: 'Every site starts from how you operate, not a recycled template. Brand, hierarchy, rhythm and structure are designed for your company, not picked from a theme catalog. When the brand or the business changes, the site keeps up, no full rebuild required.',
         payload: {
           kind: 'rows',
@@ -951,7 +951,7 @@ const webPageEn: LandingData = {
     rows: portfolioData.en
   },
   webProcess: {
-    title: 'How we run a project.',
+    title: 'How we run a web development project.',
     intro:
       'From first conversation to live site. Four stages, real timelines, no empty promises.',
     stages: [
