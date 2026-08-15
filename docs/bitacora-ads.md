@@ -914,10 +914,30 @@ La verificación píxel a píxel y el análisis de los videos están en la entra
       bits/píxel valen lo mismo que los del portafolio—, pesan porque tienen 2,8× más píxeles. En
       móvil se pintan a 1068 px de ancho y el archivo trae 1280. Se propuso decidirlo mirando una
       comparación lado a lado, no por cálculo.
-- [ ] **~3 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
+- [ ] **4 sep 2026 — la nota de página de destino.** Es la revisión nueva y la razón por la que la
+      cita se movió del 3 al 4: son tres semanas exactas desde que el copy salió a producción, que es
+      lo que esa nota necesita para recalcularse. **Línea base del 14 ago, contra la que hay que
+      comparar:**
+
+      | campaña | keyword | QS | página |
+      |---|---|---:|---|
+      | Búsqueda (CR) | desarrollo de sitios web | 5 | BELOW_AVERAGE |
+      | Software (CR) | empresa de desarrollo de software | 3 | BELOW_AVERAGE |
+      | **Búsqueda #2 (AR)** | desarrollo de sitios web | **7** | BELOW_AVERAGE |
+      | **Software #2 (AR)** | empresa de desarrollo de software | **5** | BELOW_AVERAGE |
+
+      > Sale de `ad_group_criterion.quality_info.post_click_quality_score`, se consulta **cualquier
+      > día** y el histórico admite `segments.week`. Filtrar por `negative = FALSE` **y** mirar el
+      > estado del grupo de anuncios: hay keywords `ENABLED` en grupos `REMOVED` que ensucian.
+      >
+      > **Que una sola campaña pase a «promedio» no prueba nada**: la nota es relativa y con una
+      > keyword por campaña es muestra de tamaño uno. La señal es que varias se muevan igual o que
+      > una se sostenga varias semanas. Las argentinas son las que más rápido juntan masa
+      > (Búsqueda #2 2.934 impresiones/mes, Software #2 1.602).
+- [ ] **~4 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
       **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
-- [ ] **~3 sep 2026** — Revisar **"Software #2"** recién entonces, con las acciones separadas dando
+- [ ] **~4 sep 2026** — Revisar **"Software #2"** recién entonces, con las acciones separadas dando
       canal real en vez de inferencia por value unitario. El caso para subirla mejora solo **si el
       CPC baja hacia la puja que sugiere el Planner (0,91–3,72 contra 4,15–6,23 actuales)**; si sigue
       en 4+ con QS 5, la palanca es la página de destino y no el presupuesto. No mover las dos
@@ -928,15 +948,15 @@ La verificación píxel a píxel y el análisis de los videos están en la entra
       > CTR sí son legibles** —responden al cambio del 14 ago casi de inmediato— y son justamente lo
       > que ese cambio buscaba mover. Lo que queda contaminado es leer el *volumen* de leads serios
       > como efecto de una sola causa. "Búsqueda #2" sigue con su ventana limpia.
-- [ ] **3 sep 2026 — o después, nunca antes** ~~(27 ago)~~ — Recalibrar los values con datos propios
-      por canal. Hoy la escala (WhatsApp 10 contra formulario 30–60) es un supuesto sin evidencia; el
-      CRM de LinkDesign sugiere que la brecha real es **mayor**.
-      > **Se movió del 27 de agosto al 3 de septiembre el 13 ago 2026, a propósito.** Recalibrar a
-      > mitad de la ventana de medición habría dejado el análisis del 3 de septiembre con **dos
-      > escalas de valor mezcladas** y el aprendizaje de Smart Bidding reiniciado por la mitad — el
-      > mismo error que volvió irresoluble lo del 23 de julio, cuando el recorte de presupuesto y el
-      > ×2 de values cayeron el mismo día. La ventana 13 ago – 3 sep queda con **una sola escala**.
-      > Si el 3 de septiembre se decide recalibrar, ese cambio abre su propia ventana de medición.
+- [ ] **4 sep 2026 — o después, nunca antes** ~~(27 ago → 3 sep)~~ — Recalibrar los values con datos
+      propios por canal. Hoy la escala (WhatsApp 10 contra formulario 30–60) es un supuesto sin
+      evidencia; el CRM de LinkDesign sugiere que la brecha real es **mayor**.
+      > **Se movió del 27 de agosto al 3 de septiembre el 13 ago 2026, y del 3 al 4 el 14 ago.**
+      > Recalibrar a mitad de la ventana de medición habría dejado el análisis con **dos escalas de
+      > valor mezcladas** y el aprendizaje de Smart Bidding reiniciado por la mitad — el mismo error
+      > que volvió irresoluble lo del 23 de julio, cuando el recorte de presupuesto y el ×2 de values
+      > cayeron el mismo día. La ventana 13 ago – 4 sep queda con **una sola escala**. Si ese día se
+      > decide recalibrar, el cambio abre su propia ventana de medición.
 - [ ] **24–48 h** — Verificar que las cuatro acciones nuevas registran conversiones. Si una queda en
       cero mientras las otras se mueven, el label quedó mal copiado: es el modo de fallo silencioso
       de este cambio.
