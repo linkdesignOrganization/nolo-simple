@@ -323,36 +323,65 @@ export type CapabilityCard = {
       will-change: transform, opacity;
     }
 
-    /* Modo "flat" (mobile o reduced-motion): sin pin ni hijack; cards apiladas y reveal. */
-    :host(.wc-flat) .wc-tall {
-      height: auto !important;
+    /* Modo "flat" (mobile o reduced-motion): sin pin ni hijack; cards apiladas y reveal.
+       El LAYOUT se decide por media query y no sólo por la clase .wc-flat, que la pone
+       ngAfterViewInit — y eso no corre en el prerender. Antes, el HTML servido a un móvil traía el
+       layout de escritorio y al hidratar el .wc-track colapsaba de 600px a 0: 0,71 de CLS medido.
+       Con la media query el prerender ya sale apilado y no hay salto.
+       El breakpoint debe seguir a MOBILE_MAX (860) — si cambia uno, cambiar el otro. */
+    @mixin wc-flat-layout {
+      .wc-tall {
+        height: auto !important;
+      }
+
+      .wc-pin {
+        position: static;
+        height: auto;
+        width: auto;
+        margin-inline: 0;
+        overflow: visible;
+        display: block;
+        padding: 0 clamp(1rem, 3vw, 2.5rem) var(--section-py);
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+
+      .wc-track {
+        flex-direction: column;
+        padding-inline: 0;
+        gap: clamp(1.25rem, 5vw, 2rem);
+        transform: none !important;
+        will-change: auto;
+      }
+
+      .wc-card {
+        width: auto;
+        height: auto;
+        border: 1px solid var(--line-strong) !important;
+        border-radius: 0.85rem !important;
+      }
+
+      .wc-anim {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
-    :host(.wc-flat) .wc-pin {
-      position: static;
-      height: auto;
-      width: auto;
-      margin-inline: 0;
-      overflow: visible;
-      display: block;
-      padding: 0 clamp(1rem, 3vw, 2.5rem) var(--section-py);
-      -webkit-mask-image: none;
-      mask-image: none;
+    @media (max-width: 860px), (prefers-reduced-motion: reduce) {
+      :host {
+        @include wc-flat-layout;
+      }
     }
 
-    :host(.wc-flat) .wc-track {
-      flex-direction: column;
-      padding-inline: 0;
-      gap: clamp(1.25rem, 5vw, 2rem);
-      transform: none !important;
-      will-change: auto;
+    /* La clase se conserva: cubre el reduced-motion detectado en runtime y mantiene el modo flat
+       cuando el resize cruza el breakpoint. */
+    :host(.wc-flat) {
+      @include wc-flat-layout;
     }
 
+    /* El reveal sí necesita JS (IntersectionObserver), así que queda atado a la clase: sin ella las
+       cards se ven, que es lo correcto si el bundle no llegara a cargar. */
     :host(.wc-flat) .wc-card {
-      width: auto;
-      height: auto;
-      border: 1px solid var(--line-strong) !important;
-      border-radius: 0.85rem !important;
       opacity: 0;
       transform: translateY(28px);
       transition:
@@ -363,11 +392,6 @@ export type CapabilityCard = {
     :host(.wc-flat.is-in) .wc-card {
       opacity: 1;
       transform: none;
-    }
-
-    :host(.wc-flat) .wc-anim {
-      opacity: 1 !important;
-      transform: none !important;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -392,6 +416,8 @@ export class WebCapabilitiesComponent implements AfterViewInit, OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly platformId = inject(PLATFORM_ID);
 
+  // Espejo de la media query del bloque `styles` (`max-width: 860px`), que es la que decide el
+  // layout apilado ya en el prerender. Si cambia acá, cambiarla allá.
   private static readonly MOBILE_MAX = 860;
   // Viewport-heights de scroll por card → controla el ritmo del horizontal (cómodo).
   private static readonly VH_PER_CARD = 1.15;
