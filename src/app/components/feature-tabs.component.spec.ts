@@ -4,9 +4,9 @@ import { afterEach, vi } from 'vitest';
 import { FeatureTab, FeatureTabsComponent } from './feature-tabs.component';
 
 const tabs: FeatureTab[] = [
-  { lead: 'Ordená', body: 'la operación que ya tenés.', videoSrc: '/media/a.mp4' },
-  { lead: 'Centralizá', body: 'las fichas y los flujos.', videoSrc: '/media/b.mp4' },
-  { lead: 'Automatizá', body: 'las tareas repetitivas.', videoSrc: '/media/c.mp4' }
+  { lead: 'Ordená', body: 'la operación que ya tenés.', videoSrc: '/media/a.mp4', poster: '/media/a.jpg' },
+  { lead: 'Centralizá', body: 'las fichas y los flujos.', videoSrc: '/media/b.mp4', poster: '/media/b.jpg' },
+  { lead: 'Automatizá', body: 'las tareas repetitivas.', videoSrc: '/media/c.mp4', poster: '/media/c.jpg' }
 ];
 
 describe('FeatureTabsComponent', () => {
@@ -46,6 +46,12 @@ describe('FeatureTabsComponent', () => {
     expect(tabButtons[1].getAttribute('aria-selected')).toBe('false');
     expect(videos[0].classList.contains('is-active')).toBe(true);
     expect(videos[1].classList.contains('is-active')).toBe(false);
+    // El bloque queda sobre el fold: sin poster el área está vacía hasta que el video trae datos.
+    expect(Array.from(videos).map((video) => video.getAttribute('poster'))).toEqual([
+      '/media/a.jpg',
+      '/media/b.jpg',
+      '/media/c.jpg'
+    ]);
 
     fixture.destroy();
   });

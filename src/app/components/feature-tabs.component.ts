@@ -16,6 +16,9 @@ export type FeatureTab = {
   body: string;
   lead: string;
   videoSrc: string;
+  /** Primer frame del propio video. El bloque está sobre el fold: sin poster queda un hueco
+      vacío hasta que el video tiene datos (~3.5 s en 4G). */
+  poster: string;
 };
 
 @Component({
@@ -32,6 +35,7 @@ export type FeatureTab = {
           class="feature-video"
           [class.is-active]="$index === activeIndex()"
           [src]="tab.videoSrc"
+          [poster]="tab.poster"
           [muted]="true"
           loop
           playsinline

@@ -10,7 +10,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { LucideArrowLeft, LucideHeadset } from '@lucide/angular';
-import { filter, map, startWith } from 'rxjs';
+import { filter, map } from 'rxjs';
 
 import { TechnicalGridSurfaceComponent } from './components/technical-grid-surface.component';
 import { LanguageService } from './services/language.service';
@@ -45,10 +45,14 @@ export class App {
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
-      startWith(null),
       map(() => this.router.url),
     ),
-    { initialValue: this.router.url },
+    // Sin `startWith(null)` a propósito: emitía al suscribirse y leía `router.url` cuando el
+    // Router todavía no había resuelto la navegación inicial, o sea '/'. Con el DOM hidratado eso
+    // pintaba el header del home (isHome() true ⇒ sin <nav>) durante ~400 ms y lo corregía al
+    // llegar NavigationEnd: un salto de layout y su reversión, 0,79 de CLS medido. `Location.path()`
+    // ya trae la ruta real y vale igual en el prerender que en el browser.
+    { initialValue: this.location.path() || '/' },
   );
 
   // Idioma global (ES/EN). El toggle del nav lo alterna; todo el sitio reacciona sin recargar.
