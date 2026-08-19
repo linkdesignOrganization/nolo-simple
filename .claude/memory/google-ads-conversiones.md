@@ -14,6 +14,10 @@ LinkDesign (Costa Rica) y SOWE (Argentina, misma empresa) comparten **una sola c
 - **Nuevo** `C:\Users\Roberth Castillo\Desktop\LinkDesign\WEB\LinkDesign-simple` (Angular 21) — reemplazará al legacy.
 - **Nolõ** `C:\Users\Roberth Castillo\Desktop\Nolo\WEB` (Angular 21) — copia del nuevo, para Argentina. Divergió un poco (sin SeoService/isNotFound en su `app.ts`). *La carpeta se llamó `Sowe` hasta el 30 jul 2026.*
 
+> **Desactualizado desde el 13 ago 2026:** las 2 acciones agrupadas pasaron a **5 separadas por
+> canal** (WhatsApp / correo / reunión / formulario + scroll) en ambos mercados. Lo que sigue
+> describe el modelo de junio y se conserva como historia. Estado actual: `docs/bitacora-ads.md`.
+
 **Modelo correcto = SOLO 2 acciones de conversión** (definido por el legacy):
 - **CONTACTO** (`AW-16767245191/qSMFCN2ek-YZEIe3n7s-`): WhatsApp (10), copiar correo (50), agendar reunión (60), formulario (30-60 por scoring). Categoría "Contacto". **Values ×2 desde el 23-24 jul 2026** — antes eran 5/25/30 y 15-30.
 - **SCROLL** (`AW-16767245191/qZoeCOfls-oZEIe3n7s-`): scroll al 50% (value 1). Conviene marcarla **Secundaria** (no optimizar hacia ella).
@@ -31,7 +35,7 @@ LinkDesign (Costa Rica) y SOWE (Argentina, misma empresa) comparten **una sola c
 
 **Pendiente en Google Ads (lo maneja el usuario):**
 1. Conversion actions ya creadas. "Scroll Argentina" debe ir en categoría **Otras** (no Contacto) y marcarse **secundaria**; "Contacto Argentina" principal con "usar valores distintos por conversión". (Una acción no se "saca" de su objetivo estándar: eso lo define su categoría.)
-2. Objetivo de conversión **personalizado** ("Contacto Argentina") asignado **a nivel de campaña** (no como predeterminado de cuenta), para separar la optimización de LinkDesign. Google advierte que custom goals pueden bajar la eficiencia del bidding; vale la pena igual (datos de CR contaminarían AR).
+2. ~~Objetivo de conversión **personalizado** ("Contacto Argentina") asignado **a nivel de campaña**~~ — **HECHO desde junio 2026**: id `6458009700`, aplicado a "Búsqueda #2" y "Software #2". La decisión fue correcta (los datos de CR contaminarían AR), pero **exige mantenimiento manual**: toda acción nueva para Argentina hay que agregarla a esa lista o **mide pero no puja**. Ya falló una vez — las cuatro acciones separadas por canal del 13 ago 2026 quedaron fuera y estuvieron tres días hábiles sin pujar, con el 63 % del valor argentino invisible para Smart Bidding (detectado y corregido el 18 ago 2026). Para saber qué puja una campaña hay que mirar `conversion_goal_campaign_config` **primero**: si trae `custom_conversion_goal`, `campaign_conversion_goal` y `customer_conversion_goal` son irrelevantes — y «ninguna categoría biddable» en la segunda es la *firma* de que hay objetivo personalizado, no de que herede las de la cuenta.
 3. Campaña nueva (copia de LinkDesign vía Google Ads Editor). Zona horaria de la cuenta = **Costa Rica (UTC-6)**; Argentina va +3h → restar 3h al cargar horarios. Sitelinks: máx granularidad = grupo de anuncios (no por anuncio).
 
 Conexión con [[sowe-google-ads-cuenta]] si se crea.

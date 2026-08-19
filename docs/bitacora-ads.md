@@ -189,6 +189,13 @@ Todas `WEBPAGE`, `ONE_PER_CLICK`, primarias, lookback 30 días. **Categoría DEF
 `DEFAULT/WEBSITE` puja. Poner otra categoría las habría dejado fuera de la puja sin aviso. Los values
 no se tocaron. "Contacto Argentina" queda ENABLED pero ya no se dispara: conserva su histórico.
 
+> **⚠️ Corregido el 18 ago 2026 — el motivo de este párrafo es falso, y tuvo consecuencias.** La
+> categoría DEFAULT era la elección correcta, pero **no porque las campañas argentinas usen los
+> objetivos de la cuenta**: usan el objetivo personalizado «Contacto Argentina» (`6458009700`), donde
+> lo que puja lo decide **la lista de acciones**, no la categoría. Como estas cuatro nuevas no se
+> agregaron a esa lista, **estuvieron tres días hábiles registrando sin pujar**. Ver la entrada del
+> 18 de agosto al final de este documento.
+
 En el código: `ADS_CONVERSIONS` pasa de dos entradas a cinco en `services/ads.service.ts`, más
 `GA_CONVERSION.SEND_TO` en `lead-form/models/lead-form-options.ts`. Cambio espejo de LinkDesign.
 46 tests pasan.
@@ -206,15 +213,28 @@ Se comprobó por API lo que este documento pedía revisar:
 
 - **"Scroll Argentina (2)" NO es secundaria**: está `primary_for_goal = True` y cuenta en la columna
   de conversiones, con categoría DEFAULT (no "Otras").
-- **Las campañas argentinas NO tienen objetivo propio a nivel campaña.** `campaign_conversion_goal`
+- ~~**Las campañas argentinas NO tienen objetivo propio a nivel campaña.** `campaign_conversion_goal`
   existe sólo para "Búsqueda" y "Software" (CONTACT/WEBSITE, las de Costa Rica); "Búsqueda #2" y
   "Software #2" usan los objetivos de la **cuenta**, que hacen pujar tanto DEFAULT/WEBSITE como
-  CONTACT/WEBSITE.
+  CONTACT/WEBSITE.~~ **Falso. Corregido el 18 ago 2026** — ver abajo.
 
-O sea: son las campañas de **Costa Rica** las que están aisladas, no las argentinas. En la práctica
+~~O sea: son las campañas de **Costa Rica** las que están aisladas, no las argentinas. En la práctica
 el riesgo es acotado —una conversión se atribuye al clic que la originó, y nadie llega por un anuncio
 argentino para convertir en `linkdesign.cr`— pero la configuración no es la que este pendiente
-describía, y ahora hay ocho acciones más en juego. Queda abierto, con el estado real documentado.
+describía, y ahora hay ocho acciones más en juego. Queda abierto, con el estado real documentado.~~
+
+> **⚠️ Esta conclusión es exactamente al revés, y se verificó el 18 ago 2026.** Las campañas
+> argentinas **sí** tienen configuración propia: usan el objetivo personalizado «Contacto Argentina»
+> (`6458009700`), tal como se había planeado en junio. **Son las más aisladas de las cuatro**, porque
+> ese objetivo sólo contiene acciones argentinas.
+>
+> El error fue de método: se consultó `campaign_conversion_goal`, que para esas dos campañas devuelve
+> **ninguna categoría biddable** — y eso se leyó como «hereda las de la cuenta» cuando es justo la
+> **firma de que hay un objetivo personalizado**. La tabla que había que mirar es
+> `conversion_goal_campaign_config`, y hay que mirarla **primero**.
+>
+> El pendiente no estaba incumplido: estaba cumplido desde junio. Lo que faltaba era **mantenerlo**,
+> y eso es lo que falló el 13 de agosto.
 
 ## 13 ago 2026 (misma tarde) — Concordancia, geografía y presupuesto de las dos campañas AR
 
@@ -894,6 +914,123 @@ aunque bastaría con el `gap`.
 La verificación píxel a píxel y el análisis de los videos están en la entrada gemela de
 `docs/bitacora-ads-values-troas.md` del repo `LinkDesign-simple`.
 
+## 17 ago 2026 — Las cuatro acciones nuevas miden bien
+
+Cierra el pendiente de 24–48 h del 13 de agosto: verificar que las acciones separadas por canal
+registran, porque **un label mal copiado falla en silencio** —la acción queda en cero para siempre y
+el informe se ve normal—.
+
+### La ventana real es de dos días hábiles, no de cuatro
+
+El deploy fue el **13 ago a las 19:34** (`a7a6b57`) y las campañas argentinas corren **L-V 6-15**.
+Todo el tráfico pagado del 13 ocurrió con el código viejo y el fin de semana están apagadas: quedan
+**viernes 14 y lunes 17**.
+
+### Los labels de producción contra los del servidor: coinciden los cinco
+
+Es la verificación que cierra el asunto, porque es determinista y **no depende de que haya volumen**.
+Se bajó el bundle de producción `nolo.ar/main-NMV7BHXH.js` y se cruzó contra el
+`conversion_action.tag_snippets` que devuelve la API:
+
+- **Los 5 labels nuevos coinciden byte a byte.**
+- **El viejo `-7YECOqL7b8c…` (Contacto Argentina) ya no aparece**: cero coincidencias en el bundle.
+  Dejó de acumular como se planeó, y sigue ENABLED conservando su histórico.
+
+**El método es reutilizable para cualquier cambio de etiquetas**: no hay que esperar a que alguien
+convierta para saber si el label está bien. Responde la pregunta el mismo día.
+
+### Dos ya registraron, y con el value correcto
+
+| acción | primera conversión | campaña | value | comprobación |
+|---|---|---|---:|---|
+| Contacto Correo Argentina | 17 ago | Software #2 | 40,00 | 50 × 0,80 ✔ |
+| Contacto WhatsApp Argentina | 14 ago | Software #2 | 8,00 | 10 × 0,80 ✔ |
+
+Que lleguen **modulados** prueba algo que el pendiente no pedía: no sólo viaja el label, también el
+`value` del evento. Si el value no llegara, se vería el `default_value` de 1,0 con que se crearon.
+
+### Las que quedaron en cero: no hubo oportunidad, y está medido
+
+Con la tasa base de contactos por clic del período anterior (24 jul – 12 ago) aplicada a los clics
+reales del 14 y el 17:
+
+| campaña | clics 14+17 | contactos esperados | observados |
+|---|---:|---:|---:|
+| Búsqueda #2 | 26 | **2,93** | **0** |
+| Software #2 | 11 | 1,50 | 2 |
+
+**El punto con tensión es "Búsqueda #2"**: 26 clics —la campaña de más tráfico— y ningún contacto,
+cuando se esperaban casi tres (P ≈ 5 %). No se puede concluir nada con dos días, y su `Scroll
+Argentina (2)` registró 17 veces en la misma ventana, así que las etiquetas de esa campaña llegan
+bien. Quedó anotado para el 4 de septiembre.
+
+> **Lo que esta verificación no vio.** Que una acción registre no significa que puje, y justo eso
+> falló acá: las cuatro estaban fuera del objetivo de puja. Se descubrió al día siguiente — ver la
+> entrada del 18 de agosto. La trampa de método está en la bitácora de LinkDesign, porque aplica a
+> cualquier cuenta.
+
+`Contacto Reunión Argentina` y `Contacto Formulario Argentina` siguieron sin una sola conversión, que
+son justamente las de mayor value. Su label está verificado contra el servidor; falta oportunidad.
+
+> Esas dos son las que marcan **«Configuración incorrecta»** en la interfaz. No están rotas: ese
+> estado significa literalmente `Conversion has never received data` y se limpia solo con el primer
+> evento. Puede tardar meses sin que signifique nada, porque dependen de que alguien las use.
+
+## 18 ago 2026 — El aislamiento sí existía, y por eso las cuatro nuevas no pujaban
+
+Apareció revisando otra cosa en Costa Rica —unas acciones que marcaban «Configuración incorrecta» en
+la interfaz, que resultaron ser inofensivas— y terminó corrigiendo lo que este documento dio por
+verificado el 13 de agosto.
+
+**Las campañas argentinas llevaban tres días hábiles pujando sólo por el scroll.** «Búsqueda #2» y
+«Software #2» usan el objetivo personalizado «Contacto Argentina» (`6458009700`) — el que se planeó
+en junio justamente para que los datos de Costa Rica no contaminaran la optimización argentina. Ese
+objetivo contenía **dos acciones**: `Scroll Argentina (2)` y la vieja `Contacto Argentina`. Las
+cuatro nuevas del 13 de agosto nunca se agregaron, y la vieja dejó de dispararse ese mismo día — su
+última conversión es del **12 de agosto**.
+
+Días afectados: viernes 14, lunes 17 y martes 18 (el deploy fue el 13 a las 19:34 y las campañas
+corren L-V 6-15 hora argentina).
+
+**La prueba no depende de leer la interfaz**: `metrics.all_conversions` es todo lo que entra;
+`metrics.conversions` es lo que alimenta Smart Bidding. Si una acción tiene la primera en positivo y
+la segunda en cero, está fuera de la puja.
+
+| campaña | acción | recibidas | cuentan para pujar |
+|---|---|---:|---:|
+| Software #2 | Contacto Correo Argentina | 1 (USD 40) | **0** |
+| Software #2 | Contacto WhatsApp Argentina | 2 (USD 16) | **0** |
+| Software #2 | Scroll Argentina (2) | 9 | 9 |
+| Búsqueda #2 | Scroll Argentina (2) | 24 | 24 |
+
+**En plata**, del 13 al 18 de agosto: las dos campañas argentinas gastaron **USD 199,12** y generaron
+**USD 89 de valor**, pero el algoritmo vio **USD 33**. El **63 % del valor argentino era invisible**
+para la puja. Argentina gastó más que Costa Rica (145,41) mientras le escondía dos tercios de su
+resultado.
+
+Le da además otra lectura al pendiente del 4 de septiembre sobre «Búsqueda #2»: lleva **45 clics sin
+un solo contacto** desde el 13. No es que la etiqueta falle — la campaña dejó de tener por qué
+buscarlos.
+
+### Lo aplicado
+
+Se agregaron las cuatro acciones nuevas al objetivo `6458009700`, que queda con seis: `Scroll
+Argentina (2)`, `Contacto Argentina` (vieja) y `Contacto WhatsApp/Correo/Reunión/Formulario
+Argentina`. Por API, validado con `validate_only` antes de escribir y releído del servidor después.
+Se dejaron las dos que ya estaban: la vieja no molesta y conserva el histórico; el scroll se mantiene
+por paridad con Costa Rica, donde también está dentro del objetivo de puja.
+
+**Las campañas argentinas vuelven a período de aprendizaje** con una señal distinta. Los primeros
+días no se leen: la comparación honesta arranca la semana del 24 de agosto.
+
+> **La regla que queda, y es permanente:** toda acción de conversión nueva para Argentina hay que
+> **agregarla al objetivo `6458009700` a mano**. Crear la acción y verificar su label prueba que
+> *mide*, no que *puja*. Son dos cosas distintas y se verifican en tablas distintas.
+
+La verificación equivocada que originó todo esto quedó marcada en su lugar: la tabla de la Vía 3 del
+17 de agosto en `docs/bitacora-ads-values-troas.md` de `LinkDesign-simple`, donde también está la
+trampa de método, que aplica a cualquier cuenta. **El caso argentino se documenta acá y sólo acá.**
+
 ## Pendientes
 
 - [x] ~~**El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.~~
@@ -964,9 +1101,14 @@ La verificación píxel a píxel y el análisis de los videos están en la entra
       Smart Bidding; encimar un tROAS haría imposible atribuir el efecto de nada.
 - [ ] **~Sept 2026** — Primera lectura con sentido de Search Console de Nolõ, cuando haya varias
       semanas acumuladas. Repetir el análisis de canibalización que se hizo para LinkDesign.
-- [ ] Aislamiento de la optimización argentina: ver arriba el estado real verificado el 13 ago.
+- [x] ~~Aislamiento de la optimización argentina: ver arriba el estado real verificado el 13 ago.
       Decidir si se le asigna a "Búsqueda #2" y "Software #2" un `campaign_conversion_goal` propio
-      con las acciones de Nolõ, y si "Scroll Argentina (2)" pasa a secundaria.
+      con las acciones de Nolõ~~ — **ya estaba cumplido desde junio**, y el 13 de agosto se leyó al
+      revés. Las dos campañas usan el objetivo personalizado «Contacto Argentina» (`6458009700`),
+      que desde el **18 ago 2026** contiene las seis acciones argentinas. Ver esa entrada.
+- [ ] **Sigue abierto: si "Scroll Argentina (2)" debe seguir pujando.** Ahora compite, dentro del
+      mismo objetivo, contra contactos de value 8 a 54 — que es exactamente el escenario para el que
+      se hizo la escala de values. Va al **4 de septiembre**, no antes.
 - [x] ~~**13 ago 2026** — Revisión conjunta con LinkDesign; primer análisis de "Búsqueda #2".~~ Hecho.
 - [x] ~~**13 ago 2026** — Separar las acciones de conversión por canal.~~ Hecho, ver arriba.
 
