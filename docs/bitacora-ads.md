@@ -39,6 +39,9 @@ propia cuenta argentina, pasaría a `google.com.ar` y esto sobraría.
 | 30 jul 2026 | Se consolida esta bitácora y se registra el análisis de atribución del embudo. |
 | 13 ago 2026 | Separación de las acciones de conversión por canal (cuatro nuevas). Misma tarde: **presupuesto de "Búsqueda #2" 15 → 20 USD/día** por API. Se evaluó y **descartó**, para **las dos** campañas argentinas, pasar la keyword a concordancia amplia y limitar la segmentación a Buenos Aires; "Software #2" queda además con su presupuesto sin cambios. |
 | 14 ago 2026 | Revisión rehecha de esas dos preguntas con datos frescos: **ambas conclusiones se sostienen**, pero la geográfica estaba medida con la métrica equivocada (ver la corrección de método abajo). De ahí salió el diagnóstico del **CPC caro** y **siete correcciones ejecutadas por API**: en "Software #2" dos títulos, seis extensiones y dos negativas; después, textos destacados y fragmento de web fuera de **las dos** campañas de software (con reemplazo propio en ambas) y los dos títulos con "CR" de "Búsqueda #2". Todas son correcciones de errores heredados del fork, no experimentos: por eso no esperaron a que cerrara la ventana de medición. Además se verificó, y **descartó**, cambiar las keywords: en amplia y en frase el volumen nominal de la keyword no dice nada, y la actual ya cubre las familias genéricas. |
+| 17 ago 2026 | Verificado que las cuatro acciones nuevas **registran** (labels del bundle de producción contra los del servidor, byte a byte; dos ya con conversiones moduladas). |
+| 18 ago 2026 | **Las cuatro acciones nuevas no pujaban**: faltaban en el objetivo personalizado `6458009700`. Agregadas por API; tres días hábiles con el 63 % del valor argentino invisible para Smart Bidding. |
+| 7 sep 2026 | **Revisión del 4 de septiembre.** "Búsqueda #2" con 20/día sostuvo la tasa de leads serios (3,2 → 4,2 por 100 clics, 61 → 53 USD por serio); la nota de página no se movió; "Software #2" abarató el clic porque la puja se retrajo (cero serios, QS 5 → 4). Estadísticas de subasta leídas en la interfaz. **Ejecutado por API**: anuncio de "Software #2" (cinco títulos, dos descripciones, ruta visible), sitelink a voseo, dos negativas; y **presupuesto de "Búsqueda #2" 20 → 24 USD/día**. Values, scroll y pujas sin cambios. Fechas en Calendar: 8 sep, lunes 14/21/28 sep y 5 oct. |
 
 **Advertencia para cualquier comparación**: el historial anterior al 19 jul **no es comparable** en
 comportamiento de puja (era otro régimen de optimización). De ese período solo sirven las métricas de
@@ -50,7 +53,7 @@ Campañas activas, ambas con Maximizar valor de conversión:
 
 | Campaña | Presupuesto |
 |---|---|
-| Búsqueda #2 | ~~USD 15,00/día~~ → **USD 20,00/día desde el 13 ago 2026** (ver la entrada al final) |
+| Búsqueda #2 | ~~USD 15,00/día~~ → ~~USD 20,00/día desde el 13 ago 2026~~ → **USD 24,00/día desde el 7 sep 2026** (entradas del 13 ago y del 7 sep) |
 | Software #2 | USD 15,00/día |
 
 Conversiones ene–29 jul 2026: **Contacto Argentina 34** (valor 522,5) · **Scroll Argentina 234**
@@ -1031,12 +1034,463 @@ La verificación equivocada que originó todo esto quedó marcada en su lugar: l
 17 de agosto en `docs/bitacora-ads-values-troas.md` de `LinkDesign-simple`, donde también está la
 trampa de método, que aplica a cualquier cuenta. **El caso argentino se documenta acá y sólo acá.**
 
+## 7 sep 2026 — La revisión del 4 de septiembre (Argentina): el presupuesto compró leads serios, la nota no se movió, y "Software #2" abarató el clic por la razón equivocada
+
+Datos del **14 ago – 4 sep** (16 días hábiles, tres semanas exactas desde el copy) y, como ventana
+limpia, **19 ago – 4 sep** (13 días hábiles: desde que las cuatro acciones nuevas pujan). El lunes
+7 sep queda fuera. Costa Rica se revisó el mismo día en su propia bitácora
+(`docs/bitacora-ads-values-troas.md` de `LinkDesign-simple`, entrada del 7 sep); de allá se tomó
+sólo la fila de la nota de página, como control.
+
+Fuentes: Ads por API, el CRM leído directo de Cosmos (colecciones `webleads`, `leads` y
+`sitesessions`) y Search Console de `nolo.ar`, que ya acumula un mes.
+
+### Verificaciones previas, todas limpias
+
+- **Nada más cambió desde el 13 ago.** `change_event` de la cuenta, excluidas las negativas diarias
+  de grupo: presupuesto de "Búsqueda #2" (13 ago 21:54), títulos de las dos campañas y extensiones
+  y dos negativas de campaña de "Software #2" (14 ago). Después del 14 ago, sólo negativas.
+  El objetivo `6458009700` conserva las seis acciones argentinas. *El cambio del objetivo del 18 ago
+  no aparece en `change_event`: ese recurso no queda registrado ahí.*
+- **Las cuatro acciones pujan**: `conversions` = `all_conversions` en cada una, 19 ago – 4 sep.
+- **Rezago cero**: por fecha de clic y por fecha de conversión coinciden acción por acción.
+- **Sin período de aprendizaje**: las dos campañas están `LIMITED / BUDGET_CONSTRAINED`, sin
+  `LEARNING` entre los motivos.
+
+> **Trampa de método, para la próxima.** `change_event` obliga a un `LIMIT` y con 300 filas se
+> agotó el 17 ago: las ~17 negativas diarias por campaña inundan el registro. Hay que filtrar
+> `change_event.change_resource_type != 'AD_GROUP_CRITERION'` para ver el resto. Y admite 30 días
+> exactos: el 7 sep ya rechazó el 8 ago. Además `campaign.start_date` no existe en v24.
+
+### 1. "Búsqueda #2": el presupuesto de 20 compró leads serios
+
+La pregunta era **leads serios por cada 100 clics** (correo, reunión o formulario; no WhatsApp),
+porque el volumen sube solo con el dinero y la tasa no. Las ventanas anteriores al 13 ago salen de
+la acción agrupada con las cotas exactas del 13 ago; desde el 19 ago el canal viene dado.
+
+| ventana | háb. | clics | costo | CPC | CTR | IS | perd. presup. | perd. rank | WhatsApp | correo | reunión | form. | **serios** | **serios/100** | **USD/serio** | scroll | valor | ratio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1–22 jul | 16 | 119 | 273,28 | 2,30 | 6,0 % | 44,3 % | 42,5 % | 13,2 % | ~3 | | | | 3 | 2,5 | 91 | 80 | 150,5 | 0,55 |
+| 24 jul – 12 ago (**PRE**, 15/día) | 14 | 142 | 273,37 | 1,93 | 7,3 % | 40,1 % | 37,3 % | 22,6 % | ~11,5 | | | | 4–5 | 3,2 | 61 | 84 | 386,9 | 1,42 |
+| 13–18 ago (transición, sin puja) | 4 | 45 | 111,94 | 2,49 | 7,2 % | 53,4 % | 14,1 % | 32,4 % | 0 | 0 | 0 | 0 | 0 | 0,0 | — | 24 | 24,0 | 0,21 |
+| **19 ago – 4 sep (POST limpio, 20/día)** | 13 | 165 | 374,13 | 2,27 | 7,0 % | 44,3 % | **29,3 %** | 26,4 % | 15 | 2 | **5** | 0 | **7** | **4,2** | **53** | 77 | 537,9 | **1,44** |
+| 14 ago – 4 sep (POST total) | 16 | 200 | 470,58 | 2,35 | 7,2 % | 45,7 % | 28,1 % | 26,2 % | 15 | 2 | 5 | 0 | 7 | 3,5 | 67 | 97 | 557,9 | 1,19 |
+
+**La tasa no se cayó: 3,2 → 4,2 serios por 100 clics** (3,5 contando la transición). Con siete
+leads serios el intervalo es ancho (1,7–8,7) y la prueba exacta da p ≈ 0,55–0,78: **no prueba que
+subió, prueba que no se cayó**, que era la condición del pendiente. Todo lo demás acompaña:
+
+- **USD por lead serio 61 → 53**, y el ratio se sostiene en **1,44**, único > 1 de la cuenta.
+- **Sigue tocando el techo**: 28,78 USD por día activo, exactamente el equivalente L–V de 20/día
+  (28); **12 de 13 días** superan el nominal en más de 10 %. La pérdida por presupuesto bajó de
+  37,3 % a 29,3 % pero sigue siendo el freno principal.
+- **El CPC subió 18 %** (1,93 → 2,27) y la cuota de impresiones en la parte superior pasó de 24,0 %
+  a 29,7 %: con más dinero compra subastas que antes perdía. Es lo esperable y no un problema.
+- **WhatsApp por 100 clics estable** (8,1 → 9,1). Los serios cambiaron de composición: en el PRE
+  eran inferidos; ahora son **5 clics de «Agendar reunión» y 2 de «copiar correo»**, formulario 0.
+
+**La correlación gasto ↔ serios ya no sirve como argumento.** Pasó de +0,71 (hasta el 12 ago) a
++0,31 con 12 semanas, porque las semanas de más gasto (10 y 17 ago) cayeron en la transición sin
+puja. Se lee en tasa por clic, como se había anticipado el 13 ago.
+
+**Cierra el pendiente del 17–18 ago** («45 clics sin contacto»): era la puja, no la etiqueta. Desde
+el 19 ago la campaña produjo **22 contactos en 13 días hábiles**.
+
+**Veredicto: entra en la rama «si escala, evaluar 24».** Recomendación de los datos: **subir a
+24 USD/día** (+20 %, un paso normal para Smart Bidding). Tope mensual 730, gasto esperado ~649
+(~30 por día hábil). Con la tasa actual y CPC ~2,4, son ~45 clics más al mes, o sea **~2 leads
+serios más al mes a ~55 USD**. El presupuesto implícito para capturar todo lo que hoy se pierde es
+`20 × (44,3 + 29,3) / 44,3 ≈ 33`: 24 es el paso, no el destino, y por encima de 30 sigue sin haber
+base. Condición: **no tocar "Software #2" a la vez.** Decisión de Robert; no se ejecutó.
+
+#### Adenda del mismo día: las estadísticas de subasta de "Búsqueda #2" confirman que acá la puja subió
+
+Mismas dos ventanas que en "Software #2", leídas en la interfaz (no salen por API). Nuestra fila:
+
+| nosotros | PRE 24 jul – 12 ago | POST 19 ago – 4 sep |
+|---|---:|---:|
+| cuota de impresiones | 39,3 % | **44,3 %** |
+| parte superior de la página | 59,4 % | **67,1 %** |
+| primera posición | 16,6 % | **20,7 %** |
+
+Las tres subieron a la vez. Eso sólo pasa cuando se ofrece más: coincide con el CPC +18 % y con el
+valor por clic 2,72 → 3,26 de la segunda adenda de §2. Es la imagen invertida de "Software #2",
+donde presencia igual y primera posición ocho puntos abajo. La cuota de la API (40,1 → 44,3 %)
+coincide con la de la interfaz.
+
+Los rivales, con «arriba nuestro» = cuántas veces se muestran por encima cuando coincidimos:
+
+| dominio | cuota PRE → POST | arriba nuestro PRE → POST | 1ª posición PRE → POST |
+|---|---:|---:|---:|
+| **rednodo.com** | 23,8 → **31,0 %** | 76,9 → 72,4 % | 50,9 → 45,4 % |
+| romero.ar | 12,3 → 16,0 % | 22,4 → 22,8 % | 5,8 → 6,8 % |
+| hostinger.com | 11,4 → 14,6 % | 50,5 → 53,2 % | 13,5 → 12,9 % |
+| manadigital.com.ar | 13,7 → 13,2 % | 18,2 → 26,2 % | 9,9 → 10,1 % |
+| lader.com.ar | <10 → 11,8 % | 64,4 → **48,0 %** | 38,0 → 23,2 % |
+| google.com | <10 → <10 % | 88,6 → 75,2 % | 56,3 → 54,2 % |
+| base44.com | 10,2 → <10 % | 37,5 → 38,5 % | 6,8 → 10,4 % |
+
+Tres lecturas:
+
+1. **El mercado también se llenó acá** (rednodo +7 puntos, romero +4, hostinger +3, entra
+   nicobilinkis con 10 %), pero **nosotros subimos más que ellos**. Contra el líder, rednodo, pasamos
+   de estar debajo el 77 % de las veces al 72 %, y contra lader del 64 % al 48 %. En "Software #2"
+   la misma columna empeoró con casi todos. La diferencia entre las dos campañas no es el mercado:
+   es lo que el algoritmo vio que valía cada clic.
+2. **Rednodo es el rival que importa**: 31 % de cuota, arriba nuestro 7 de cada 10 veces que
+   coincidimos, 45 % de primeras posiciones. Nuestras primeras posiciones (20,7 %) salen sobre todo
+   de las subastas donde rednodo no está. Con QS 6 y CPC 2,27 es un lugar razonable; pelearle la
+   primera posición sería pagar su precio.
+3. **Los constructores de sitios están en la subasta**: hostinger, squarespace, base44, google.com y
+   antes wix. Es la intención «hacerlo yo mismo» dentro de la familia «páginas web», y explica los
+   clics carísimos aislados de §6 («creadores de sitios web» 24,36 por un clic): ahí pujan las
+   plataformas. Anotado, sin negativa: «creadores de páginas web» también trajo un WhatsApp.
+
+**No cambia nada de lo decidido**: refuerza la recomendación de 20 → 24, porque la pérdida por
+presupuesto (29 %) sigue siendo el freno y el algoritmo demostró que con más dinero compra
+posición, no sólo volumen.
+
+### 2. "Software #2": el clic bajó a 3,39, pero porque la puja se retrajo, no porque la página mejorara
+
+| ventana | háb. | clics | costo | CPC | CTR | IS | perd. presup. | perd. rank | WhatsApp | correo | reunión | form. | serios | serios/100 | USD/serio | scroll | valor | ratio |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1–22 jul | 16 | 38 | 274,94 | 7,24 | 4,6 % | 54,4 % | 40,9 % | 4,7 % | ~3 | | | | 4 | 10,5 | 69 | 21 | 121,0 | 0,44 |
+| 24 jul – 12 ago (**PRE**) | 14 | 66 | 285,24 | 4,32 | 5,4 % | 52,7 % | 33,8 % | 13,5 % | ~6 | | | | 3 | 4,5 | 95 | 29 | 213,0 | 0,75 |
+| 13–18 ago (transición) | 4 | 21 | 87,18 | 4,15 | 6,5 % | 55,0 % | 27,8 % | 17,1 % | 2 | 1 | 0 | 0 | 1 | 4,8 | 87 | 9 | 65,0 | 0,75 |
+| **19 ago – 4 sep (POST limpio)** | 13 | 74 | 250,68 | **3,39** | 5,8 % | 55,1 % | **19,2 %** | **25,7 %** | 6 | 0 | 0 | 0 | **0** | **0,0** | — | 33 | 81,0 | 0,32 |
+| 14 ago – 4 sep (POST total) | 16 | 89 | 315,82 | 3,55 | 5,8 % | 55,5 % | 19,2 % | 25,3 % | 8 | 1 | 0 | 0 | 1 | 1,1 | 316 | 40 | 144,0 | 0,46 |
+
+El criterio decía: «el caso para subirla mejora sólo si el CPC baja hacia 0,91–3,72; si sigue en 4+
+con QS 5, la palanca es la página». **El número se cumple**: CPC 4,32 → 3,39, y por semanas
+5,69 · 4,69 · 3,39 · 4,82 · 3,89 · 3,52 · **3,05**; la última entra en el rango del Planner.
+**El mecanismo no.** El clic no se abarató por calidad, porque el QS **bajó de 5 a 4** (ver §3).
+Se abarató porque **Smart Bidding pujó menos**:
+
+- pérdida por **ranking 13,5 % → 25,7 %** y pérdida por presupuesto 33,8 % → 19,2 %: la campaña
+  pasó de perder por dinero a perder por puja;
+- primera posición 19,7 % → 16,1 %;
+- gastó **19,28 por día activo contra 21 de equivalente**: por primera vez **no toca el techo**.
+
+El algoritmo ve menos valor que antes (6 WhatsApp de 8 contactos y 33 scrolls; **cero serios en la
+ventana limpia**, contra 3 en el PRE, p ≈ 0,10) y responde comprando clics más baratos en
+posiciones más bajas. El CPC bajó por la razón equivocada: **es la campaña apagándose sola, no
+mejorando.**
+
+Lo que sí hicieron los títulos y extensiones del 14 ago: CTR 5,4 % → 5,8 %, leve. Los dos títulos
+nuevos son los más servidos y rinden a nivel de campaña o mejor: «Desarrollo de Software» 876
+impresiones, CTR 6,4 %; «Empresa de Software a Medida» 600, 7,0 %. El flojo entre los muy servidos
+es **«Empresa Argentina de Software»** (623 impresiones, **3,4 %**). El móvil sigue flojo: CTR 4,2 %
+contra 6,5 % en escritorio, CPC 3,86 contra 3,47 (al revés que en Costa Rica).
+
+**Veredicto: no subir el presupuesto, ni bajarlo, ni tocar la campaña.** Es la rama «la palanca es
+la página». Lo que hay que vigilar el 5 oct es la primera posición y los serios: si el abs-top sigue
+cayendo y los serios siguen en cero, la campaña se está retirando de las subastas que valen.
+
+#### Adenda del mismo día: no es falta de mercado, es la primera posición
+
+Robert preguntó por qué "Software #2" gasta menos. Se midió el tamaño del mercado por semana como
+`impresiones / cuota de impresiones` (subastas en las que podíamos aparecer) y se leyó
+«Estadísticas de subastas» en la interfaz, porque **esas métricas no salen por API** con el token
+Basic (`authorization_error=26`).
+
+**El mercado creció.** Subastas disponibles por semana: 500 · 758 (jul) → 875 · 957 · 715 · 1.008 ·
+803 (ago–sep). La semana del 31 ago aparecimos en el **67,5 %** de ellas, la cuota más alta desde
+junio, y perdimos sólo el 1,6 % por presupuesto. Lo que cambió es la columna de al lado: la pérdida
+**por ranking** pasó de 0–6 % en julio a **23–31 %** desde agosto. La campaña dejó de estar frenada
+por dinero y pasó a estar frenada por su propia oferta.
+
+**Estadísticas de subastas, 24 jul – 12 ago contra 19 ago – 4 sep** (interfaz, campaña
+"Software #2"):
+
+| nosotros | PRE | POST |
+|---|---:|---:|
+| cuota de impresiones | 52,2 % | 54,1 % |
+| parte superior de la página | 72,0 % | 70,2 % |
+| **primera posición** | **36,3 %** | **28,2 %** |
+
+Presencia igual, parte superior igual, **primera posición ocho puntos abajo**. Y los rivales, con
+«arriba nuestro» = cuántas veces se muestran por encima cuando coincidimos en la subasta:
+
+| dominio | cuota PRE → POST | arriba nuestro PRE → POST | 1ª posición PRE → POST |
+|---|---:|---:|---:|
+| intway.com.ar | 14,3 → **22,9 %** | 47,5 → **63,1 %** | 24,1 → 30,8 % |
+| exceser.com.ar | <10 → **18,2 %** | 16,7 → **49,5 %** | 3,9 → **23,5 %** |
+| genit.com.ar | 20,8 → 16,9 % | 35,5 → 55,0 % | 15,1 → 21,1 % |
+| propositiva.com.ar | 15,4 → 16,8 % | 10,7 → 21,0 % | 2,3 → 9,9 % |
+| neuralsoft.com | 13,9 → 15,7 % | 43,3 → 49,0 % | 35,6 → 32,0 % |
+| 3pbiconsulting.com.ar | nuevo → 12,3 % | — → 33,8 % | — → 22,2 % |
+| medve.com.ar | 16,7 → 10,1 % | 16,2 → 33,0 % | 8,0 → 16,4 % |
+| ingenia.la | <10 → <10 % | 34,1 → 61,1 % | 12,3 → 31,3 % |
+
+Dos escalaron (**exceser** e **intway**), entró uno fuerte (**3pbi**) y aparecen ocho dominios
+nuevos en la lista (manadigital, seidor, axiomait, hitocean, axoft, oestedigitalsrl, crombie).
+Pero «arriba nuestro» subió también para los que **no** crecieron (genit, propositiva, medve): eso
+no es que ellos pujen más, es que **nosotros pujamos menos en relación a ellos**. Las dos cosas a
+la vez: la primera posición se encareció justo cuando nuestro algoritmo tenía menos razones para
+pagarla (valor visto por clic 3,2 → 1,1; QS 5 → 4). La consecuencia mecánica es la que se ve en el
+gasto: seguimos en la página, más veces en segunda o tercera, que cuestan menos → CPC 4,32 → 3,39 →
+menos gasto con más impresiones. La columna «ranking superior» (~50 % con todos, en los dos
+períodos) no dice nada: cuenta sobre todo las veces que nosotros aparecemos y ellos no.
+
+*Dato lateral: entre los rivales hay fabricantes de ERP (neuralsoft, axoft) y consultoras grandes
+(seidor, 3pbi), no sólo estudios; y en el PRE pujaba `cursor.com`, el editor de código, por estos
+términos en Argentina.*
+
+**Qué cambia en la decisión: nada hoy, y una palanca anotada.** El presupuesto sigue sin ser el
+freno. La única forma de volver a la primera posición cueste lo que cueste es una estrategia de
+cuota de impresiones objetivo, que con QS 4 pagaría 5–6 USD por clic: **no se recomienda**. La
+palanca barata es recuperar la relevancia del anuncio (Promedio desde el 14 ago) cambiando los
+títulos flojos, «Empresa Argentina de Software» (623 impresiones, CTR 3,4 %), «Código 100% Propio»
+(2,4 %) y «Desarrollo Backend Complejo» (3,5 %), por títulos que lleven la keyword; abarata la
+primera posición para nosotros sin tocar la puja. Decisión de Robert; para el 5 oct o antes.
+Indicador semanal a seguir hasta entonces: **pérdida por ranking y primera posición** de
+"Software #2".
+
+#### Segunda adenda: ¿tuvo que ver que «ahora el WhatsApp vale menos»?
+
+Pregunta de Robert. **En sentido literal, no**: un WhatsApp vale hoy lo mismo que en julio, base 10
+modulada por sesión a 8 o 9. Valores unitarios observados en celdas de una sola conversión:
+"Búsqueda #2" PRE `8,00 ×9 · 9,00 ×2`, POST `8,00 ×11 · 9,00 ×2`; "Software #2" PRE
+`8,00 ×5 · 9,00 ×1`, POST `8,00 ×6`. Y el código no tocó los values desde el ×2 del 24 jul
+(`e860ca1`); el 13 ago (`a7a6b57`) sólo separó las acciones.
+
+**En otro sentido, sí, y es el sentido que importa.** Hasta el 13 ago todos los contactos entraban
+por una sola acción y la puja aprendía «un contacto de esta campaña vale ~20» (18,9 en "Búsqueda #2",
+20,5 en "Software #2"): un WhatsApp de 8 y una reunión de 54 se promediaban. Desde la separación un
+WhatsApp es un WhatsApp de 8. Donde siguieron llegando serios, el valor medio por contacto subió;
+donde sólo llegaron WhatsApp, se desplomó. Es exactamente el efecto que se buscaba con la
+separación, y las cuatro campañas se movieron según su valor por clic:
+
+| campaña | valor / clic PRE → POST | valor / contacto PRE → POST | 1ª posición PRE → POST | CPC PRE → POST |
+|---|---:|---:|---:|---:|
+| Búsqueda #2 (AR) | 2,72 → **3,26** | 18,9 → 21,0 | 10,7 → **11,5 %** | 1,93 → 2,27 |
+| Búsqueda (CR) | 1,61 → **1,68** | 8,3 → 16,2 | 17,7 → **21,5 %** | 2,74 → 2,45 |
+| Software #2 (AR) | 3,23 → **1,09** | 20,5 → **8,0** | 19,7 → **16,1 %** | 4,32 → 3,39 |
+| Software (CR) | 1,71 → **0,96** | 33,7 → 8,8 | 17,8 → **13,2 %** | 4,12 → 3,74 |
+
+Donde el valor por clic subió, la puja subió y ganó primera posición; donde cayó, se retiró. **Las
+dos de software cayeron en los dos países**: no es un accidente argentino, es lo que pasa cuando una
+campaña de software sólo trae WhatsApp y scrolls (que en "Software #2" son ya el 41 % del valor que
+ve la puja, contra 14 % en "Búsqueda #2").
+
+**Lo que deja en claro.** La separación funciona como se diseñó, pero tiene un costo que no se había
+anticipado del todo: cuando una campaña deja de traer serios, la puja deja de pelear posición, y
+eso reduce la chance de que lleguen. **No se arregla subiendo el value del WhatsApp**: sería
+mentirle al algoritmo, y en Argentina WhatsApp lleva 0 ganados de 6 resueltos. Las salidas son las
+de la primera adenda (títulos y página) o aceptar que "Software #2" sea una campaña de segunda o
+tercera posición mientras no traiga serios. El peso del scroll en su valor va a la revisión del
+5 oct, como ya estaba.
+
+### 3. La nota de página de destino: sin cambio, y el punto de QS perdido es de los anuncios
+
+| campaña | keyword | QS 14 ago | QS 7 sep | anuncio | CTR esp. | **página** |
+|---|---|---:|---:|---|---|---|
+| **Búsqueda #2** | desarrollo de sitios web | 7 | **6** | Promedio (era Por encima) | Por encima | **Por debajo** |
+| **Software #2** | empresa de desarrollo de software | 5 | **4** | Promedio (era Por encima) | Promedio | **Por debajo** |
+
+`metrics.historical_landing_page_quality_score` por semana: **BELOW_AVERAGE todas las semanas desde
+el 13 jul, en las dos**, sin excepción. "Búsqueda #2" juntó ~3.600 impresiones desde el 17 ago: no
+es falta de masa. **El copy solo no movió la nota en tres semanas**, igual que en Costa Rica.
+
+El punto perdido llegó por `creative_quality_score` (relevancia del anuncio), no por la página, y
+coincide con el cambio de títulos del 14 ago: en "Búsqueda #2" cayó esa misma semana; en
+"Software #2" Google tardó, con la semana del 24 ago mixta (5/6/7) y la del 31 ago ya en 4. **No se
+revierte**: el CTR se sostuvo o mejoró, y los títulos que llevan la keyword son los de mejor CTR
+(«Desarrollo de sitios web» 10,3 %). Anotado para releer el 5 oct.
+
+**Search Console de `nolo.ar`, primer mes (7 ago – 6 sep)**: **71 impresiones y 3 clics** en total,
+40 impresiones desde Argentina; la única consulta visible es la marca («nolo», 28). `/web` 9
+impresiones, `/software` 4. Google rastreó `/web` el 5 sep y `/software` el 4 sep, así que tiene el
+copy nuevo. Dos conclusiones: **no hay orgánico que canibalizar, cada clic pagado es
+incremental**; y la reclasificación que Costa Rica vio en `/web` (de 0 a 30–100 impresiones
+semanales por «diseño web costa rica») **acá no aparece**: el dominio es más nuevo y no tiene
+autoridad para rankear ni en página 5. Se relee en octubre.
+
+### 4. El CRM: WhatsApp no cierra, la cita cerró, y los formularios argentinos no están en el pipeline
+
+Leads argentinos del pipeline creados desde junio (13):
+
+| canal | total | ganados | perdidos | abiertos |
+|---|---:|---:|---:|---:|
+| WhatsApp | 11 | **0** | 6 | 5 |
+| Email | 1 | 0 | 1 | 0 |
+| Otro (cita del calendario) | 1 | **1** | 0 | 0 |
+
+En la ventana 14 ago – 4 sep entraron cuatro: Alfredo H. Olmedo SA (WhatsApp, 19 ago, en
+seguimiento), Iluminación en Obra SRL (WhatsApp, 26 ago, propuesta enviada), **Energy Check (cita,
+27 ago, ganado el 1 sep)** y Autopartes (WhatsApp, 1 sep, propuesta enviada).
+
+Cruce con Ads, misma ventana:
+
+- **21 clics de WhatsApp → 3 leads en el pipeline (14 %)**, igual que Costa Rica (3 de 11).
+- **5 clics de «Agendar reunión» → 1 cita en el CRM.** El clic del 26 ago a las 11 (hora AR) y el
+  lead de Energy Check del 27 ago a las 16:20 coinciden; Ads y CRM no se enlazan, así que es
+  coincidencia fuerte, no prueba. Los otros cuatro clics no dejaron cita.
+- 3 clics de «copiar correo» → 0 leads por email.
+
+**El único cliente ganado del período llegó por la cita, el canal con el value más alto (60).** Y la
+nota del CRM dice que no es un buen lead (idea sin probar, poco presupuesto): ganado no es lo mismo
+que rentable. Con eso no hay número propio que calcular.
+
+**Los cinco formularios de `nolo.ar` no están en el pipeline.** Cadsyst (26 jun), Estudio Jurídico
+Said (1 jul), un estudiante (7 jul), un packaging farmacéutico sin empresa (22 jul) y Mini market
+Maxi (12 ago) siguen como `webleads` sin `convertedToLeadId` y sin un lead con ese nombre. **Pregunta
+abierta para Robert: ¿se atendieron fuera del CRM?** Importa porque el formulario es el techo de la
+escala (30–60) y hoy no hay forma de saber si cierra. Ninguno nuevo desde el 12 ago (el «Contacto
+Formulario Argentina» en cero es correcto: sin oportunidad, label verificado el 17 ago).
+
+**Sesiones del sitio** (`sitesessions`, `site = AR`, con `entryGclid`): 68 · 75 · 75 · 72 por semana
+del 10 al 31 ago, 0,8–1,0 min activos por sesión. Consistente con los 86–93 clics semanales de Ads
+y **sin cambio de comportamiento tras el copy**, como en Costa Rica.
+
+**Decisión sobre el pendiente 4 (recalibrar values): no se recalibra.** La evidencia argentina
+(cita 1 de 1, WhatsApp 0 de 6 resueltos) va en la dirección de la escala actual, y con un cierre no
+hay número que sostenga otra. Misma decisión que Costa Rica; la ventana sigue con una sola escala.
+
+### 5. "Scroll Argentina (2)": sigue pujando, por paridad y porque en "Búsqueda #2" pesa poco
+
+Ventana limpia: en "Búsqueda #2" el scroll es **77 de 99 conversiones (78 %) pero sólo el 14 % del
+valor** (76,9 de 537,9); en "Software #2", 33 de 39 (85 %) y **41 % del valor** (33 de 81). Con
+Maximizar valor lo que orienta la puja es el valor, no el conteo: en "Búsqueda #2" es ruido menor;
+en "Software #2" pesa porque no hay contactos serios que lo diluyan. Sacarlo del objetivo reinicia
+el aprendizaje otra vez, y Costa Rica decidió hoy dejarlo. **Queda.** Regla para el 5 oct: si en
+"Software #2" el scroll sigue por encima del 40 % del valor, se evalúa sacarlo **de las dos**
+campañas argentinas a la vez, nunca de una.
+
+### 6. Hallazgos laterales, sin acción
+
+- **Términos de "Búsqueda #2"** (67,8 % del gasto visible): los serios vinieron de «armado de
+  pagina web» (valor 57), «creacion de paginas web» (55) y «agencias de desarrollo web» (41).
+  Clics carísimos aislados: «creadores de sitios web» **24,36 por un clic**, «diseñadores de
+  paginas web» 25,40 por tres. Smart Bidding paga mucho por términos que predice valiosos; anotado.
+- **Términos de "Software #2"** (48,3 % visible): contactos en «software a medida» (29), «empresa
+  de software argentina» y «software a medida argentina». Marcas de competidor nuevas con clic:
+  **«ltm software»** (3,13) y «adelia software» (0). Candidatas a negativa en frase.
+- **Dispositivo, ventana POST**: "Búsqueda #2" escritorio CPC 2,28 / móvil 2,59; "Software #2"
+  3,47 / 3,86. Al revés que en Costa Rica, donde el móvil es más barato en las dos.
+- **Títulos de "Búsqueda #2"**: «Hecho en Argentina» es el más servido (1.459 impresiones, CTR
+  7,7 %); «Sin WordPress Ni Plantillas» es el flojo entre los grandes (748, 4,4 %).
+
+### 7. Decisiones pendientes de Robert (7 sep 2026)
+
+Lo que los datos recomiendan, a falta de su decisión. **Nada se ejecutó en la cuenta** en ese momento.
+**Actualización de la tarde:** Robert pidió salir del círculo de "Software #2"; lo ejecutado está en la
+entrada siguiente (anuncio, sitelink y negativas; nada de puja ni presupuesto).
+
+1. **"Búsqueda #2": subir de 20 a 24 USD/día.** Único cambio con base (§1). Abre su propia ventana.
+2. **"Software #2": sin cambios** (§2). Vigilar abs-top y serios el 5 oct.
+3. **Values, scroll y tROAS: sin cambios** (§4, §5). tROAS sigue sin señal que lo alimente: siete
+   serios en tres semanas.
+4. **Confirmar qué pasó con los cinco formularios argentinos** (§4).
+5. Opcional y barato: negativas en frase para «ltm software» y «adelia software» en "Software #2".
+6. **Próxima revisión: ~5 oct 2026, junto con Costa Rica.**
+
+
+## 7 sep 2026 (tarde) — Ejecutado: salir del círculo de "Software #2" por el anuncio, no por la puja
+
+Decisión de Robert tras las dos adendas: «hacé lo que veas necesario para salir de este círculo
+vicioso». El círculo: la puja ve poco valor por clic (sólo WhatsApp de 8 y scrolls de 1) → ofrece
+menos → pierde la primera posición → menos chance de un lead serio → menos valor. Todo lo de abajo se
+hizo por API con `validate_only` previo y relectura del servidor después.
+
+### Palancas evaluadas y descartadas
+
+| palanca | por qué no |
+|---|---|
+| Presupuesto | No es el freno: 19,28 por día activo contra 21 de equivalente, pérdida por presupuesto 1,6 % la última semana. |
+| Estrategia de puja (cuota de impresiones objetivo, o manual) | Fuerza posición pagando lo que sea, con QS 4 serían 5–6 USD por clic, y tira a la basura el aprendizaje de valor. |
+| Sacar el scroll del objetivo | Dejaría a la puja de "Software #2" con 6 conversiones en tres semanas: sin datos para aprender. Y reinicia el aprendizaje. Va al 5 oct, como estaba. |
+| Subir el value del WhatsApp | Sería mentirle al algoritmo: WhatsApp lleva 0 ganados de 6 resueltos en Argentina. |
+| Keyword, concordancia, geografía | Descartadas con datos el 13 y 14 ago; el mercado creció, no faltan subastas. |
+| CTA del sitio | Verificado en `app.routes.ts`: `/software` ya tiene **«Agendar reunión»** como botón principal del hero (`ctaPrimary` → cal.com) y «Mandar mensaje» como secundario. El sitio no empuja a WhatsApp; las cero reuniones son del visitante, no de la página. |
+
+### Lo que sí: el anuncio `813097373240`, donde estaban los errores heredados
+
+Tres cosas del anuncio que no se habían visto: la relevancia del anuncio bajó a **Promedio** desde el
+14 ago; **ninguna descripción llevaba la keyword**; y dos descripciones y un título hablaban de
+**usted** («Cotice hoy», «su flujo de trabajo», «Automatice sus Procesos»), la voz de Costa Rica
+heredada del fork, cuando Nolõ habla de vos. Además la URL visible no tenía ruta.
+
+**Cinco títulos reemplazados** (impresiones y CTR desde el 14 ago):
+
+| se quitó | por qué | se agregó |
+|---|---|---|
+| «Soluciones de Software B2B» | 19 impresiones, **0 %** | «Software a Medida en Argentina» |
+| «Software Corporativo Seguro» | 36 impresiones, **0 %** | «Cotizá tu Software a Medida» |
+| «Código 100% Propio» | 82 impresiones, 2,4 % | «Desarrollo de Software Propio» |
+| «Automatice sus Procesos» | usted | «Automatizá tus Procesos» |
+| «Empresa Argentina de Software» | 623 impresiones, **3,4 %** | «Empresa de Software Argentina», el orden en que la gente busca |
+
+Los diez restantes quedan iguales, incluidos los dos del 14 ago, que son los más servidos y rinden a
+nivel de campaña o mejor. «Desarrollo Backend Complejo» (172 impresiones, 3,5 %) queda anotado como
+próximo candidato; no se quitó para no cambiar más de un tercio del anuncio de una vez.
+
+**Dos descripciones reemplazadas** (las de usted; las otras dos quedan):
+
+| antes | después |
+|---|---|
+| «No somos agencia, somos ingenieros. Expertos en APIs y sistemas complejos. Cotice hoy.» | «Empresa de desarrollo de software a medida en Argentina. Cotizá tu sistema hoy.» |
+| «¿Sistemas lentos? Creamos software adaptado a su flujo de trabajo real. 100% Propio.» | «¿Sistemas lentos? Creamos software adaptado a tu operación real. Código 100% propio.» |
+
+La primera lleva la keyword literal, «empresa de desarrollo de software», que en un título no cabe
+(33 caracteres) y en una descripción sí. «No somos agencia» sigue en el título 7.
+
+**Ruta visible**: `nolo.ar/software/a-medida` (`path1`/`path2`, antes vacíos).
+
+**Sitelink** `372920546926`: «Hable con un Ingeniero» → **«Hablá con un Ingeniero»**. Los sitelinks
+argentinos son assets propios, no compartidos con Costa Rica, así que el cambio no la toca. Los
+demás sitelinks quedan.
+
+**Negativas de campaña en frase**: «ltm software» y «adelia software», dos marcas de competidor con
+clic en la ventana.
+
+**Verificación**: títulos y descripciones releídos del servidor, idénticos a lo enviado; ruta y
+negativas confirmadas; el sitelink relee «Hablá con un Ingeniero» sólo en "Software #2". El anuncio
+quedó en `REVIEW_IN_PROGRESS` y fuerza `PENDING`, que es lo normal tras editar: **confirmar el 8 sep
+que está aprobado**.
+
+### Lo que no se tocó, a propósito
+
+- **"Búsqueda #2"**: nada. Su anuncio tutea («Moderniza tu web», «Olvídate») y su sitelink sigue en
+  usted; se corrige después de su ventana, no ahora. Su presupuesto 20 → 24 lo aprobó Robert
+  y se aplicó esa misma tarde: ver el cierre de esta entrada.
+- Puja, presupuesto, keyword y objetivo de conversión de "Software #2".
+
+### Cómo saber si funcionó
+
+Ventana nueva desde el **8 sep** (primer día hábil con el anuncio aprobado). Lo que tiene que
+moverse, en este orden, porque es lo que el cambio toca directamente:
+
+1. `creative_quality_score` de Promedio a **Por encima del promedio** (semanal, `historical_*`).
+2. Pérdida por **ranking** de "Software #2" bajando desde 25–31 %, y primera posición subiendo desde
+   16 %. Si eso pasa con el CPC estable, el anuncio abarató la posición.
+3. Recién después, serios por 100 clics. Si la posición vuelve y los serios siguen en cero, la
+   posición no era la causa y la palanca que queda es la página.
+
+Impresiones y CTR de cada título nuevo en `ad_group_ad_asset_view`. Se lee el **5 oct** con el
+resto, o antes si la pérdida por ranking sigue subiendo.
+
+
+### Cierre del día: presupuesto de "Búsqueda #2" de 20 a 24 USD/día
+
+Robert lo aprobó después de ver las estadísticas de subasta de la campaña (adenda de §1). Ejecutado
+por API sobre `campaignBudgets/15658499227`: se leyó primero del servidor (20,00, exclusivo,
+una sola campaña, entrega estándar), `validate_only`, aplicado y releído en **24,00**. "Software #2"
+sigue en 15,00. Equivalencias: tope mensual 730, gasto esperado ~649 al mes, ~30 por día hábil.
+
+**Sobre la regla de no mover las dos campañas argentinas a la vez.** Hoy se tocaron las dos, pero con
+palancas distintas y lecturas distintas: en "Búsqueda #2" el presupuesto, que se lee en serios por
+100 clics; en "Software #2" el anuncio, que se lee en relevancia, pérdida por ranking y primera
+posición. La regla existía para no confundir el efecto de una misma palanca en dos lugares; acá cada
+campaña sigue teniendo una sola causa que leer. Las dos ventanas arrancan el **8 sep**.
+
 ## Pendientes
 
 - [x] ~~**El copy de `/software` y de `/web`** para que las páginas usen el lenguaje de la búsqueda.~~
       **Hecho y publicado el 14 ago 2026** (merge `af7eb8a`); ver la entrada de esa noche. Era lo
       único que tocaba la nota BELOW_AVERAGE de las cuatro campañas a la vez.
-- [ ] **~4 sep 2026 — Leer la nota de página de destino**, que es lo único que ese cambio toca y por
+- [x] ~~**~4 sep 2026 — Leer la nota de página de destino**~~ **Leída el 7 sep 2026: no se movió**
+      (ver la entrada del 7 sep, §3). Era lo único que ese cambio toca y por
       lo tanto se puede leer limpia. El efecto en *leads* no: ahí se superponen las conversiones
       separadas del 13 ago, las extensiones del 14 y el copy.
 - [x] ~~**Recodificar los clips del portafolio.**~~ **Descartado el 14 ago con medición**: están a
@@ -1051,7 +1505,9 @@ trampa de método, que aplica a cualquier cuenta. **El caso argentino se documen
       bits/píxel valen lo mismo que los del portafolio—, pesan porque tienen 2,8× más píxeles. En
       móvil se pintan a 1068 px de ancho y el archivo trae 1280. Se propuso decidirlo mirando una
       comparación lado a lado, no por cálculo.
-- [ ] **4 sep 2026 — la nota de página de destino.** Es la revisión nueva y la razón por la que la
+- [x] **4 sep 2026 — la nota de página de destino.** **Hecho el 7 sep 2026: BELOW_AVERAGE todas las
+      semanas en las dos campañas; el punto de QS perdido es de los anuncios, no de la página**
+      (entrada del 7 sep, §3). Era la revisión nueva y la razón por la que la
       cita se movió del 3 al 4: son tres semanas exactas desde que el copy salió a producción, que es
       lo que esa nota necesita para recalcularse. **Línea base del 14 ago, contra la que hay que
       comparar:**
@@ -1071,10 +1527,13 @@ trampa de método, que aplica a cualquier cuenta. **El caso argentino se documen
       > keyword por campaña es muestra de tamaño uno. La señal es que varias se muevan igual o que
       > una se sostenga varias semanas. Las argentinas son las que más rápido juntan masa
       > (Búsqueda #2 2.934 impresiones/mes, Software #2 1.602).
-- [ ] **~4 sep 2026** — Leer el efecto del presupuesto de 20/día en **"Búsqueda #2"**, medido en
-      **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
+- [x] **~4 sep 2026** — **Hecho el 7 sep 2026: 3,2 → 4,2 serios por 100 clics, USD/serio 61 → 53,
+      sigue tocando el techo; entra en la rama «evaluar 24»** (entrada del 7 sep, §1). Leer el efecto
+      del presupuesto de 20/día en **"Búsqueda #2"**, medido en **leads serios por 100 clics** (no en totales, que suben por el volumen). Si escala, evaluar
       24; si el ratio se cae, el techo útil estaba por debajo de 20. Por encima de 30 no hay base.
-- [ ] **~4 sep 2026** — Revisar **"Software #2"** recién entonces, con las acciones separadas dando
+- [x] **~4 sep 2026** — **Hecho el 7 sep 2026: el CPC bajó a 3,39 pero por retracción de la puja
+      (QS 5 → 4, perdida por ranking 13,5 → 25,7 %), cero serios en la ventana limpia; sin
+      cambios** (entrada del 7 sep, §2). Revisar **"Software #2"** recién entonces, con las acciones separadas dando
       canal real en vez de inferencia por value unitario. El caso para subirla mejora solo **si el
       CPC baja hacia la puja que sugiere el Planner (0,91–3,72 contra 4,15–6,23 actuales)**; si sigue
       en 4+ con QS 5, la palanca es la página de destino y no el presupuesto. No mover las dos
@@ -1085,7 +1544,8 @@ trampa de método, que aplica a cualquier cuenta. **El caso argentino se documen
       > CTR sí son legibles** —responden al cambio del 14 ago casi de inmediato— y son justamente lo
       > que ese cambio buscaba mover. Lo que queda contaminado es leer el *volumen* de leads serios
       > como efecto de una sola causa. "Búsqueda #2" sigue con su ventana limpia.
-- [ ] **4 sep 2026 — o después, nunca antes** ~~(27 ago → 3 sep)~~ — Recalibrar los values con datos
+- [x] **4 sep 2026 — o después, nunca antes** ~~(27 ago → 3 sep)~~ — **Decidido el 7 sep 2026: no
+      se recalibra** (entrada del 7 sep, §4; misma decisión en Costa Rica). Recalibrar los values con datos
       propios por canal. Hoy la escala (WhatsApp 10 contra formulario 30–60) es un supuesto sin
       evidencia; el CRM de LinkDesign sugiere que la brecha real es **mayor**.
       > **Se movió del 27 de agosto al 3 de septiembre el 13 ago 2026, y del 3 al 4 el 14 ago.**
@@ -1094,21 +1554,50 @@ trampa de método, que aplica a cualquier cuenta. **El caso argentino se documen
       > que volvió irresoluble lo del 23 de julio, cuando el recorte de presupuesto y el ×2 de values
       > cayeron el mismo día. La ventana 13 ago – 4 sep queda con **una sola escala**. Si ese día se
       > decide recalibrar, el cambio abre su propia ventana de medición.
-- [ ] **24–48 h** — Verificar que las cuatro acciones nuevas registran conversiones. Si una queda en
+- [x] ~~**24–48 h** — Verificar que las cuatro acciones nuevas registran conversiones.~~ **Hecho:
+      registran (17 ago) y pujan (18 ago; reverificado el 7 sep).** Si una queda en
       cero mientras las otras se mueven, el label quedó mal copiado: es el modo de fallo silencioso
       de este cambio.
-- [ ] **No tocar pujas por al menos dos semanas.** Separar las acciones reinicia el aprendizaje de
+- [x] ~~**No tocar pujas por al menos dos semanas.**~~ **Cumplido: ventana cerrada el 4 sep sin tocar pujas.** Separar las acciones reinicia el aprendizaje de
       Smart Bidding; encimar un tROAS haría imposible atribuir el efecto de nada.
-- [ ] **~Sept 2026** — Primera lectura con sentido de Search Console de Nolõ, cuando haya varias
+- [x] **~Sept 2026** — **Hecha el 7 sep 2026: 71 impresiones y 3 clics en el primer mes, sólo la
+      marca; no hay orgánico que canibalizar. Releer en octubre** (entrada del 7 sep, §3).
+      Primera lectura con sentido de Search Console de Nolõ, cuando haya varias
       semanas acumuladas. Repetir el análisis de canibalización que se hizo para LinkDesign.
 - [x] ~~Aislamiento de la optimización argentina: ver arriba el estado real verificado el 13 ago.
       Decidir si se le asigna a "Búsqueda #2" y "Software #2" un `campaign_conversion_goal` propio
       con las acciones de Nolõ~~ — **ya estaba cumplido desde junio**, y el 13 de agosto se leyó al
       revés. Las dos campañas usan el objetivo personalizado «Contacto Argentina» (`6458009700`),
       que desde el **18 ago 2026** contiene las seis acciones argentinas. Ver esa entrada.
-- [ ] **Sigue abierto: si "Scroll Argentina (2)" debe seguir pujando.** Ahora compite, dentro del
+- [x] **Decidido el 7 sep 2026: sigue pujando** (entrada del 7 sep, §5; regla para el 5 oct:
+      si en "Software #2" pasa del 40 % del valor, se evalúa sacarlo de las dos). ~~Sigue abierto:
+      si "Scroll Argentina (2)" debe seguir pujando.~~ Ahora compite, dentro del
       mismo objetivo, contra contactos de value 8 a 54 — que es exactamente el escenario para el que
       se hizo la escala de values. Va al **4 de septiembre**, no antes.
+- [x] ~~**Decisión de Robert (7 sep 2026): "Búsqueda #2" de 20 a 24 USD/día.**~~ **Aprobado y
+      aplicado el 7 sep 2026** (`campaignBudgets/15658499227`, validado y releído; "Software #2"
+      sigue en 15). Ventana nueva desde el 8 sep; se lee el 5 oct en serios por 100 clics.
+- [ ] **Pregunta a Robert (7 sep 2026; lo trae el 8 sep): los cinco formularios argentinos** (Cadsyst, Estudio Jurídico
+      Said, Mini market Maxi y dos sin empresa) no están en el pipeline del CRM. ¿Se atendieron fuera?
+      Sin eso no se puede medir si el formulario, el techo de la escala de values, cierra.
+- [x] ~~**Opcional**: negativas en frase para «ltm software» y «adelia software» en "Software #2".~~
+      **Aplicadas el 7 sep 2026** (ver la entrada «Ejecutado»).
+- [ ] **5 oct 2026, 9:00 CR — revisión conjunta con Costa Rica** (en Calendar con correo un día antes;
+      además vistazos semanales a "Software #2" los lunes 14, 21 y 28 sep, también en Calendar). Qué mirar: la nota de página (siete semanas
+      de copy); "Búsqueda #2" en serios por 100 clics con el presupuesto que haya quedado;
+      "Software #2" en relevancia del anuncio (Promedio → Por encima), pérdida por ranking y primera
+      posición, y recién después serios por 100 clics (ver «Cómo saber si funcionó» en la entrada de
+      la tarde del 7 sep); el scroll de "Software #2" contra el 40 % del valor; y Search Console de
+      `nolo.ar` con dos meses.
+- [x] ~~**Decisión de Robert (7 sep, tarde): títulos flojos de "Software #2"**~~ **Ejecutado el 7 sep**
+      (tarde): cinco títulos, dos descripciones, ruta visible, sitelink y dos negativas. Ver la entrada
+      «Ejecutado». «Desarrollo Backend Complejo» quedó como próximo candidato.
+- [ ] **8 sep 2026 — confirmar que el anuncio `813097373240` de "Software #2" está aprobado**
+      (recordatorio en Calendar, 9:00 CR, con correo)
+      (`ad_group_ad.policy_summary.approval_status`); quedó en revisión tras la edición.
+- [ ] **Después del 5 oct — voz del anuncio de "Búsqueda #2"**: descripciones en tuteo («Moderniza tu
+      web», «Olvídate») y sitelink «Hable con un Ingeniero» en usted. No se tocó para no ensuciar su
+      ventana.
 - [x] ~~**13 ago 2026** — Revisión conjunta con LinkDesign; primer análisis de "Búsqueda #2".~~ Hecho.
 - [x] ~~**13 ago 2026** — Separar las acciones de conversión por canal.~~ Hecho, ver arriba.
 
