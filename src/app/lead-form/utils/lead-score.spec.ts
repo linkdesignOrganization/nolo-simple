@@ -6,7 +6,7 @@ import {
 } from './lead-score';
 
 // Sesión "ideal": vino de un ad de búsqueda (cpc + gclid), en /software,
-// >2 min, 5 páginas, país con timezone+locale coincidentes.
+// >2 min, 5 páginas. El país viaja pero desde el 2026-09-08 no suma puntos.
 const ideal: SessionSignals = {
   landing: 'software',
   utm_medium: 'cpc',
@@ -18,8 +18,9 @@ const ideal: SessionSignals = {
 };
 
 // Sesión "pobre" (rebote): directo, home, <30 s, 1 página, país desconocido.
+// La home no es ningún brazo del negocio: su origen es `other`.
 const poor: SessionSignals = {
-  landing: 'corporate',
+  landing: 'other',
   utm_medium: null,
   gclid: null,
   time_on_site_ms: 10_000,
@@ -30,7 +31,7 @@ const poor: SessionSignals = {
 
 // Sesión "media": directo, home, ~1 min, 2 páginas.
 const neutral: SessionSignals = {
-  landing: 'corporate',
+  landing: 'other',
   utm_medium: null,
   gclid: null,
   time_on_site_ms: 60_000,
@@ -40,12 +41,16 @@ const neutral: SessionSignals = {
 };
 
 describe('scoreSessionSignals', () => {
-  it('puntúa una sesión ideal en el tope esperado (+56)', () => {
-    expect(scoreSessionSignals(ideal).score).toBe(56);
+  it('puntúa una sesión ideal en el tope esperado (+46)', () => {
+    // 56 hasta el 2026-09-08: los diez puntos que faltan son los del país, que
+    // salieron del puntaje por decisión de negocio (el dato sigue viajando).
+    expect(scoreSessionSignals(ideal).score).toBe(46);
   });
 
-  it('penaliza una sesión pobre (rebote) en negativo (-13)', () => {
-    expect(scoreSessionSignals(poor).score).toBe(-13);
+  it('penaliza una sesión pobre (rebote) en negativo (-18)', () => {
+    // -13 hasta el 2026-09-08: la home cobraba cinco puntos por caer en el
+    // cajón por defecto, que compartía nombre con el brazo web.
+    expect(scoreSessionSignals(poor).score).toBe(-18);
   });
 
   it('solo incluye señales de sesión, nunca factores de formulario', () => {
@@ -54,7 +59,6 @@ describe('scoreSessionSignals', () => {
       'email_corporativo',
       'need_software',
       'anti_spam_pasa_todo',
-      'interaction_<3',
       'form_llenado_<10s'
     ]) {
       expect(factors).not.toContain(formFactor);

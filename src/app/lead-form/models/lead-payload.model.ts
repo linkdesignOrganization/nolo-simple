@@ -70,22 +70,49 @@ export interface LeadIntent {
 }
 
 /**
+ * Página con nombre propio desde la que se envió el lead: un sistema de
+ * `/software/<slug>` o una industria de `/industrias/<slug>`. Null en el resto
+ * del sitio, que no tiene nada más específico que contar que su propio brazo.
+ *
+ * v1.6.0. Hasta entonces esto viajaba como una línea entre corchetes pegada al
+ * principio del `message`, porque el esquema del CRM no tenía dónde ponerlo.
+ * Hacía dos daños: se comía hasta 105 de los mil caracteres del mensaje, y el
+ * puntaje medía como «mensaje detallado» un texto que había escrito el sitio.
+ * El correo de aviso y la ficha del CRM leen este campo, y conservan el parser
+ * del mensaje como respaldo para los leads anteriores a esta versión.
+ */
+export interface LeadPageContext {
+  /** Nombre legible, ya resuelto al idioma activo (ej. «Demo Pulso»). */
+  name: string;
+  /** Slug de la URL (ej. «pulso»). */
+  slug: string;
+}
+
+/**
  * Origen del lead — desde dónde llenó el form.
  */
 export interface LeadSource {
   /**
-   * Landing en la que estaba el usuario al enviar el form.
+   * Brazo de negocio de la página en la que estaba el usuario al enviar el form.
    *
    * Mapping para el equipo del CRM:
-   *   - 'corporate' → Sitio Corporativo (línea de servicios corporativos)
-   *   - 'weblab'    → WebLab / Creativo (proyectos creativos / experimentales)
-   *   - 'software'  → Software a Medida (desarrollo a medida)
-   *   - 'contact'   → Página de Contacto (entró directo a contacto)
+   *   - 'software'   → Software a Medida: `/software` y la ficha de cada sistema
+   *   - 'web'        → Brazo web: `/web`
+   *   - 'industries' → Páginas de industria: `/industrias` y su detalle
+   *   - 'contact'    → Página de Contacto (entró directo a contacto)
+   *   - 'other'      → Cualquier otra página: la portada, privacidad, 404…
    *
    * Este dato es crítico: indica desde qué oferta convirtió el lead,
    * lo que sugiere qué tipo de proyecto le interesó más.
+   *
+   * El prefijo de idioma no cambia el valor: `/en/software` es `software`.
    */
   landing: SourceLanding;
+  /**
+   * v1.6.0 — El sistema o la industria concreta de la página, cuando la página
+   * tiene uno. Null en el resto. Ver `LeadPageContext`.
+   */
+  page_context: LeadPageContext | null;
   /** Sección de la página donde está el form (footer | contact_page). */
   form_location: FormLocation;
   /** URL completa de la página al momento del submit. */
@@ -168,7 +195,7 @@ export interface LeadSession {
   pages_visited: number;
   /**
    * Recorrido de rutas visitadas en orden cronológico durante la sesión.
-   * Ej: ['/corporate', '/weblab', '/software', '/contact']
+   * Ej: ['/', '/software', '/software/crm-a-medida', '/contacto']
    *
    * Esto le da al CRM información sobre qué tanto exploró el sitio antes
    * de decidir contactarnos. Limitado a las últimas 30 páginas.

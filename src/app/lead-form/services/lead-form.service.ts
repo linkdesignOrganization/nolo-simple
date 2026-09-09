@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { LeadTrackingService } from './lead-tracking.service';
 import {
   LeadFormRawValue,
+  LeadPageContext,
   LeadPayload,
   LeadSubmitResult
 } from '../models/lead-payload.model';
@@ -41,6 +42,27 @@ import {
 declare var gtag: Function;
 
 /**
+ * Recorta el contexto de página a algo que el CRM pueda guardar sin sorpresas.
+ *
+ * A diferencia del resto de los campos, esto NO lo escribe el visitante: sale
+ * del contenido del propio sitio. Por eso se limpia (espacios, caracteres de
+ * control, largo) pero NO se escapa a entidades HTML: escapar en origen es lo
+ * que hacía que un `&` de «Operations & inventory ERP» llegara al CRM como
+ * `&amp;`. Escapar es tarea de quien renderiza.
+ */
+function normalizePageContext(
+  ctx: LeadPageContext | null | undefined
+): LeadPageContext | null {
+  if (!ctx) return null;
+  const limpiar = (v: string): string =>
+    // eslint-disable-next-line no-control-regex
+    (v || '').replace(/[\u0000-\u001F\u007F]/g, '').replace(/\s+/g, ' ').trim().slice(0, 120);
+  const name = limpiar(ctx.name);
+  const slug = limpiar(ctx.slug);
+  return name || slug ? { name, slug } : null;
+}
+
+/**
  * Contexto adicional que el componente del form debe proveer al servicio
  * (no es parte de los valores del FormGroup pero sí del payload final).
  */
@@ -50,6 +72,13 @@ export interface LeadSubmitContext {
   /** Momento del primer foco/cambio del usuario en el form (null si nunca interactuó). */
   formFirstInteractionAt: number | null;
   interactionCount: number;
+  /**
+   * v1.6.0 — El sistema o la industria de la página, cuando la página tiene uno.
+   * Viaja en `source.page_context`. Hasta esta versión el componente lo
+   * anteponía al mensaje entre corchetes, y el puntaje lo medía como si lo
+   * hubiera escrito la persona.
+   */
+  pageContext?: LeadPageContext | null;
 }
 
 /**
@@ -240,7 +269,10 @@ export class LeadFormService {
       passed_interaction_check: boolean;
     }
   ): LeadPayload {
-    const trackingCtx = this.tracking.getTrackingContext(context.formLocation);
+    const trackingCtx = this.tracking.getTrackingContext(
+      context.formLocation,
+      normalizePageContext(context.pageContext)
+    );
 
     // Sanitización defensiva
     const name = sanitizeText(raw.name, 80);

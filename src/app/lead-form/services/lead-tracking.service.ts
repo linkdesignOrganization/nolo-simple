@@ -17,15 +17,17 @@ import { TimelineService } from './timeline.service';
 import {
   STORAGE_KEYS,
   UTM_TTL_MS,
-  PERSONAL_EMAIL_DOMAINS,
   DeviceType,
   EmailDomainType,
   Language,
   SourceLanding,
   FormLocation
 } from '../models/lead-form-options';
+import { classifyEmailDomain } from '../utils/email-domain';
+import { landingFromPath } from '../utils/landing-from-path';
 import {
   LeadAttribution,
+  LeadPageContext,
   LeadSession,
   LeadSource,
   TrackingContext
@@ -65,6 +67,24 @@ export class LeadTrackingService {
   private lastResumeAt = Date.now();
   private visible = true;
 
+  /**
+   * ¿El router todavía no había resuelto su navegación inicial cuando nació este
+   * servicio? Si es así, su primera `NavigationEnd` es esa misma carga, que el
+   * constructor ya contó: no debe sumar una página más.
+   *
+   * Esto es lo que se rompió el 2026-06-28. Hasta entonces al servicio lo
+   * inyectaba solo el formulario, que se construye después de que el router
+   * resolvió la ruta, y la primera navegación no se veía. Ese día `AdsService`
+   * pasó a inyectarlo, y como `AdsService` vive en el componente raíz, el
+   * servicio empezó a nacer en el arranque, antes de navegar: desde entonces la
+   * página inicial se contaba dos veces y el envío se contradecía a sí mismo
+   * (decía dos páginas y adjuntaba un recorrido de una).
+   *
+   * Preguntarle al router en vez de asumir un orden hace que el conteo deje de
+   * depender de quién inyecte primero.
+   */
+  private initialNavigationPending = false;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     @Inject(DOCUMENT) private document: Document,
@@ -81,12 +101,16 @@ export class LeadTrackingService {
       this.lastResumeAt = Date.now();
       this.visible = this.document.visibilityState !== 'hidden';
       this.trackVisibility();
-      this.pagesVisited = 1; // página inicial cuenta
 
-      // Registrar la página inicial en el recorrido
+      // Registrar la página inicial en el recorrido. El contador va con el
+      // recorrido, no aparte: cada página que entra al array suma uno.
       const initialPath = this.cleanPath(this.document.location.pathname);
       this.visitedPaths.push(initialPath);
+      this.pagesVisited = 1;
       this.timeline.log('page', initialPath);
+
+      // Si el router aún no navegó, la NavigationEnd que viene es esta misma carga.
+      this.initialNavigationPending = !this.router.navigated;
 
       // Capturar UTM al cargar (incluye la primera visita)
       this.persistUtmParams();
@@ -97,12 +121,21 @@ export class LeadTrackingService {
       // Contar páginas visitadas + acumular recorrido
       this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
-          this.pagesVisited += 1;
-
           const nextPath = this.cleanPath(event.urlAfterRedirects || event.url);
+
+          if (this.initialNavigationPending) {
+            // Es la carga inicial, ya contada arriba. Si el router resolvió otra
+            // ruta (una redirección), se corrige el recorrido sin sumar página.
+            this.initialNavigationPending = false;
+            this.replaceInitialPath(nextPath);
+            this.persistUtmParams();
+            return;
+          }
+
           // Evitar duplicados consecutivos (navegaciones internas a la misma ruta)
           const lastPath = this.visitedPaths[this.visitedPaths.length - 1];
           if (nextPath !== lastPath) {
+            this.pagesVisited += 1;
             this.visitedPaths.push(nextPath);
             this.timeline.log('page', nextPath);
             // Mantener tamaño acotado
@@ -128,12 +161,33 @@ export class LeadTrackingService {
   }
 
   /**
+   * Sustituye la ruta inicial del recorrido por la que el router resolvió de
+   * verdad. Es la misma visita, no una página nueva: la carga inicial se anota
+   * con lo que muestra el navegador (`/software/`, con barra) y el router puede
+   * resolver otra cosa (`/software`, o la home si la URL no existía).
+   */
+  private replaceInitialPath(path: string): void {
+    const lastIndex = this.visitedPaths.length - 1;
+    if (lastIndex < 0 || this.visitedPaths[lastIndex] === path) return;
+    this.visitedPaths[lastIndex] = path;
+    this.timeline.replaceLastPage(path);
+  }
+
+  /**
    * Devuelve el snapshot completo de tracking en este instante.
    * Llamado por LeadFormService al armar el payload.
+   *
+   * `pageContext` no lo captura este servicio: lo trae el componente del
+   * formulario, que es el único que sabe qué sistema o industria está mostrando
+   * la página. Entra por acá para que `LeadSource` se arme entero en un solo
+   * lugar.
    */
-  getTrackingContext(formLocation: FormLocation): TrackingContext {
+  getTrackingContext(
+    formLocation: FormLocation,
+    pageContext: LeadPageContext | null = null
+  ): TrackingContext {
     return {
-      source: this.getSource(formLocation),
+      source: this.getSource(formLocation, pageContext),
       attribution: this.getAttribution(),
       session: this.getSessionPartial()
     };
@@ -157,6 +211,7 @@ export class LeadTrackingService {
       utm_medium: stored ? stored.utm_medium : null,
       gclid: stored ? stored.gclid : null,
       time_on_site_ms: this.getTimeOnSite(),
+      time_on_site_active_ms: this.getActiveTimeOnSite(),
       pages_visited: this.pagesVisited,
       country: countryInfo.country,
       country_source: countryInfo.source
@@ -167,9 +222,13 @@ export class LeadTrackingService {
   // Source
   // ──────────────────────────────────────────────────────────────────────────
 
-  private getSource(formLocation: FormLocation): LeadSource {
+  private getSource(
+    formLocation: FormLocation,
+    pageContext: LeadPageContext | null
+  ): LeadSource {
     return {
       landing: this.detectLanding(),
+      page_context: pageContext,
       form_location: formLocation,
       page_url: this.isBrowser ? this.document.location.href : '',
       referrer: this.isBrowser ? (this.document.referrer || null) : null,
@@ -178,14 +237,16 @@ export class LeadTrackingService {
     };
   }
 
+  /**
+   * Brazo de negocio de la página desde la que se está enviando el lead. La
+   * regla vive en `utils/landing-from-path.ts`, que es pura: acá solo se le pasa
+   * el path.
+   */
   detectLanding(): SourceLanding {
-    if (!this.isBrowser) return 'corporate'; // default arbitrario en SSR
-    const path = this.document.location.pathname.toLowerCase();
-    if (path.startsWith('/software')) return 'software';
-    if (path.startsWith('/contacto')) return 'contact';
-    if (path.startsWith('/web')) return 'corporate';
-    // home y resto → corporate
-    return 'corporate';
+    // En SSR no hay página real y el envío se arma siempre en el navegador, así
+    // que este valor no llega a viajar. `other` es el honesto: no se sabe.
+    if (!this.isBrowser) return 'other';
+    return landingFromPath(this.document.location.pathname);
   }
 
   getLanguage(): Language {
@@ -434,10 +495,11 @@ export class LeadTrackingService {
   // ──────────────────────────────────────────────────────────────────────────
 
   /**
-   * Clasifica un email como personal o corporate según el dominio.
+   * Clasifica un email como personal o corporate según el proveedor del dominio.
+   * La lógica (etiqueta registrable + sufijos compuestos) vive en
+   * `utils/email-domain.ts`, que es pura y se prueba sin montar el servicio.
    */
   getEmailDomainType(email: string): EmailDomainType {
-    const domain = (email.split('@')[1] || '').toLowerCase().trim();
-    return PERSONAL_EMAIL_DOMAINS.includes(domain) ? 'personal' : 'corporate';
+    return classifyEmailDomain(email);
   }
 }

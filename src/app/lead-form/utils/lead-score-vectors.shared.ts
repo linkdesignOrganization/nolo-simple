@@ -76,11 +76,17 @@ export interface ScoreVector {
  * ni restar — salvo los dos inevitables, que se cancelan: email personal (-5)
  * y anti-spam todo OK (+5). Score = 0, categoría `nurture`. Es el ancla: si
  * este vector falla, cambió la fórmula base.
+ *
+ * El origen es `contact`: no tiene factor asociado (sigue siendo neutro) y
+ * además es un valor que los sitios producen de verdad, desde `/contacto`.
+ * Hasta el 2026-09-08 acá decía `weblab`, heredado del sitio anterior: también
+ * era neutro, pero ningún sitio puede producirlo desde que ese sitio se apagó,
+ * así que el punto de partida de la suite era un caso imposible.
  */
 export const BASE_PAYLOAD: ScoreVectorPayload = {
   contact: { email_domain_type: 'personal', company: null },
   intent: { need: [], preferred_contact: ['correo'], message: null },
-  source: { landing: 'weblab' },
+  source: { landing: 'contact' },
   attribution: { utm_medium: null, gclid: null },
   session: {
     time_on_site_ms: 60_000, // entre <30s y >2min: neutro
@@ -157,9 +163,37 @@ export const SCORE_VECTORS: ScoreVector[] = [
     expected: { score: 10, category: 'nurture' },
   },
   {
-    name: 'aterrizó en la landing corporate (+5)',
-    over: { source: { landing: 'corporate' } },
+    name: 'aterrizó en el brazo web (+5)',
+    over: { source: { landing: 'web' } },
     expected: { score: 5, category: 'nurture' },
+  },
+  {
+    name: 'aterrizó en una industria (+5, mismo peso que el brazo web)',
+    over: { source: { landing: 'industries' } },
+    expected: { score: 5, category: 'nurture' },
+  },
+  {
+    name: 'el cajón por defecto («other») no suma ni resta',
+    over: { source: { landing: 'other' } },
+    expected: { score: 0, category: 'nurture' },
+  },
+  {
+    name: '«corporate» del histórico se acepta pero ya no suma',
+    over: { source: { landing: 'corporate' } },
+    expected: { score: 0, category: 'nurture' },
+  },
+  {
+    name: '«weblab», el otro heredado, tampoco suma',
+    over: { source: { landing: 'weblab' } },
+    expected: { score: 0, category: 'nurture' },
+  },
+  {
+    name: 'la página de contacto no suma ni resta',
+    // Es el origen del payload base, así que este vector es explícito a
+    // propósito: fija que `contact` vale cero por sí mismo y no por herencia
+    // de la base. Si algún día se le diera peso, este vector lo caza.
+    over: { source: { landing: 'contact' } },
+    expected: { score: 0, category: 'nurture' },
   },
   {
     name: 'vino de Ads: cpc + gclid (8+5)',
@@ -192,19 +226,19 @@ export const SCORE_VECTORS: ScoreVector[] = [
     expected: { score: -8, category: 'suspicious' },
   },
   {
-    name: 'pocas interacciones y form llenado en 5s (-5-5)',
+    name: 'form llenado en 5s (-5); las pocas interacciones ya no penalizan',
     over: { session: { interaction_count: 2, form_load_to_submit_ms: 5_000 } },
-    expected: { score: -10, category: 'suspicious' },
+    expected: { score: -5, category: 'suspicious' },
   },
   {
-    name: 'Costa Rica con confianza alta (8+2)',
+    name: 'el país ya no da puntos: Costa Rica no vale más que nadie',
     over: { session: { country: 'CR', country_source: 'both' } },
-    expected: { score: 10, category: 'nurture' },
+    expected: { score: 0, category: 'nurture' },
   },
   {
-    name: 'Argentina NO recibe el bonus de país',
+    name: 'Argentina tampoco: ningún país suma ni resta',
     over: { session: { country: 'AR', country_source: 'both' } },
-    expected: { score: 2, category: 'nurture' },
+    expected: { score: 0, category: 'nurture' },
   },
   {
     name: 'honeypot fallido: -50 y pierde el +5 → suspicious',
@@ -248,6 +282,6 @@ export const SCORE_VECTORS: ScoreVector[] = [
         country_source: 'both',
       },
     },
-    expected: { score: 173, category: 'hot' },
+    expected: { score: 163, category: 'hot' },
   },
 ];

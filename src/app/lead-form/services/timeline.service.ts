@@ -27,6 +27,21 @@ export class TimelineService {
     this.events.push({ at_ms: Date.now() - this.startAt, kind, label });
   }
 
+  /**
+   * Corrige la etiqueta del último hito de página ya registrado, sin agregar uno
+   * nuevo: es la misma visita. La carga inicial se anota con la ruta que muestra
+   * el navegador, y el router puede resolver otra (barra final, redirección).
+   */
+  replaceLastPage(label: string): void {
+    if (!this.isBrowser || !label) return;
+    for (let i = this.events.length - 1; i >= 0; i--) {
+      if (this.events[i].kind === 'page') {
+        this.events[i] = { ...this.events[i], label };
+        return;
+      }
+    }
+  }
+
   /** Snapshot del recorrido en orden. Para el payload. */
   getSnapshot(): TimelineEvent[] {
     if (!this.isBrowser) return [];

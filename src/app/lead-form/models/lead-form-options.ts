@@ -14,11 +14,55 @@ export type PreferredContactOption =
   | 'whatsapp'
   | 'llamada';
 
+/**
+ * Origen del lead: el brazo del negocio al que pertenece la página desde la que
+ * escribió. Nombra brazos, no páginas, y por eso una página nueva dentro de un
+ * brazo que ya existe entra sola.
+ *
+ * `corporate` y `weblab` salieron el 2026-09-08. `weblab` era del sitio
+ * anterior, apagado desde junio de 2026, y ningún sitio podía producirlo.
+ * `corporate` nombraba al brazo web Y hacía de cajón por defecto a la vez, así
+ * que la etiqueta no distinguía `/web` de una URL inexistente. El CRM los
+ * sigue aceptando por el histórico; los sitios ya no los producen y no suman
+ * puntos.
+ */
 export type SourceLanding =
-  | 'corporate'
-  | 'weblab'
   | 'software'
-  | 'contact';
+  | 'web'
+  | 'industries'
+  | 'contact'
+  | 'other';
+
+/**
+ * Segmentos que el árbol de rutas usa como prefijo de idioma: el español va sin
+ * prefijo (`/software`) y el inglés bajo `/en` (`/en/software`).
+ *
+ * El idioma es una decisión de presentación, no de intención comercial: la
+ * misma página vale lo mismo en los dos. La clasificación lo descarta antes de
+ * mirar nada. Hasta el 2026-09-08 no lo hacía, y las ocho rutas en inglés con
+ * formulario caían todas en el cajón por defecto.
+ */
+export const LANGUAGE_PATH_PREFIXES: readonly string[] = ['en'];
+
+/**
+ * PRIMER segmento del path (ya sin el prefijo de idioma) → brazo del negocio.
+ *
+ * La clasificación mira solo ese primer segmento, así que una página nueva
+ * dentro de una sección que ya está acá —`/software/lo-que-sea`,
+ * `/industrias/lo-que-sea`— se clasifica sola, sin tocar esta tabla. Lo que no
+ * aparezca acá es `other`.
+ *
+ * Abrir una SECCIÓN nueva de primer nivel sí obliga a agregarla, y hay una red
+ * que lo recuerda: `services/lead-tracking.landing.spec.ts` recorre el árbol
+ * real de rutas y se pone roja sola si aparece una página con formulario sin
+ * expectativa declarada.
+ */
+export const LANDING_BY_PATH_SEGMENT: Readonly<Record<string, SourceLanding>> = {
+  software: 'software',
+  industrias: 'industries',
+  web: 'web',
+  contacto: 'contact'
+};
 
 export type FormLocation = 'footer' | 'contact_page';
 
@@ -55,24 +99,122 @@ export const CONTACT_OPTIONS: Array<{
 ];
 
 /**
- * Dominios de email considerados "personales" (consumer).
- * Todo lo demás se clasifica como "corporate".
+ * PROVEEDORES de correo personal (consumer), identificados por su **etiqueta
+ * registrable**: la parte propia del dominio, sin el sufijo público.
+ *
+ * Comparar por etiqueta y no por el dominio completo hace que el país y el
+ * sufijo dejen de importar: `hotmail.com`, `hotmail.es`, `hotmail.com.ar` y
+ * `hotmail.com.mx` son el mismo proveedor y entran con una sola línea.
+ * Todo lo que no esté acá se clasifica como "corporate" y cobra sus puntos,
+ * venga del país que venga. Criterio de Robert, 2026-09-08.
+ *
+ * Hasta esa fecha esto era una lista de catorce dominios exactos: tenía
+ * `hotmail.com` y `hotmail.es` pero no `hotmail.com.ar`, muy común en
+ * Argentina. Cada variante que faltaba valía veinte puntos de más en el CRM
+ * (+15 de "corporativo" en vez de −5 de "personal"), el desvío más grande que
+ * puede producir un solo factor.
+ *
+ * La clasificación vive en `utils/email-domain.ts`.
  */
-export const PERSONAL_EMAIL_DOMAINS = [
-  'gmail.com',
-  'hotmail.com',
-  'hotmail.es',
-  'outlook.com',
-  'outlook.es',
-  'yahoo.com',
-  'yahoo.es',
-  'icloud.com',
-  'live.com',
-  'live.cl',
-  'aol.com',
-  'protonmail.com',
-  'proton.me',
-  'me.com'
+export const PERSONAL_EMAIL_PROVIDERS = [
+  // Google
+  'gmail',
+  'googlemail',
+  // Microsoft — todas sus marcas de correo de consumo
+  'hotmail',
+  'outlook',
+  'live',
+  'msn',
+  'windowslive',
+  // Yahoo
+  'yahoo',
+  'ymail',
+  'rocketmail',
+  // Apple
+  'icloud',
+  'me',
+  'mac',
+  // AOL
+  'aol',
+  'aim',
+  // Proton (proton.me, protonmail.com, pm.me)
+  'proton',
+  'protonmail',
+  'pm',
+  // GMX / United Internet — incluye web.de, mail.com y mail.ru
+  'gmx',
+  'web',
+  'mail',
+  // Zoho — solo su buzón personal (zoho.com). Los dominios propios que una
+  // empresa aloja en Zoho llegan con SU dominio, así que no pasan por acá.
+  'zoho',
+  'zohomail',
+  // Yandex
+  'yandex',
+  // Tutanota / Tuta
+  'tutanota',
+  'tutamail',
+  'tuta',
+  // Fastmail
+  'fastmail',
+  // HEY
+  'hey',
+  // América Latina — portales e ISP de uso masivo
+  'terra',
+  'uol',
+  'bol',
+  'ig',
+  'globo',
+  'globomail',
+  'prodigy',
+  'latinmail',
+  'speedy',
+  'fibertel',
+  'arnet',
+  'ciudad',
+  'racsa'
+];
+
+/**
+ * Etiquetas de segundo nivel que forman parte del **sufijo público** cuando el
+ * dominio termina en un ccTLD de dos letras: en `hotmail.com.ar` el sufijo es
+ * `com.ar` y la etiqueta registrable es `hotmail`.
+ *
+ * Sin esto, `mail.empresa.com` se confundiría con `mail.com` y un correo de
+ * empresa perdería veinte puntos. Es un recorte deliberado de la Public Suffix
+ * List: no hace falta la lista entera, solo lo suficiente para que la etiqueta
+ * registrable no se equivoque en los sufijos que este negocio ve
+ * (`com.ar`, `com.mx`, `co.cr`, `go.cr`, `com.br`, `co.uk`, `com.co`,
+ * `com.pe`, `com.es`…). Errar de más acá es inofensivo: solo produce un
+ * "corporate" cuando ya iba a serlo.
+ */
+export const PUBLIC_SUFFIX_SECOND_LEVEL = [
+  'com',
+  'co',
+  'net',
+  'org',
+  'edu',
+  'gov',
+  'gob',
+  'go',
+  'mil',
+  'ac',
+  'or',
+  'ne',
+  'ed',
+  'sch',
+  'nom',
+  'info',
+  'web',
+  'gen',
+  'ind',
+  'art',
+  'tur',
+  'biz',
+  'in',
+  'id',
+  'sa',
+  'fi'
 ];
 
 /**
@@ -131,8 +273,13 @@ export const STORAGE_KEYS = {
 /**
  * Schema version del payload — bumpear cuando haya breaking changes.
  * 1.5.0: + source.entry_referrer (referrer first-touch persistido).
+ * 1.6.0: + source.page_context (el sistema o la industria de la página, que
+ *        hasta ahora viajaba pegado al principio del mensaje) y vocabulario
+ *        nuevo de source.landing: software · web · industries · contact · other.
+ *        REGLA DE ORO: el CRM se despliega ANTES que los sitios — rechaza con
+ *        400 las versiones de schema que no conoce y el lead se pierde.
  */
-export const PAYLOAD_SCHEMA_VERSION = '1.5.0' as const;
+export const PAYLOAD_SCHEMA_VERSION = '1.6.0' as const;
 
 /**
  * Configuración del evento de conversión de Google Ads que se dispara

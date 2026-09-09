@@ -67,17 +67,6 @@
       "heroSrc": "/media/hero/xceed.mp4"
     },
     {
-      "client": "WeDrive CR",
-      "logo": "/media/portfolio/wedrivecr-logo.svg",
-      "industry": "Turismo",
-      "projectType": "Corporativo + transacciones",
-      "link": "https://wedrivecr.com/",
-      "videoSrc": "/media/portfolio/wedrivecr-web.mp4",
-      "poster": "/media/portfolio/wedrivecr-poster.jpg",
-      "slug": "wedrivecr",
-      "heroSrc": "/media/hero/wedrivecr.mp4"
-    },
-    {
       "client": "R. Loría",
       "logo": "/media/portfolio/legalway-logo.svg",
       "industry": "Legal",
@@ -87,6 +76,17 @@
       "poster": "/media/portfolio/legalway-poster.jpg",
       "slug": "legalway",
       "heroSrc": null
+    },
+    {
+      "client": "WeDrive CR",
+      "logo": "/media/portfolio/wedrivecr-logo.svg",
+      "industry": "Turismo",
+      "projectType": "Corporativo + transacciones",
+      "link": "https://wedrivecr.com/",
+      "videoSrc": "/media/portfolio/wedrivecr-web.mp4",
+      "poster": "/media/portfolio/wedrivecr-poster.jpg",
+      "slug": "wedrivecr",
+      "heroSrc": "/media/hero/wedrivecr.mp4"
     },
     {
       "client": "CEWTEC",
@@ -333,17 +333,6 @@
       "heroSrc": "/media/hero/xceed.mp4"
     },
     {
-      "client": "WeDrive CR",
-      "logo": "/media/portfolio/wedrivecr-logo.svg",
-      "industry": "Tourism",
-      "projectType": "Corporate + transactions",
-      "link": "https://wedrivecr.com/",
-      "videoSrc": "/media/portfolio/wedrivecr-web.mp4",
-      "poster": "/media/portfolio/wedrivecr-poster.jpg",
-      "slug": "wedrivecr",
-      "heroSrc": "/media/hero/wedrivecr.mp4"
-    },
-    {
       "client": "R. Loría",
       "logo": "/media/portfolio/legalway-logo.svg",
       "industry": "Legal",
@@ -353,6 +342,17 @@
       "poster": "/media/portfolio/legalway-poster.jpg",
       "slug": "legalway",
       "heroSrc": null
+    },
+    {
+      "client": "WeDrive CR",
+      "logo": "/media/portfolio/wedrivecr-logo.svg",
+      "industry": "Tourism",
+      "projectType": "Corporate + transactions",
+      "link": "https://wedrivecr.com/",
+      "videoSrc": "/media/portfolio/wedrivecr-web.mp4",
+      "poster": "/media/portfolio/wedrivecr-poster.jpg",
+      "slug": "wedrivecr",
+      "heroSrc": "/media/hero/wedrivecr.mp4"
     },
     {
       "client": "CEWTEC",
@@ -538,8 +538,8 @@
     "uga",
     "aaec",
     "xceed",
-    "wedrivecr",
     "legalway",
+    "wedrivecr",
     "cewtec",
     "alturaraiz",
     "cefsa",
