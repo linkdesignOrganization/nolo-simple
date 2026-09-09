@@ -58,8 +58,8 @@ Sitios publicados para clientes reales; cada entrada indica la industria y enlaz
 - [Uga Comediante](https://ugacomediante.com/): Entretenimiento.
 - [AAEC](https://aaec.org/): Legal.
 - [Xceed](https://xceedsportsandtravel.com/): Turismo.
-- [WeDrive CR](https://wedrivecr.com/): Turismo.
 - [R. Loría](https://legalwaycr.com/): Legal.
+- [WeDrive CR](https://wedrivecr.com/): Turismo.
 - [CEWTEC](https://www.cewtec.com/): Tecnología.
 - [Altura Raíz](https://wonderful-smoke-00f5c7f0f.6.azurestaticapps.net/): Arquitectura.
 - [CEFSA](https://cefsa.cr/): Finanzas.
