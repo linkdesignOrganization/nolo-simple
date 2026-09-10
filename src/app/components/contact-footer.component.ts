@@ -14,6 +14,7 @@ import { LanguageService } from '../services/language.service';
 import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { AdsService } from '../services/ads.service';
 import { LeadFormService, LeadSubmitContext } from '../lead-form/services/lead-form.service';
+import { COMPANY_LEGAL, COMPANY_SCHEDULE } from '../company-info';
 import { TimelineService } from '../lead-form/services/timeline.service';
 import { LeadFormRawValue, LeadPageContext } from '../lead-form/models/lead-payload.model';
 import { NeedOption, PreferredContactOption } from '../lead-form/models/lead-form-options';
@@ -126,6 +127,9 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
         </ul>
 
         <p class="cf-location">{{ info().location }}</p>
+        @for (line of footerLines(); track line) {
+          <p class="cf-location cf-location--meta">{{ line }}</p>
+        }
       </aside>
 
       <form class="cf-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -395,6 +399,11 @@ const CONTACT_MAP: Record<string, PreferredContactOption> = {
       color: #8a8a8a;
       font-family: var(--font-mono);
       font-size: 0.85rem;
+    }
+
+    /* Horario y datos legales: mismas letra y color que la ubicación, pegados debajo. */
+    .cf-location--meta {
+      margin-top: 0.35rem;
     }
 
     /* Columna derecha: form minimal, sin panel ni cajas. Cada campo es una sola línea
@@ -814,6 +823,18 @@ export class ContactFooterComponent {
   private readonly ads = inject(AdsService);
   protected readonly lang = this.i18n.lang;
   protected readonly t = computed(() => FOOTER_TEXT[this.lang()]);
+
+  /**
+   * Líneas debajo de la ubicación: horario corto, razón social (solo donde no es el mismo número
+   * que la cédula) y cédula o CUIT. Transparencia de la empresa para la nota de página de destino.
+   */
+  protected readonly footerLines = computed(() => {
+    const lang = this.lang();
+    const lines: string[] = [COMPANY_SCHEDULE[lang].short];
+    if (COMPANY_LEGAL.showLegalName) lines.push(COMPANY_LEGAL.legalName);
+    lines.push(`${COMPANY_LEGAL.label[lang]} ${COMPANY_LEGAL.taxId}`);
+    return lines;
+  });
 
   protected readonly year = new Date().getFullYear();
 

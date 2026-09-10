@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 
 import { ContactFooterComponent, ContactInfo } from './contact-footer.component';
 import { LeadFormService } from '../lead-form/services/lead-form.service';
+import { LanguageService } from '../services/language.service';
 
 const info: ContactInfo = {
   email: 'hola@test.com',
@@ -114,4 +115,20 @@ describe('ContactFooterComponent', () => {
 
     fixture.destroy();
   });
+  // Transparencia de la empresa (nota de página de destino): horario corto y datos legales
+  // debajo de la ubicación, con la misma clase visual, en el idioma activo.
+  it('muestra el horario corto y los datos legales debajo de la ubicación', () => {
+    const fixture = createFixture();
+    const meta = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.cf-location--meta')].map((n) => n.textContent?.trim());
+    expect(meta).toEqual(['L-V, 9 a 18', 'NOLO CAAR', 'CUIT 30-71951427-4']);
+  });
+
+  it('traduce el horario y la etiqueta legal en inglés', () => {
+    TestBed.inject(LanguageService).set('en');
+    const fixture = createFixture();
+    const meta = [...(fixture.nativeElement as HTMLElement).querySelectorAll('.cf-location--meta')].map((n) => n.textContent?.trim());
+    expect(meta).toEqual(['Mon-Fri, 9am-6pm', 'NOLO CAAR', 'CUIT 30-71951427-4']);
+    TestBed.inject(LanguageService).set('es');
+  });
+
 });

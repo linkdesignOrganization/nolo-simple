@@ -3,6 +3,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 
 import { environment } from '../../environments/environment';
+import { COMPANY_LEGAL } from '../company-info';
 
 export interface SeoData {
   title: string;
@@ -328,6 +329,8 @@ export class SeoService {
           '@type': 'Organization',
           '@id': `${this.siteOrigin}/#organization`,
           name: 'Nolo',
+          legalName: COMPANY_LEGAL.legalName,
+          taxID: COMPANY_LEGAL.taxId,
           url: `${this.siteOrigin}/`,
           description: brand.description,
           slogan: brand.slogan,

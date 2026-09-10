@@ -1621,3 +1621,13 @@ CRM como `landing: software` con el contexto de la ficha. Nada se tocó en Googl
 mirar primero cuánto viene de estas páginas antes de leerlo como cambio de comportamiento. Verificado
 en producción el 10 sep con un espía sobre `gtag` (sin enviar nada): values 42 y 7 en sesión fría.
 Bitácora del proyecto: `~/dev/WebSite/PLAN-FICHAS-NOLO.md`.
+
+### 10 sep 2026 · horario y datos legales en el pie (transparencia para la nota de página de destino)
+
+Misma acción que en Link Design (plan `docs/plan-nota-pagina-destino.md` de ese repo), con los datos
+que dio Robert: razón social **NOLO CAAR** y **CUIT 30-71951427-4**. Desde hoy el pie de todas las
+páginas muestra, debajo de la ubicación: «L-V, 9 a 18», «NOLO CAAR» y «CUIT 30-71951427-4» (en inglés
+«Mon-Fri, 9am-6pm» y las mismas dos líneas legales). La ficha de marca que lee Google lleva
+`legalName` y `taxID`. Fuente única en `src/app/company-info.ts`; `/contacto` usa el horario largo de
+la misma constante. Apunta a la nota de página de destino, que se lee el 5 oct 2026 junto con la de
+Costa Rica; los videos móviles (acción 3) quedan pendientes en los dos sitios.
