@@ -16,7 +16,7 @@ npm test           # vitest
 
 ## Sitio gemelo
 
-`Desktop\LinkDesign\WEB\LinkDesign-simple` (dominio `linkdesign.cr`, Costa Rica) es el original.
+`~/dev/WebSite/LinkDesign-simple` (dominio `linkdesign.cr`, Costa Rica) es el original.
 Comparten arquitectura: `ads.service.ts`, lead-form, lead scoring, SEO por effect en `app.ts`. Un
 cambio en uno casi siempre aplica al otro cambiando IDs, branding y teléfonos — antes de cerrar un
 cambio estructural, preguntá si corresponde replicarlo.
@@ -61,3 +61,11 @@ archivos que lista no se cargan solos — leerlos cuando el tema aparezca.
 
 Cuando aprendas algo duradero de este proyecto, escribilo ahí: un archivo por tema y una línea en
 `MEMORY.md`. El índice se carga entero en cada sesión, así que va corto.
+
+## Voz y páginas por país
+
+Nolõ escribe en **voseo argentino** (vos, tenés, podés, escribinos), con tildes siempre y sin guion largo.
+Es un **estudio propio argentino con sede en Buenos Aires**: el sitio no se presenta como marca de Link
+Design. Desde el 10 sep 2026 tiene el hub `/desarrollo-de-software-argentina` y seis fichas de demo
+(ES/EN), espejo del hub de Costa Rica; ver `.claude/memory/landing-software-ar.md` y la bitácora
+`~/dev/WebSite/PLAN-FICHAS-NOLO.md`. Grafía: «Nolo» en títulos, JSON-LD y sitemaps; «Nolõ» en el copy.

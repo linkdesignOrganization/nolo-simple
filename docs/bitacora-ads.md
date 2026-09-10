@@ -1606,3 +1606,18 @@ campaña sigue teniendo una sola causa que leer. Las dos ventanas arrancan el **
 La zona horaria de la cuenta es **Costa Rica (UTC-6)** y Argentina va +3h: al cargar horarios de
 campaña hay que restar 3 horas. Los sitelinks admiten como máxima granularidad el grupo de anuncios,
 no el anuncio.
+
+### 10 sep 2026 · el hub y las fichas de demo reportan agendar y WhatsApp
+
+Desde el deploy `9ceb2c9` existen `/desarrollo-de-software-argentina` y sus seis fichas (ES y EN), espejo
+del hub de Costa Rica. Sus tres botones de contacto («Agendá una reunión» y «Escribinos por WhatsApp»
+del hero del hub, y «Agendá una reunión de 30 minutos» en la sección de precio de cada ficha) reportan
+las mismas conversiones que el resto del sitio, con los labels argentinos: reunión
+`GPuTCMeXquEcEIe3n7s-` (value base 60, modulado) y WhatsApp `zxm7CMGXquEcEIe3n7s-` (base 10). El
+formulario del pie sigue reportando `ZAj_CMqXquEcEIe3n7s-` con value por scoring, y el lead llega al
+CRM como `landing: software` con el contexto de la ficha. Nada se tocó en Google Ads.
+
+**Para leer después:** si suben las conversiones de reunión y WhatsApp sin que suban las de formulario,
+mirar primero cuánto viene de estas páginas antes de leerlo como cambio de comportamiento. Verificado
+en producción el 10 sep con un espía sobre `gtag` (sin enviar nada): values 42 y 7 en sesión fría.
+Bitácora del proyecto: `~/dev/WebSite/PLAN-FICHAS-NOLO.md`.
