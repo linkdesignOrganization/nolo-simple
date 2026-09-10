@@ -30,7 +30,7 @@ const PROPER_NAMES =
   /Vértice Seguridad Industrial|Nolõ|Estudio Dental Mendieta|Tornos del Sur|Punto Cero|Mercado Pago|Link Design/g;
 
 // Campos que no son texto traducible: vienen del ES y quedan fuera del escaneo de fugas.
-const INVARIANT_KEYS = new Set(['slug', 'system', 'poster', 'video', 'link']);
+const INVARIANT_KEYS = new Set(['slug', 'system', 'poster', 'video', 'videoMobile', 'link']);
 
 /** Quita las citas «…» (rótulos de los demos, en español a propósito) y los nombres propios. */
 function stripAllowed(text: string): string {
@@ -90,6 +90,7 @@ describe('SOFTWARE_AR_CASES (paridad ES/EN de las fichas)', () => {
         expect(en.system).toBe(es.system);
         expect(en.poster).toBe(es.poster);
         expect(en.video).toBe(es.video);
+        expect(en.videoMobile).toBe(es.videoMobile);
         expect(en.link).toBe(es.link);
         expect(en.name).toBe(es.name);
         // La capa EN se aplicó de verdad: el texto cambia.
@@ -186,5 +187,12 @@ describe('SOFTWARE_AR_CASES (paridad ES/EN de las fichas)', () => {
       ...stringLeaves(SOFTWARE_AR_CASE_LABELS_EN, 'SOFTWARE_AR_CASE_LABELS_EN')
     ];
     expect(leaves.filter((leaf) => leaf.value.includes('—')).map((leaf) => leaf.path)).toEqual([]);
+  });
+  // El clip de celular es el mismo video en 720 px: mismo nombre con sufijo -mobile, para que
+  // nadie apunte a un archivo que no existe al agregar una ficha.
+  it('cada ficha declara el clip de celular derivado de su video', () => {
+    for (const c of Object.values(SOFTWARE_AR_CASES)) {
+      expect(c.videoMobile).toBe(c.video.replace('.mp4', '-mobile.mp4'));
+    }
   });
 });

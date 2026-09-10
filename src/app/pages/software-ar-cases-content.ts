@@ -47,6 +47,8 @@ export type SoftwareArCase = {
   summary: string;
   poster: string;
   video: string;
+  /** Clip de 720 px para celular: mismo encuadre y proporción, un tercio del peso. */
+  videoMobile: string;
   link: string;
   before: string;
   after: string;
@@ -77,6 +79,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'Toda una cadena de gimnasios en un tablero, con socios, planes, cobranzas, asistencia y clases, más una capa de IA que marca quién está por darse de baja.',
     poster: '/media/software/pulso.jpg',
     video: '/media/software/pulso.mp4',
+    videoMobile: '/media/software/pulso-mobile.mp4',
     link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net',
     before:
       'Membresías que se vencen y nadie avisa, cupos de clase anotados en una pizarra, pagos que hay que ir a reclamar por WhatsApp y cuatro sedes que nunca se miran juntas.',
@@ -112,6 +115,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'El legajo completo, el organigrama, las vacaciones y licencias, la búsqueda por vacante y las evaluaciones, con alertas de riesgo de renuncia.',
     poster: '/media/software/cumbre.jpg',
     video: '/media/software/cumbre.mp4',
+    videoMobile: '/media/software/cumbre-mobile.mp4',
     link: 'https://orange-forest-0713c560f.7.azurestaticapps.net',
     before:
       'Vacaciones, permisos y licencias en correos y planillas, legajos desparramados en carpetas y una búsqueda de personal que se sigue de memoria.',
@@ -145,6 +149,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'La agenda de turnos por profesional, la ficha del paciente con odontograma, los tratamientos por etapas y todo el circuito de presupuestos, cobros y obras sociales.',
     poster: '/media/software/dental.jpg',
     video: '/media/software/dental.mp4',
+    videoMobile: '/media/software/dental-mobile.mp4',
     link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda',
     before:
       'Turnos en papel o en una app genérica que no entiende de tratamientos por etapas, ni de obras sociales, ni de cuánto debe cada paciente.',
@@ -177,6 +182,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'De punta a punta la orden de trabajo de un taller metalúrgico, con sus materiales, sus horas máquina y el costo real contra el estimado, además de planificación por máquina, inventario y mermas.',
     poster: '/media/software/tornos.jpg',
     video: '/media/software/tornos.mp4',
+    videoMobile: '/media/software/tornos-mobile.mp4',
     link: 'https://app-tornosops.azurewebsites.net/dashboard',
     before:
       'Órdenes de trabajo anotadas en un cuaderno, materia prima que se termina a mitad de una pieza, máquinas que se superponen en el calendario y costos que recién se saben a fin de mes.',
@@ -211,6 +217,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'Un sistema con tres caras, la de gerencia, la del cliente y la del técnico, para vender y operar mantenimiento por suscripción.',
     poster: '/media/software/puntocero.jpg',
     video: '/media/software/puntocero.mp4',
+    videoMobile: '/media/software/puntocero-mobile.mp4',
     link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso',
     before:
       'Contratos de mantenimiento con visitas que se pasan de largo, técnicos sin ruta armada, clientes que no saben cuándo les toca y reportes que nadie aprueba.',
@@ -245,6 +252,7 @@ export const SOFTWARE_AR_CASES: SoftwareArCase[] = [
       'Del cliente a la nota de crédito. La cotización con su margen, el pedido, el despacho y la devolución, con stock reservado y disponible en seis ubicaciones.',
     poster: '/media/software/vertice.jpg',
     video: '/media/software/vertice.mp4',
+    videoMobile: '/media/software/vertice-mobile.mp4',
     link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home',
     before:
       'Precios por cliente que viven en la cabeza del vendedor, cotizaciones que tardan días, un stock en el que nadie confía y despachos que se pierden entre depósitos.',
@@ -275,7 +283,7 @@ export const SOFTWARE_AR_CASE_SLUGS = SOFTWARE_AR_CASES.map((c) => c.slug);
 /** Campos traducibles; slug, system, poster, video y link se toman siempre del ES. */
 export type SoftwareArCaseText = Omit<
   SoftwareArCase,
-  'slug' | 'system' | 'poster' | 'video' | 'link'
+  'slug' | 'system' | 'poster' | 'video' | 'videoMobile' | 'link'
 >;
 
 /**

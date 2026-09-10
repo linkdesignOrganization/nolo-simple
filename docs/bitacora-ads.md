@@ -1649,3 +1649,9 @@ los mismos (720×384 contra 1280×682, ambos 1,875).
 Verificado con Chrome real: a 390 px pide los clips de 720 y a 1280 los originales, en carrusel,
 pestañas y viewcases. Tres pruebas nuevas fijan la regla (mutación comprobada). Apunta a la nota de
 página de destino, que se lee el 5 oct 2026 junto con la de Costa Rica.
+
+**Ampliación del mismo día:** las seis fichas de demo y las secciones de demo de las páginas de
+sistema también sirven el clip de 720 px en celular (campo `videoMobile` por ficha, con prueba que
+exige el sufijo `-mobile`). Con esto todos los videos del sitio eligen archivo por tamaño de
+pantalla: carrusel de `/web`, pestañas y viewcases de `/software`, fichas, páginas de sistema y la
+tabla del portafolio.

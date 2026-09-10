@@ -185,6 +185,8 @@ import { getSystemDetail } from './systems-content';
                   preload="metadata"
                   aria-hidden="true"
                 >
+                  <!-- En celular, el clip de 720 px (mismo encuadre, un tercio del peso). -->
+                  <source media="(max-width: 760px)" [src]="ex.videoMobile" type="video/mp4" />
                   <source [src]="ex.video" type="video/mp4" />
                 </video>
               </a>
