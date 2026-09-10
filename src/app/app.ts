@@ -72,6 +72,15 @@ export class App {
   // /software es la landing; /software/<slug> es el detalle (terminal, header back-only).
   protected readonly isSoftware = computed(() => this.pathNoLang() === '/software');
   protected readonly isSystemDetail = computed(() => /^\/software\/[^/]+$/.test(this.pathNoLang()));
+  // Landing «Desarrollo de software a medida en Argentina»: hero sobre la grilla del shell y
+  // tema software, con su propio nav de anclas (ver app.routes.ts).
+  protected readonly isSoftwareAr = computed(
+    () => this.pathNoLang() === '/desarrollo-de-software-argentina',
+  );
+  // Ficha de un demo de esa landing: página terminal (back-only), misma grilla y tema.
+  protected readonly isSoftwareArCase = computed(() =>
+    /^\/desarrollo-de-software-argentina\/[^/]+$/.test(this.pathNoLang()),
+  );
   protected readonly isContact = computed(() => this.pathNoLang().startsWith('/contacto'));
   protected readonly isPrivacy = computed(() =>
     this.pathNoLang().startsWith('/politicas-de-privacidad'),
@@ -85,9 +94,14 @@ export class App {
   );
 
   // Rutas "terminales" cuyo topbar se reduce a una sola flecha de volver
-  // (contacto, privacidad y el detalle de un sistema).
+  // (contacto, privacidad, el detalle de un sistema y la ficha de un demo).
   protected readonly backOnly = computed(
-    () => this.isContact() || this.isPrivacy() || this.isSystemDetail() || this.isIndustryDetail(),
+    () =>
+      this.isContact() ||
+      this.isPrivacy() ||
+      this.isSystemDetail() ||
+      this.isIndustryDetail() ||
+      this.isSoftwareArCase(),
   );
 
   // Opciones del nav por landing: cada una apunta a una sección real de esa página.
@@ -96,7 +110,13 @@ export class App {
   // El href lleva la ruta completa porque con <base href="/"> un "#frag" suelto resolvería
   // contra la raíz (/#frag = home), no contra la página actual. El label se resuelve por idioma.
   protected readonly navLinks = computed<NavLink[]>(() =>
-    this.isIndustries() ? INDUSTRIES_NAV : this.isSoftware() ? SOFTWARE_NAV : WEB_NAV,
+    this.isIndustries()
+      ? INDUSTRIES_NAV
+      : this.isSoftwareAr()
+        ? SOFTWARE_AR_NAV
+        : this.isSoftware()
+          ? SOFTWARE_NAV
+          : WEB_NAV,
   );
 
   // Conversión de scroll (acción "Scroll" de Ads): una sola vez por página, se rearma al navegar.
@@ -170,12 +190,14 @@ export class App {
     }
     // Entrada directa (sin historial in-app: link compartido, recarga o pestaña nueva): en vez de
     // saltar al inicio o a una página en blanco, volvemos a un padre con sentido según la página
-    // terminal, respetando el idioma activo.
+    // terminal, respetando el idioma activo: la ficha de un demo vuelve al hub de software AR.
     const fallback = this.isIndustryDetail()
       ? '/industrias'
       : this.isSystemDetail()
         ? '/software'
-        : '/';
+        : this.isSoftwareArCase()
+          ? '/desarrollo-de-software-argentina'
+          : '/';
     this.router.navigateByUrl(this.i18n.link(fallback));
   }
 }
@@ -187,6 +209,15 @@ const SOFTWARE_NAV: NavLink[] = [
   { label: { es: 'Sistemas', en: 'Systems' }, href: '/software#sistemas' },
   { label: { es: 'Proceso', en: 'Process' }, href: '/software#proceso' },
   { label: { es: 'Casos', en: 'Work' }, href: '/software#casos' },
+];
+
+// Landing /desarrollo-de-software-argentina: «Inicio» vuelve al landing de software y el resto
+// son anclas a sus propias secciones.
+const SOFTWARE_AR_NAV: NavLink[] = [
+  { label: { es: 'Inicio', en: 'Home' }, href: '/software' },
+  { label: { es: 'Casos', en: 'Work' }, href: '/desarrollo-de-software-argentina#casos' },
+  { label: { es: 'Precios', en: 'Pricing' }, href: '/desarrollo-de-software-argentina#precios' },
+  { label: { es: 'Proceso', en: 'Process' }, href: '/desarrollo-de-software-argentina#proceso' },
 ];
 
 const WEB_NAV: NavLink[] = [

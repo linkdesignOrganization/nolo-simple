@@ -10,7 +10,7 @@ import {
   effect,
   inject
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import {
@@ -26,11 +26,15 @@ import { FaqAccordionComponent } from '../components/faq-accordion.component';
 import { DarkZoneDirective } from '../directives/dark-zone.directive';
 import { TrackSectionDirective } from '../directives/track-section.directive';
 import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
+import { getSoftwareArCaseForSystem } from './software-ar-cases-content';
+import { getSoftwareArPriceForSystem } from './software-ar-content';
 import { getSystemDetail } from './systems-content';
 
 // Página de detalle de un sistema de software (/software/:slug). Página "terminal":
 // header simplificado (backOnly, resuelto en app.ts/app.html), artefacto de grilla del shell
-// en el hero, y el footer del sitio al cierre. Sin imágenes ni videos: layout + iconografía.
+// en el hero, y el footer del sitio al cierre. Layout + iconografía; el único media es el video del
+// demo que ejemplifica el sistema (sección «Así se ve…», solo en los sistemas que tienen uno).
 @Component({
   selector: 'app-system-detail-page',
   standalone: true,
@@ -39,6 +43,8 @@ import { getSystemDetail } from './systems-content';
     ContactFooterComponent,
     FaqAccordionComponent,
     DarkZoneDirective,
+    RouterLink,
+    LocalizeUrlPipe,
     TrackSectionDirective,
     LucideCheck,
     LucideCircleCheck,
@@ -138,10 +144,58 @@ import { getSystemDetail } from './systems-content';
           </ul>
         </section>
 
-        <!-- 05 — Con qué se conecta (2 columnas) -->
+        <!-- 05 (solo si el sistema tiene demo) — Así se ve un sistema como este: texto y botones
+             a la izquierda, el video del demo a la derecha con su proporción real. El demo (resumen,
+             categoría, ficha) se resuelve por idioma; el enlace a la ficha pasa por localizeUrl para
+             quedarse en el árbol del idioma activo. Las secciones que siguen se numeran corridas (num()). -->
+        @if (demo(); as ex) {
+          <section class="sd-section sd-demo sd-reveal" appTrackSection="sistema-demo">
+            <header class="sd-section__head">
+              <span class="sd-num">05</span>
+              <h2 class="sd-label">{{ t().demoTitle }}</h2>
+            </header>
+            <div class="sd-demo__grid">
+              <div class="sd-demo__text">
+                <p>{{ demoIntro() }}</p>
+                <p>{{ ex.summary }}</p>
+                <p class="sd-demo__note">{{ t().demoNote }}</p>
+                <div class="sd-demo__actions">
+                  <a class="button" [href]="ex.link" target="_blank" rel="noopener noreferrer">
+                    <span>{{ t().demoCta }}</span>
+                    <span class="button-arrow" aria-hidden="true">→</span>
+                  </a>
+                  <a class="sd-demo__link" [routerLink]="('/desarrollo-de-software-argentina/' + ex.slug) | localizeUrl">{{ t().demoFicha }} →</a>
+                </div>
+              </div>
+              <a
+                class="sd-demo__frame"
+                [href]="ex.link"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="t().demoCta + ': ' + ex.name"
+              >
+                <video
+                  class="sd-demo__media"
+                  [poster]="ex.poster"
+                  autoplay
+                  muted
+                  [muted]="true"
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-hidden="true"
+                >
+                  <source [src]="ex.video" type="video/mp4" />
+                </video>
+              </a>
+            </div>
+          </section>
+        }
+
+        <!-- 05/06 — Con qué se conecta (2 columnas) -->
         <section class="sd-section sd-connect">
           <header class="sd-section__head">
-            <span class="sd-num">05</span>
+            <span class="sd-num">{{ num().connects }}</span>
             <h2 class="sd-label">{{ t().connects }}</h2>
           </header>
           <div class="sd-connect__grid">
@@ -164,7 +218,7 @@ import { getSystemDetail } from './systems-content';
         <div class="sd-dark" appDarkZone>
           <section class="sd-section sd-not">
             <header class="sd-section__head">
-              <span class="sd-num">06</span>
+              <span class="sd-num">{{ num().notWhat }}</span>
               <h2 class="sd-label">{{ t().notWhat }}</h2>
             </header>
             <div class="sd-not__grid">
@@ -181,7 +235,7 @@ import { getSystemDetail } from './systems-content';
 
           <section class="sd-section sd-build sd-reveal">
             <header class="sd-section__head">
-              <span class="sd-num">07</span>
+              <span class="sd-num">{{ num().build }}</span>
               <h2 class="sd-label">{{ t().howWeBuild }}</h2>
             </header>
             <ol class="sd-build__steps">
@@ -194,11 +248,38 @@ import { getSystemDetail } from './systems-content';
             </ol>
           </section>
 
-          <!-- 08 — Verlo funcionando (cierre + CTA): dentro de la zona oscura, así el sitio
+          <!-- Cuánto cuesta en Argentina: el rango del hub para este tipo de sistema (si tiene fila
+               propia) y el enlace al hub /desarrollo-de-software-argentina (a la página, no al ancla de precios).
+               El hub existe en es/en: el enlace pasa por localizeUrl para quedarse en el árbol del idioma activo. -->
+          <section class="sd-section sd-cost sd-reveal" appTrackSection="sistema-costo">
+            <header class="sd-section__head">
+              <span class="sd-num">{{ num().cost }}</span>
+              <h2 class="sd-label">{{ t().costTitle }}</h2>
+            </header>
+            @if (priceView(); as row) {
+              <dl class="sd-cost__stats">
+                <div class="sd-stat">
+                  <dt class="sd-stat__label">{{ t().costRange }}</dt>
+                  <dd class="sd-stat__value">{{ row.range }}</dd>
+                </div>
+                <div class="sd-stat">
+                  <dt class="sd-stat__label">{{ t().costTimeline }}</dt>
+                  <dd class="sd-stat__value">{{ row.timeline }}</dd>
+                </div>
+              </dl>
+            }
+            <div class="sd-cost__text">
+              <p>{{ priceView() ? t().costText : t().costTextGeneral }}</p>
+              <p class="sd-cost__note">{{ priceView() ? t().costNote : t().costNoteGeneral }}</p>
+            </div>
+            <a class="sd-cost__link" [routerLink]="'/desarrollo-de-software-argentina' | localizeUrl">{{ t().costLink }} →</a>
+          </section>
+
+          <!-- 09/10 — Verlo funcionando (cierre + CTA): dentro de la zona oscura, así el sitio
                se queda oscuro desde "Qué no es" hasta el footer (un solo cambio de color). -->
           <section class="sd-section sd-see" appTrackSection="sistema-cierre">
             <header class="sd-section__head">
-              <span class="sd-num">08</span>
+              <span class="sd-num">{{ num().see }}</span>
               <h2 class="sd-label">{{ t().seeItWork }}</h2>
             </header>
             <div class="sd-see__grid">
@@ -574,6 +655,150 @@ import { getSystemDetail } from './systems-content';
       text-wrap: pretty;
     }
 
+    /* ── 05 Así se ve un sistema como este (solo con demo): texto + video ─────── */
+    .sd-demo__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: clamp(2rem, 4vw, 4rem);
+      align-items: center;
+    }
+
+    .sd-demo__text {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      max-width: 46ch;
+    }
+
+    .sd-demo__text p {
+      margin: 0;
+      color: var(--ink);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .sd-demo__text .sd-demo__note {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .sd-demo__actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 1.5rem;
+      margin-top: 0.4rem;
+    }
+
+    .sd-demo__link {
+      padding-bottom: 0.1rem;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: border-color 180ms ease;
+    }
+
+    .sd-demo__link:hover,
+    .sd-demo__link:focus-visible {
+      border-bottom-color: var(--ink);
+      outline: none;
+    }
+
+    /* El video con su proporción real (1280 × 682), sin recorte. */
+    .sd-demo__frame {
+      display: block;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: #e9e9e9;
+      aspect-ratio: 1280 / 682;
+    }
+
+    .sd-demo__media {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* ── Cuánto cuesta en Argentina (zona oscura): dos datos, texto y enlace al hub ── */
+    .sd-cost__stats {
+      display: grid;
+      /* Cada dato toma el ancho de su contenido para que el monto no se parta en dos líneas. */
+      grid-template-columns: repeat(2, minmax(14rem, max-content));
+      column-gap: clamp(2rem, 4vw, 4rem);
+      margin: 0 0 clamp(1.6rem, 3vw, 2.4rem);
+    }
+
+    .sd-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .sd-stat__label {
+      order: 2;
+      color: #f4f4f4;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .sd-stat__value {
+      order: 1;
+      margin: 0;
+      color: #f4f4f4;
+      font-family: var(--font-mono);
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .sd-cost__text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      max-width: 60ch;
+      margin-bottom: clamp(1.4rem, 3vw, 2rem);
+    }
+
+    .sd-cost__text p {
+      margin: 0;
+      color: #f4f4f4;
+      font-size: 1.08rem;
+      line-height: 1.6;
+      text-wrap: pretty;
+    }
+
+    .sd-cost__note {
+      font-size: 0.95rem;
+    }
+
+    .sd-cost__link {
+      color: #f4f4f4;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      padding-bottom: 0.15rem;
+      transition: border-color 180ms ease;
+    }
+
+    .sd-cost__link:hover,
+    .sd-cost__link:focus-visible {
+      border-bottom-color: #f4f4f4;
+      outline: none;
+    }
+
     /* ── 08 Verlo funcionando (cierre + CTA): en la zona oscura, a 2 columnas ──── */
     .sd-see__grid {
       display: grid;
@@ -644,9 +869,18 @@ import { getSystemDetail } from './systems-content';
 
     @media (max-width: 760px) {
       .sd-two__grid,
-      .sd-connect__grid {
+      .sd-connect__grid,
+      .sd-demo__grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+      }
+
+      .sd-cost__stats {
+        grid-template-columns: 1fr;
+      }
+
+      .sd-stat__value {
+        white-space: normal;
       }
 
       .sd-section__head {
@@ -703,6 +937,40 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
 
   protected readonly t = computed(() => SECTION_LABELS[this.lang()]);
 
+  // Demo navegable que ejemplifica este tipo de sistema (null si el sistema no tiene uno).
+  protected readonly demo = computed(() => getSoftwareArCaseForSystem(this.slug(), this.lang()));
+
+  // Números de sección desde «Con qué se conecta»: se corren uno cuando hay demo.
+  protected readonly num = computed(() => {
+    const shift = this.demo() ? 1 : 0;
+    return {
+      connects: this.pad(5 + shift),
+      notWhat: this.pad(6 + shift),
+      build: this.pad(7 + shift),
+      cost: this.pad(8 + shift),
+      see: this.pad(9 + shift)
+    };
+  });
+
+  // Fila de precios del hub para este tipo de sistema, ya en el idioma activo: el contenido
+  // trae «1.500 a 4.000*» en ES y «1,500 to 4,000*» en EN. Acá solo se antepone «USD».
+  protected readonly priceView = computed(() => {
+    const row = getSoftwareArPriceForSystem(this.slug(), this.lang());
+    return row ? { range: `USD ${row.range}`, timeline: row.timeline } : null;
+  });
+
+  // Primer párrafo de la sección del demo. En español interpola la categoría en minúscula; en
+  // inglés no se interpola (evita el artículo a/an): el resumen EN que sigue ya nombra el tipo.
+  protected readonly demoIntro = computed(() => {
+    const ex = this.demo();
+    if (!ex) return '';
+    if (this.lang() === 'en') {
+      return `We built ${ex.name} as a demo so you can browse a system of this kind end to end, with sample data.`;
+    }
+    const category = ex.category.replace(/^(Sistema|Software)/, (m) => m.toLowerCase());
+    return `Armamos ${ex.name}, un ${category}, como demostración para que navegues un sistema de este tipo con datos de prueba.`;
+  });
+
   // Contexto para el footer: identifica del lado del CRM qué sistema veía el lead (nombre
   // resuelto al idioma activo + slug). Reactivo al toggle de idioma vía d().
   protected readonly systemContext = computed<SystemContext | null>(() => {
@@ -720,7 +988,23 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
     location: 'Buenos Aires, Argentina'
   };
 
-  private observer: IntersectionObserver | null = null;
+  // Reveal on scroll: listeners de scroll/resize + rAF que consultan los nodos vivos en cada
+  // pasada. Antes era un IntersectionObserver creado en ngAfterViewInit, que observaba nodos que
+  // la hidratación o el HMR del dev server reemplazan, y que además se creaba una sola vez: al
+  // navegar entre slugs Angular reutiliza el componente y las secciones nuevas (el demo es
+  // condicional) quedaban en opacity 0, o sea espacios vacíos enormes.
+  private revealRaf = 0;
+  private readonly onReveal = (): void => {
+    if (this.revealRaf) return;
+    this.revealRaf = requestAnimationFrame(() => {
+      this.revealRaf = 0;
+      const vh = window.innerHeight;
+      this.host.nativeElement.querySelectorAll('.sd-reveal:not(.is-in)').forEach((el: Element) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < vh * 0.9 && r.bottom > 0) el.classList.add('is-in');
+      });
+    });
+  };
 
   constructor() {
     // Slug inexistente → 404 con marca (Nolo ya tiene su propia página /404).
@@ -749,33 +1033,23 @@ export class SystemDetailPageComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    if (!isPlatformBrowser(this.platformId) || typeof IntersectionObserver === 'undefined') {
-      return;
-    }
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-in');
-            this.observer?.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.15 }
-    );
-    this.host.nativeElement
-      .querySelectorAll('.sd-reveal')
-      .forEach((el: Element) => this.observer?.observe(el));
+    if (!isPlatformBrowser(this.platformId)) return;
+    window.addEventListener('scroll', this.onReveal, { passive: true });
+    window.addEventListener('resize', this.onReveal, { passive: true });
+    this.onReveal();
+    setTimeout(this.onReveal, 600);
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
-    this.observer = null;
+    if (!isPlatformBrowser(this.platformId)) return;
+    window.removeEventListener('scroll', this.onReveal);
+    window.removeEventListener('resize', this.onReveal);
+    if (this.revealRaf) cancelAnimationFrame(this.revealRaf);
   }
 }
 
-// Rótulos de UI (nombres de las 9 secciones del .md + textos de interfaz). No es copy nuevo:
-// son los encabezados ### del documento aprobado, usados como títulos de sección.
+// Rótulos de UI (nombres de las secciones del .md + textos de interfaz). Los encabezados ### del
+// documento aprobado se usan como títulos; los del demo y el costo son de las dos secciones nuevas.
 const SECTION_LABELS = {
   es: {
     eyebrow: 'Software a medida',
@@ -790,7 +1064,24 @@ const SECTION_LABELS = {
     faq: 'Preguntas frecuentes',
     fitsTag: 'Tiene sentido',
     notYetTag: 'Todavía no',
-    cta: 'Escribinos'
+    cta: 'Escribinos',
+    demoTitle: 'Así se ve un sistema como este',
+    demoNote:
+      'Es un ejemplo, no el sistema de un cliente ni lo que vas a recibir. Lo que construyamos para vos arranca de tu operación.',
+    demoCta: 'Navegar el demo',
+    demoFicha: 'Ver la ficha',
+    costTitle: 'Cuánto cuesta en Argentina',
+    costRange: 'Inversión',
+    costTimeline: 'Plazo',
+    costText:
+      'El precio se cierra por alcance antes de arrancar. Anticipo y saldo contra entrega, pagos por hito o una cuota mensual con soporte incluido.',
+    costTextGeneral:
+      'Un sistema a medida con nosotros sale entre USD 1.500 y 15.000, según el alcance. El precio se cierra por alcance antes de arrancar. Anticipo y saldo contra entrega, pagos por hito o una cuota mensual con soporte incluido.',
+    costNote:
+      '* Rangos y plazos de referencia. Cada proyecto se cotiza según su alcance. Nunca tenemos un precio listo, porque nunca son soluciones estandarizadas.',
+    costNoteGeneral:
+      'Cada proyecto se cotiza según su alcance. Nunca tenemos un precio listo, porque nunca son soluciones estandarizadas.',
+    costLink: 'Ver todos los rangos por tipo de sistema'
   },
   en: {
     eyebrow: 'Custom software',
@@ -805,6 +1096,23 @@ const SECTION_LABELS = {
     faq: 'Frequently asked questions',
     fitsTag: 'It makes sense',
     notYetTag: 'Not yet',
-    cta: 'Get in touch'
+    cta: 'Get in touch',
+    demoTitle: 'What a system like this looks like',
+    demoNote:
+      "It is an example, not a client's system or what you will receive. What we build for you starts from your operation.",
+    demoCta: 'Browse the demo',
+    demoFicha: 'See the case',
+    costTitle: 'What it costs in Argentina',
+    costRange: 'Investment',
+    costTimeline: 'Timeline',
+    costText:
+      'The price is closed by scope before we start. Deposit and balance on delivery, milestone payments or a monthly fee with support included.',
+    costTextGeneral:
+      'A custom system with us costs between USD 1,500 and 15,000, depending on scope. The price is closed by scope before we start. Deposit and balance on delivery, milestone payments or a monthly fee with support included.',
+    costNote:
+      '* Reference ranges and timelines. Every project is quoted by its scope. We never have a ready-made price, because these are never standardized solutions.',
+    costNoteGeneral:
+      'Every project is quoted by its scope. We never have a ready-made price, because these are never standardized solutions.',
+    costLink: 'See all ranges by system type'
   }
 } as const;

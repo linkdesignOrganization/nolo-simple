@@ -1,12 +1,12 @@
 # Nolo
 
-> Nolo es un estudio de desarrollo de software y sitios web a medida con sede en Buenos Aires, Argentina. Construimos software empresarial, aplicaciones internas, e-commerce y sitios corporativos desde código — sin plantillas ni constructores visuales.
+> Nolo es un estudio de desarrollo de software y sitios web a medida con sede en Buenos Aires, Argentina. Construimos software empresarial, aplicaciones internas, e-commerce y sitios corporativos desde código, sin plantillas ni constructores visuales.
 
 Nolo opera dos líneas de trabajo: **software a medida** (sistemas internos construidos sobre la operación real de cada empresa) y **sitios web a medida** (landing pages, sitios corporativos, e-commerce). El stack principal es Angular (frontend) y Node.js (backend); la tecnología puntual se define en el discovery de cada proyecto.
 
 ## Páginas
 
-- [Inicio](https://nolo.ar/): Resumen de las dos líneas — software y web a medida.
+- [Inicio](https://nolo.ar/): Resumen de las dos líneas: software y web a medida.
 - [Software a medida](https://nolo.ar/software): Los sistemas que construimos, con proceso por módulos y discovery previo.
 - [Sitios web](https://nolo.ar/web): Landing pages, sitios corporativos y e-commerce a medida.
 - [Industrias](https://nolo.ar/industrias): Siete industrias con soluciones de software y web pensadas para cada operación; cada una con su página de detalle.
@@ -27,14 +27,26 @@ Cada sistema se construye sobre la operación real del cliente, por módulos, co
 
 ## Demos navegables
 
-Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás.
+Cada demo es una versión funcional de un sistema a medida, pensada para que recorrás la operación completa de una industria distinta. Vas a sentir lo simple y rápido que puede ser un software diseñado específicamente para cómo trabajás. Cada uno tiene además su ficha en el sitio, con la operación antes y después, qué hay adentro del demo, el rango de inversión y el plazo de un sistema así.
 
-- [Pulso](https://jolly-stone-0869f530f.7.azurestaticapps.net): Sistema de gestión para gimnasios y wellness.
-- [Cumbre](https://orange-forest-0713c560f.7.azurestaticapps.net): Sistema de gestión de RRHH.
-- [Estudio Dental Mendieta](https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda): Software de gestión clínica.
-- [Tornos del Sur](https://app-tornosops.azurewebsites.net/dashboard): ERP industrial.
-- [Punto Cero](https://victorious-desert-032f8750f.1.azurestaticapps.net/): Sistema de mantenimiento por suscripción.
-- [Vértice Seguridad Industrial](https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home): ERP comercial y de inventario.
+- [Pulso](https://jolly-stone-0869f530f.7.azurestaticapps.net): Sistema de gestión para gimnasios y wellness. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/pulso
+- [Cumbre](https://orange-forest-0713c560f.7.azurestaticapps.net): Sistema de gestión de RRHH. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/cumbre
+- [Estudio Dental Mendieta](https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda): Software de gestión clínica. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta
+- [Tornos del Sur](https://app-tornosops.azurewebsites.net/dashboard): ERP industrial. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur
+- [Punto Cero](https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso): Sistema de mantenimiento por suscripción. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/punto-cero
+- [Vértice Seguridad Industrial](https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home): ERP comercial y de inventario. Ficha del sistema: https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial
+
+## Desarrollo de software a medida en Argentina
+
+Página con los rangos de inversión y los plazos por tipo de sistema, calculados sobre las propuestas de 2026: entre USD 1.500 y 15.000 según el alcance, y entre 8 y 13 semanas desde la primera reunión, de 3 a 5 meses en proyectos multisede o con muchas integraciones. También explica el proceso en cuatro etapas (primer contacto, discovery, desarrollo y lanzamiento), qué incluye cada proyecto (el código y la infraestructura quedan a nombre del cliente, capacitación de cada equipo y un año de garantía de funcionamiento), cuánto cuesta mantener la infraestructura (USD 20 a 80 al mes para la mayoría de los sistemas), qué conviene preguntar antes de contratar a cualquier empresa y las preguntas frecuentes. Desde ahí entrás a las fichas de los seis sistemas de demostración. El asterisco de cada rango indica que es una referencia. Cada proyecto se cotiza según su alcance y el precio se cierra antes de arrancar, porque nunca son soluciones estandarizadas.
+
+- [Desarrollo de software a medida en Argentina](https://nolo.ar/desarrollo-de-software-argentina): Hub con la tabla de rangos por tipo de sistema, plazos, proceso, qué incluye y preguntas frecuentes. Versión en inglés: https://nolo.ar/en/desarrollo-de-software-argentina
+- [Pulso](https://nolo.ar/desarrollo-de-software-argentina/pulso): Sistema de gestión para gimnasios y wellness. USD 4.000 a 7.500*, 8 a 12 semanas*.
+- [Cumbre](https://nolo.ar/desarrollo-de-software-argentina/cumbre): Sistema de gestión de RRHH. USD 3.000 a 6.000*, 6 a 10 semanas*.
+- [Estudio Dental Mendieta](https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta): Software de gestión clínica. USD 4.000 a 7.500*, 8 a 12 semanas*.
+- [Tornos del Sur](https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur): ERP industrial. USD 4.500 a 8.000*, 10 a 14 semanas*.
+- [Punto Cero](https://nolo.ar/desarrollo-de-software-argentina/punto-cero): Sistema de mantenimiento por suscripción. USD 4.000 a 7.500*, 8 a 12 semanas*.
+- [Vértice Seguridad Industrial](https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial): ERP comercial y de inventario. USD 4.500 a 8.000*, 10 a 14 semanas*.
 
 ## Industrias
 

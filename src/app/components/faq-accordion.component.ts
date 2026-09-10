@@ -276,10 +276,15 @@ export class FaqAccordionComponent implements AfterViewInit, OnDestroy {
         }))
       };
       if (!this.faqScript) {
-        this.faqScript = this.doc.createElement('script');
+        // Reutiliza el nodo del prerender al hidratar: crear uno nuevo dejaba dos bloques
+        // idénticos en el head del navegador (el del SSG y el del cliente).
+        const previo = this.doc.head.querySelector<HTMLScriptElement>(
+          'script[data-seo="faq"]'
+        );
+        this.faqScript = previo ?? this.doc.createElement('script');
         this.faqScript.setAttribute('type', 'application/ld+json');
         this.faqScript.setAttribute('data-seo', 'faq');
-        this.doc.head.appendChild(this.faqScript);
+        if (!previo) this.doc.head.appendChild(this.faqScript);
       }
       this.faqScript.textContent = JSON.stringify(data);
     });

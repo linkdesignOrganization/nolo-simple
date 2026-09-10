@@ -15,7 +15,7 @@ import { ProjectStage, ProjectStagesComponent } from '../components/project-stag
 import { ServiceItem, ServicesStackComponent } from '../components/services-stack.component';
 import { IndustriesSectionComponent } from '../components/industries-section.component';
 import { TechnicalGridSurfaceComponent } from '../components/technical-grid-surface.component';
-import { Viewcase, ViewcasesComponent } from '../components/viewcases.component';
+import { Viewcase, ViewcasesComponent, ViewcasesIntro } from '../components/viewcases.component';
 import { CapabilityCard, WebCapabilitiesComponent } from '../components/web-capabilities.component';
 import {
   HeroAction,
@@ -91,7 +91,7 @@ export type LandingData = {
   systems?: { heading: string; intro: string; items: ServiceItem[] };
   theme?: 'software' | 'website';
   title: string;
-  viewcases?: { intro: string; items: Viewcase[]; title: string };
+  viewcases?: { intro: ViewcasesIntro; items: Viewcase[]; title: string };
   webHero?: {
     actions: HeroAction[];
     lead: string;

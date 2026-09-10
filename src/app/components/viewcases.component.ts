@@ -3,32 +3,52 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  computed,
+  effect,
   ElementRef,
+  inject,
+  input,
   NgZone,
   OnDestroy,
-  PLATFORM_ID,
-  effect,
-  inject,
-  input
+  PLATFORM_ID
 } from '@angular/core';
-import { LucideMousePointerClick } from '@lucide/angular';
+import { RouterLink } from '@angular/router';
+import { LucideArrowRight, LucideMousePointerClick } from '@lucide/angular';
 
 import { environment } from '../../environments/environment';
+import { LanguageService } from '../services/language.service';
+import { LocalizeUrlPipe } from '../services/localize-url.pipe';
 import { TechnicalGridBackgroundComponent } from './technical-grid-background.component';
+
+/** Trozo de la intro: texto plano o un enlace interno (por ejemplo al hub de software AR). */
+export type ViewcasesIntroPart = string | { text: string; href: string };
+export type ViewcasesIntro = string | ReadonlyArray<ViewcasesIntroPart>;
 
 export type Viewcase = {
   label: string;
   category: string;
   videoSrc: string;
   poster: string;
+  /** Demo navegable (externo): es el destino del clic en toda la tarjeta. */
   link: string;
+  /**
+   * Ruta interna a la ficha completa del demo, sin prefijo de idioma (el componente antepone /en
+   * cuando toca). Si existe, el panel muestra el botón «Ver la ficha» / «See the case».
+   */
+  detail?: string;
 };
+
+/** Rótulos del botón a la ficha por idioma: `long` en desktop, `short` en celular (≤ 760px). */
+const DETAIL_LABELS = {
+  es: { long: 'Ver la ficha', short: 'Ver ficha' },
+  en: { long: 'See the case', short: 'See case' }
+} as const;
 
 @Component({
   selector: 'app-viewcases',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LucideMousePointerClick, TechnicalGridBackgroundComponent],
+  imports: [RouterLink, LocalizeUrlPipe, LucideArrowRight, LucideMousePointerClick, TechnicalGridBackgroundComponent],
   host: {
     'class': 'viewcases'
   },
@@ -40,7 +60,15 @@ export type Viewcase = {
         <div class="vc-head">
           <div class="vc-head__text">
             <h2 class="vc-title">{{ title() }}</h2>
-            <p class="vc-intro">{{ intro() }}</p>
+            <p class="vc-intro">
+              @for (part of introParts(); track $index) {
+                @if (isLink(part)) {
+                  <a class="vc-intro__link" [routerLink]="part.href | localizeUrl">{{ part.text }}</a>
+                } @else {
+                  <span>{{ part }}</span>
+                }
+              }
+            </p>
           </div>
           <span class="vc-head__icon" aria-hidden="true">
             <svg lucideMousePointerClick [size]="104" [strokeWidth]="0.5"></svg>
@@ -49,14 +77,11 @@ export type Viewcase = {
 
         <div class="vc-grid">
           @for (item of items(); track item.label) {
-            <a
-              class="vc-tile"
-              [href]="item.link"
-              target="_blank"
-              rel="noopener noreferrer"
-              (mouseenter)="play($event)"
-              (mouseleave)="stop($event)"
-            >
+            <!-- La tarjeta ya no es un <a>: el demo (externo) es un enlace que cubre toda la
+                 tarjeta y el botón a la ficha es otro enlace aparte, sin anidar anclas. El panel
+                 deja pasar los clics (pointer-events) salvo en el botón. Los enlaces internos
+                 (intro y ficha) pasan por localizeUrl para quedarse en el árbol del idioma activo. -->
+            <div class="vc-tile" (mouseenter)="play($event)" (mouseleave)="stop($event)">
               <video
                 class="vc-video"
                 [src]="item.videoSrc"
@@ -67,11 +92,27 @@ export type Viewcase = {
                 [poster]="item.poster"
                 aria-hidden="true"
               ></video>
+              <a
+                class="vc-tile__demo"
+                [href]="item.link"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="item.label + ' · ' + item.category"
+              ></a>
               <span class="vc-panel">
-                <strong class="vc-panel__name">{{ item.label }}</strong>
-                <span class="vc-panel__kind">{{ item.category }}</span>
+                <span class="vc-panel__text">
+                  <strong class="vc-panel__name">{{ item.label }}</strong>
+                  <span class="vc-panel__kind">{{ item.category }}</span>
+                </span>
+                @if (item.detail) {
+                  <a class="vc-panel__detail" [routerLink]="item.detail | localizeUrl">
+                    <span class="vc-panel__detail-label">{{ detailLabels().long }}</span>
+                    <span class="vc-panel__detail-label vc-panel__detail-label--short">{{ detailLabels().short }}</span>
+                    <svg lucideArrowRight [size]="16" [strokeWidth]="1.25" aria-hidden="true"></svg>
+                  </a>
+                }
               </span>
-            </a>
+            </div>
           }
         </div>
       </div>
@@ -197,6 +238,20 @@ export type Viewcase = {
       text-wrap: pretty;
     }
 
+    /* Enlace dentro de la intro (al hub de software AR): sin botón, solo subrayado fino. */
+    .vc-intro__link {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--line-strong);
+      transition: border-color 180ms ease;
+    }
+
+    .vc-intro__link:hover,
+    .vc-intro__link:focus-visible {
+      border-bottom-color: var(--ink);
+      outline: none;
+    }
+
     .vc-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -220,6 +275,19 @@ export type Viewcase = {
       border-color: var(--line-strong);
     }
 
+    /* Enlace al demo: cubre toda la tarjeta, debajo del panel. */
+    .vc-tile__demo {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    .vc-tile__demo:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
     .vc-video {
       position: absolute;
       inset: 0;
@@ -234,10 +302,14 @@ export type Viewcase = {
       left: 0;
       right: 0;
       bottom: 0;
+      z-index: 2;
       display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
       padding: 0.85rem 1.1rem;
+      /* El panel deja pasar los clics al enlace del demo; solo el botón a la ficha los toma. */
+      pointer-events: none;
       background: var(--surface);
       border-top: 1px solid var(--line);
       /* Esquinas inferiores redondeadas: si no, el panel tapa el redondeo del tile. */
@@ -245,6 +317,42 @@ export type Viewcase = {
       border-bottom-right-radius: 0.9rem;
       transform: translateY(110%);
       transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .vc-panel__text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+
+    /* Botón de texto + flecha a la ficha completa del demo. */
+    .vc-panel__detail {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+      padding-bottom: 0.1rem;
+      border-bottom: 1px solid var(--line-strong);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: border-color 180ms ease, gap 180ms ease;
+    }
+
+    .vc-panel__detail:hover,
+    .vc-panel__detail:focus-visible {
+      border-bottom-color: var(--ink);
+      gap: 0.6rem;
+      outline: none;
+    }
+
+    .vc-panel__detail-label--short {
+      display: none;
     }
 
     .vc-panel__name {
@@ -262,7 +370,9 @@ export type Viewcase = {
       line-height: 1.3;
     }
 
-    .vc-tile:hover .vc-panel {
+    /* También con foco de teclado: el botón a la ficha vive dentro del panel. */
+    .vc-tile:hover .vc-panel,
+    .vc-tile:focus-within .vc-panel {
       transform: translateY(0);
     }
 
@@ -292,13 +402,38 @@ export type Viewcase = {
       .vc-panel {
         transform: translateY(0);
       }
+
+      /* En celular el botón usa el rótulo corto: «Ver ficha» / «See case». */
+      .vc-panel__detail-label {
+        display: none;
+      }
+
+      .vc-panel__detail-label--short {
+        display: inline;
+      }
     }
   `
 })
 export class ViewcasesComponent implements AfterViewInit, OnDestroy {
   readonly title = input.required<string>();
-  readonly intro = input.required<string>();
+  readonly intro = input.required<ViewcasesIntro>();
+  /** La intro normalizada a trozos (texto y enlaces). */
+  protected readonly introParts = computed<ReadonlyArray<ViewcasesIntroPart>>(() => {
+    const intro = this.intro();
+    return typeof intro === 'string' ? [intro] : intro;
+  });
+
+  protected isLink(part: ViewcasesIntroPart): part is { text: string; href: string } {
+    return typeof part !== 'string';
+  }
   readonly items = input.required<Viewcase[]>();
+
+  private readonly i18n = inject(LanguageService);
+  /**
+   * Rótulos del botón a la ficha (solo en los items con `detail`), resueltos por idioma acá y no
+   * por input: nadie los pasaba y en EN salían en español.
+   */
+  protected readonly detailLabels = computed(() => DETAIL_LABELS[this.i18n.lang()]);
 
   private readonly hostRef = inject(ElementRef<HTMLElement>);
   private readonly document = inject(DOCUMENT);
@@ -335,14 +470,18 @@ export class ViewcasesComponent implements AfterViewInit, OnDestroy {
         '@graph': items.map((it) => ({
           '@type': 'VideoObject',
           name: it.label,
-          description: `${it.label} — ${it.category}`,
+          description: `${it.label}: ${it.category}`,
           thumbnailUrl: origin + it.poster,
           contentUrl: origin + it.videoSrc,
           uploadDate: '2026-06-07'
         }))
       };
       if (!this.videoScript) {
-        this.videoScript = this.document.createElement('script');
+        // Reutiliza el nodo prerenderizado al hidratar: si no, /software salía con dos scripts
+        // idénticos (el del SSG y el creado en el cliente).
+        this.videoScript =
+          this.document.head.querySelector<HTMLScriptElement>('script[data-seo="viewcases-videos"]') ??
+          this.document.createElement('script');
         this.videoScript.setAttribute('type', 'application/ld+json');
         this.videoScript.setAttribute('data-seo', 'viewcases-videos');
         this.document.head.appendChild(this.videoScript);

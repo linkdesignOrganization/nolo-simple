@@ -59,6 +59,11 @@ export const LANGUAGE_PATH_PREFIXES: readonly string[] = ['en'];
  */
 export const LANDING_BY_PATH_SEGMENT: Readonly<Record<string, SourceLanding>> = {
   software: 'software',
+  // El hub de software de Argentina y sus fichas de demo son la misma oferta
+  // que `/software`, con otra puerta de entrada (búsqueda local). Sin esta
+  // línea caerían en el cajón por defecto y cobrarían cinco puntos en lugar
+  // de diez.
+  'desarrollo-de-software-argentina': 'software',
   industrias: 'industries',
   web: 'web',
   contacto: 'contact'

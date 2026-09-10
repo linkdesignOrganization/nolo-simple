@@ -2,6 +2,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 import { SYSTEM_SLUGS } from './pages/systems-content';
 import { INDUSTRY_SLUGS } from './pages/industries-content';
+import { SOFTWARE_AR_CASE_SLUGS } from './pages/software-ar-cases-content';
 
 /**
  * Todas las rutas se prerenderan a HTML estático (SSG) para SEO y LLMs.
@@ -29,6 +30,18 @@ export const serverRoutes: ServerRoute[] = [
     path: 'en/industrias/:slug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => INDUSTRY_SLUGS.map((slug) => ({ slug }))
+  },
+  // Fichas de los demos del hub de software AR, en ES y EN. El hub (sin parámetros) lo descubre
+  // el '**' solo, como /industrias.
+  {
+    path: 'desarrollo-de-software-argentina/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => SOFTWARE_AR_CASE_SLUGS.map((slug) => ({ slug }))
+  },
+  {
+    path: 'en/desarrollo-de-software-argentina/:slug',
+    renderMode: RenderMode.Prerender,
+    getPrerenderParams: async () => SOFTWARE_AR_CASE_SLUGS.map((slug) => ({ slug }))
   },
   { path: '**', renderMode: RenderMode.Prerender }
 ];

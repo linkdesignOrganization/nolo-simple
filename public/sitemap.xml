@@ -182,6 +182,69 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/pulso</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/pulso"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/pulso"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/pulso"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/cumbre</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/cumbre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/cumbre"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/cumbre"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/punto-cero</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/punto-cero"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/punto-cero"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/punto-cero"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://nolo.ar/en</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en"/>
@@ -359,6 +422,69 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/industrias/educacion-y-formacion"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/industrias/educacion-y-formacion"/>
     <lastmod>2026-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/pulso</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/pulso"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/pulso"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/pulso"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/cumbre</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/cumbre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/cumbre"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/cumbre"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/estudio-dental-mendieta</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/tornos-del-sur</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/punto-cero</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/punto-cero"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/punto-cero"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/punto-cero"/>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/vertice-seguridad-industrial</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nolo.ar/en/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial"/>
+    <lastmod>2026-09-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

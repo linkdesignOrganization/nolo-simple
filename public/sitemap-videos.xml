@@ -5,39 +5,45 @@
     <lastmod>2026-07-02</lastmod>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
-      <video:title>Pulso — Sistema de gestión para gimnasios y wellness</video:title>
+      <video:title>Pulso: Sistema de gestión para gimnasios y wellness</video:title>
       <video:description>Demo navegable de Pulso, un sistema de gestión para gimnasios y wellness a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+      <video:duration>42</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
-      <video:title>Cumbre — Sistema de gestión de RRHH</video:title>
+      <video:title>Cumbre: Sistema de gestión de RRHH</video:title>
       <video:description>Demo navegable de Cumbre, un sistema de gestión de RRHH a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+      <video:duration>38</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
-      <video:title>Estudio Dental Mendieta — Software de gestión clínica</video:title>
+      <video:title>Estudio Dental Mendieta: Software de gestión clínica</video:title>
       <video:description>Demo navegable de Estudio Dental Mendieta, software de gestión clínica a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+      <video:duration>51</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
-      <video:title>Tornos del Sur — ERP industrial</video:title>
+      <video:title>Tornos del Sur: ERP industrial</video:title>
       <video:description>Demo navegable de Tornos del Sur, un ERP industrial a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+      <video:duration>45</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
-      <video:title>Punto Cero — Sistema de mantenimiento por suscripción</video:title>
+      <video:title>Punto Cero: Sistema de mantenimiento por suscripción</video:title>
       <video:description>Demo navegable de Punto Cero, un sistema de mantenimiento por suscripción a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+      <video:duration>41</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
-      <video:title>Vértice Seguridad Industrial — ERP comercial y de inventario</video:title>
+      <video:title>Vértice Seguridad Industrial: ERP comercial y de inventario</video:title>
       <video:description>Demo navegable de Vértice, un ERP comercial y de inventario a medida.</video:description>
       <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+      <video:duration>34</video:duration>
     </video:video>
   </url>
   <url>
@@ -45,39 +51,177 @@
     <lastmod>2026-07-02</lastmod>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
-      <video:title>Pulso — Gym &amp; wellness management system</video:title>
+      <video:title>Pulso: Gym &amp; wellness management system</video:title>
       <video:description>Working demo of Pulso, a custom gym &amp; wellness management system.</video:description>
       <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+      <video:duration>42</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
-      <video:title>Cumbre — HR management system</video:title>
+      <video:title>Cumbre: HR management system</video:title>
       <video:description>Working demo of Cumbre, a custom HR management system.</video:description>
       <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+      <video:duration>38</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
-      <video:title>Estudio Dental Mendieta — Clinic management software</video:title>
+      <video:title>Estudio Dental Mendieta: Clinic management software</video:title>
       <video:description>Working demo of Estudio Dental Mendieta, custom clinic management software.</video:description>
       <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+      <video:duration>51</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
-      <video:title>Tornos del Sur — Industrial ERP</video:title>
+      <video:title>Tornos del Sur: Industrial ERP</video:title>
       <video:description>Working demo of Tornos del Sur, a custom industrial ERP.</video:description>
       <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+      <video:duration>45</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
-      <video:title>Punto Cero — Subscription-based maintenance system</video:title>
+      <video:title>Punto Cero: Subscription-based maintenance system</video:title>
       <video:description>Working demo of Punto Cero, a custom subscription-based maintenance system.</video:description>
       <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+      <video:duration>41</video:duration>
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
-      <video:title>Vértice Seguridad Industrial — Commercial &amp; inventory ERP</video:title>
+      <video:title>Vértice Seguridad Industrial: Commercial &amp; inventory ERP</video:title>
       <video:description>Working demo of Vértice, a custom commercial &amp; inventory ERP.</video:description>
       <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+      <video:duration>34</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/pulso</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
+      <video:title>Pulso: Sistema de gestión para gimnasios y wellness</video:title>
+      <video:description>Demo navegable de Pulso, un sistema de gestión para gimnasios y wellness hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 4.000 a 7.500 y toma 8 a 12 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+      <video:duration>42</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/cumbre</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
+      <video:title>Cumbre: Sistema de gestión de RRHH</video:title>
+      <video:description>Demo navegable de Cumbre, un sistema de gestión de RRHH hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 3.000 a 6.000 y toma 6 a 10 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+      <video:duration>38</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/estudio-dental-mendieta</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
+      <video:title>Estudio Dental Mendieta: Software de gestión clínica</video:title>
+      <video:description>Demo navegable de Estudio Dental Mendieta, software de gestión clínica hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 4.000 a 7.500 y toma 8 a 12 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+      <video:duration>51</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/tornos-del-sur</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
+      <video:title>Tornos del Sur: ERP industrial</video:title>
+      <video:description>Demo navegable de Tornos del Sur, un ERP industrial hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 4.500 a 8.000 y toma 10 a 14 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+      <video:duration>45</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/punto-cero</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
+      <video:title>Punto Cero: Sistema de mantenimiento por suscripción</video:title>
+      <video:description>Demo navegable de Punto Cero, un sistema de mantenimiento por suscripción hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 4.000 a 7.500 y toma 8 a 12 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+      <video:duration>41</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/desarrollo-de-software-argentina/vertice-seguridad-industrial</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
+      <video:title>Vértice Seguridad Industrial: ERP comercial y de inventario</video:title>
+      <video:description>Demo navegable de Vértice Seguridad Industrial, un ERP comercial y de inventario hecho a medida en Argentina. Como referencia, un sistema así cuesta USD 4.500 a 8.000 y toma 10 a 14 semanas.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+      <video:duration>34</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/pulso</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/pulso.jpg</video:thumbnail_loc>
+      <video:title>Pulso: Gym &amp; wellness management system</video:title>
+      <video:description>Working demo of Pulso, a custom gym &amp; wellness management system built in Argentina. As a reference, a system like this costs USD 4,000 to 7,500 and takes 8 to 12 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/pulso.mp4</video:content_loc>
+      <video:duration>42</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/cumbre</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/cumbre.jpg</video:thumbnail_loc>
+      <video:title>Cumbre: HR management system</video:title>
+      <video:description>Working demo of Cumbre, a custom HR management system built in Argentina. As a reference, a system like this costs USD 3,000 to 6,000 and takes 6 to 10 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/cumbre.mp4</video:content_loc>
+      <video:duration>38</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/estudio-dental-mendieta</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/dental.jpg</video:thumbnail_loc>
+      <video:title>Estudio Dental Mendieta: Clinic management software</video:title>
+      <video:description>Working demo of Estudio Dental Mendieta, custom clinic management software built in Argentina. As a reference, a system like this costs USD 4,000 to 7,500 and takes 8 to 12 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/dental.mp4</video:content_loc>
+      <video:duration>51</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/tornos-del-sur</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/tornos.jpg</video:thumbnail_loc>
+      <video:title>Tornos del Sur: Industrial ERP</video:title>
+      <video:description>Working demo of Tornos del Sur, a custom industrial ERP built in Argentina. As a reference, a system like this costs USD 4,500 to 8,000 and takes 10 to 14 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/tornos.mp4</video:content_loc>
+      <video:duration>45</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/punto-cero</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/puntocero.jpg</video:thumbnail_loc>
+      <video:title>Punto Cero: Subscription-based maintenance system</video:title>
+      <video:description>Working demo of Punto Cero, a custom subscription-based maintenance system built in Argentina. As a reference, a system like this costs USD 4,000 to 7,500 and takes 8 to 12 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/puntocero.mp4</video:content_loc>
+      <video:duration>41</video:duration>
+    </video:video>
+  </url>
+  <url>
+    <loc>https://nolo.ar/en/desarrollo-de-software-argentina/vertice-seguridad-industrial</loc>
+    <lastmod>2026-09-09</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://nolo.ar/media/software/vertice.jpg</video:thumbnail_loc>
+      <video:title>Vértice Seguridad Industrial: Commercial &amp; inventory ERP</video:title>
+      <video:description>Working demo of Vértice Seguridad Industrial, a custom commercial &amp; inventory ERP built in Argentina. As a reference, a system like this costs USD 4,500 to 8,000 and takes 10 to 14 weeks.</video:description>
+      <video:content_loc>https://nolo.ar/media/software/vertice.mp4</video:content_loc>
+      <video:duration>34</video:duration>
     </video:video>
   </url>
 </urlset>

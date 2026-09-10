@@ -9,6 +9,7 @@ import { ContactFooterComponent } from '../../components/contact-footer.componen
 import { LanguageService } from '../../services/language.service';
 import { SYSTEM_SLUGS } from '../../pages/systems-content';
 import { INDUSTRY_SLUGS } from '../../pages/industries-content';
+import { SOFTWARE_AR_CASE_SLUGS } from '../../pages/software-ar-cases-content';
 import { SourceLanding } from '../models/lead-form-options';
 import { ClickTrackingService } from './click-tracking.service';
 import { LeadTrackingService } from './lead-tracking.service';
@@ -24,7 +25,7 @@ import { TimelineService } from './timeline.service';
  * esa etiqueta suma o resta puntos (`landing_software` +10, `landing_corporate`
  * +5). La función se adaptó el 2026-06-07 a las cuatro páginas que existían ese
  * día y NADIE volvió a tocarla mientras el sitio crecía: llegaron el detalle por
- * sistema, las industrias y,
+ * sistema, las industrias, el hub de software de Argentina con sus fichas y,
  * sobre todo, el árbol completo en inglés bajo `/en`.
  *
  * Esta prueba NO trae una lista de rutas escrita a mano: recorre el árbol REAL
@@ -62,13 +63,16 @@ const ESPERADO: Record<string, Expectativa> = {
   'web': 'web',
   'contacto': 'contact',
   'industrias': 'industries',
-  'industrias/:slug': 'industries'
+  'industrias/:slug': 'industries',
+  'desarrollo-de-software-argentina': 'software',
+  'desarrollo-de-software-argentina/:slug': 'software'
 };
 
 /** Slug real de ejemplo para cada ruta paramétrica del árbol. */
 const SLUG_DE_EJEMPLO: Record<string, string> = {
   'software/:slug': SYSTEM_SLUGS[0],
-  'industrias/:slug': INDUSTRY_SLUGS[0]
+  'industrias/:slug': INDUSTRY_SLUGS[0],
+  'desarrollo-de-software-argentina/:slug': SOFTWARE_AR_CASE_SLUGS[0]
 };
 
 /** URL que no corresponde a ninguna ruta: revela qué devuelve el cajón por defecto. */

@@ -1,18 +1,36 @@
 <div
   class="shell"
   appTechnicalGridSurface
-  [appTechnicalGridDisabled]="!isSoftware() && !isContact() && !isSystemDetail() && !isIndustries() && !isIndustryDetail()"
+  [appTechnicalGridDisabled]="
+    !isSoftware() &&
+    !isSoftwareAr() &&
+    !isSoftwareArCase() &&
+    !isContact() &&
+    !isSystemDetail() &&
+    !isIndustries() &&
+    !isIndustryDetail()
+  "
   [appTechnicalGridViewport]="true"
   [appTechnicalGridMode]="null"
-  [appTechnicalGridCellSize]="isSoftware() || isContact() || isSystemDetail() || isIndustries() || isIndustryDetail() ? 18 : null"
+  [appTechnicalGridCellSize]="
+    isSoftware() ||
+    isSoftwareAr() ||
+    isSoftwareArCase() ||
+    isContact() ||
+    isSystemDetail() ||
+    isIndustries() ||
+    isIndustryDetail()
+      ? 18
+      : null
+  "
   [class.shell--plain]="isHome()"
-  [class.shell--software]="isSoftware()"
+  [class.shell--software]="isSoftware() || isSoftwareAr() || isSoftwareArCase() || isSystemDetail()"
   [class.shell--contact]="isContact()"
 >
   <header
     class="topbar"
     [class.topbar--home]="isHome()"
-    [class.topbar--software]="isSoftware()"
+    [class.topbar--software]="isSoftware() || isSoftwareAr()"
     [class.topbar--back]="backOnly()"
   >
     @if (backOnly()) {
@@ -115,7 +133,10 @@
     }
   </header>
 
-  <main class="content" [class.content--software]="isSoftware()">
+  <main
+    class="content"
+    [class.content--software]="isSoftware() || isSoftwareAr() || isSoftwareArCase() || isSystemDetail()"
+  >
     <router-outlet />
   </main>
 </div>

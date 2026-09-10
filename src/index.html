@@ -65,47 +65,10 @@
   <meta name="twitter:description" content="Software y sitios web a medida.">
   <meta name="twitter:image" content="https://nolo.ar/og-image.png">
 
-  <!-- Structured data: Organization + WebSite. El SeoService agrega el WebPage/Service por ruta. -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://nolo.ar/#organization",
-        "name": "Nolo",
-        "url": "https://nolo.ar/",
-        "description": "Estudio de desarrollo de software y sitios web a medida en Buenos Aires, Argentina. Software empresarial, aplicaciones internas, e-commerce y sitios corporativos construidos desde código.",
-        "slogan": "Software y sitios web a medida, construidos desde código.",
-        "knowsAbout": ["Desarrollo de software a medida", "Desarrollo web", "E-commerce", "Aplicaciones empresariales internas", "Automatización con IA", "CRM", "ERP", "Angular", "Node.js"],
-        "logo": "https://nolo.ar/icon-512.png",
-        "email": "hola@nolo.ar",
-        "telephone": "+5491133337180",
-        "openingHours": "Mo-Fr 09:00-18:00",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Buenos Aires",
-          "addressCountry": "AR"
-        },
-        "areaServed": "AR",
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+5491133337180",
-          "email": "hola@nolo.ar",
-          "contactType": "customer service"
-        }
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://nolo.ar/#website",
-        "url": "https://nolo.ar/",
-        "name": "Nolo",
-        "inLanguage": ["es-AR", "en-US"],
-        "publisher": { "@id": "https://nolo.ar/#organization" }
-      }
-    ]
-  }
-  </script>
+  <!-- Structured data: la ficha de la marca (Organization + WebSite) la emite SeoService por
+       idioma, junto con el WebPage/Service de cada ruta. Vivía acá estática y en español, así
+       que salía igual en las páginas EN; si se vuelve a poner, cada página queda con dos
+       Organization. Ver setBrandJsonLd() en src/app/services/seo.service.ts. -->
 </head>
 <body>
   <app-root></app-root>

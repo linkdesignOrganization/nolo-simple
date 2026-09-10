@@ -326,10 +326,15 @@ export class ServicesStackComponent implements AfterViewInit, OnDestroy {
         }))
       };
       if (!this.itemListScript) {
-        this.itemListScript = this.doc.createElement('script');
+        // Reutiliza el nodo del prerender al hidratar: crear uno nuevo dejaba dos bloques
+        // idénticos en el head del navegador (el del SSG y el del cliente).
+        const previo = this.doc.head.querySelector<HTMLScriptElement>(
+          'script[data-seo="itemlist"]'
+        );
+        this.itemListScript = previo ?? this.doc.createElement('script');
         this.itemListScript.setAttribute('type', 'application/ld+json');
         this.itemListScript.setAttribute('data-seo', 'itemlist');
-        this.doc.head.appendChild(this.itemListScript);
+        if (!previo) this.doc.head.appendChild(this.itemListScript);
       }
       this.itemListScript.textContent = JSON.stringify(data);
     });
