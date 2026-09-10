@@ -123,21 +123,21 @@ const softwarePageEs: LandingData = {
       lead: 'Ordená',
       body:
         'la operación que ya tenés sin cambiar cómo trabaja el equipo. Visibilidad, control de costos y alertas reales.',
-      videoSrc: '/media/software/ordena.mp4',
+      videoSrc: '/media/software/ordena.mp4', videoMobileSrc: '/media/software/ordena-mobile.mp4',
       poster: '/media/software/ordena.jpg'
     },
     {
       lead: 'Centralizá',
       body:
         'las fichas, los flujos y los datos en un solo sistema. Información clara para vos y tu equipo.',
-      videoSrc: '/media/software/centraliza.mp4',
+      videoSrc: '/media/software/centraliza.mp4', videoMobileSrc: '/media/software/centraliza-mobile.mp4',
       poster: '/media/software/centraliza.jpg'
     },
     {
       lead: 'Automatizá',
       body:
         'las tareas que se repiten y las decisiones basadas en datos. IA con criterio operativo, no decoración tecnológica.',
-      videoSrc: '/media/software/automatiza.mp4',
+      videoSrc: '/media/software/automatiza.mp4', videoMobileSrc: '/media/software/automatiza-mobile.mp4',
       poster: '/media/software/automatiza.jpg'
     }
   ],
@@ -285,12 +285,12 @@ const softwarePageEs: LandingData = {
       ', no una maqueta.'
     ],
     items: [
-      { label: 'Pulso', detail: '/desarrollo-de-software-argentina/pulso', category: 'Sistema de gestión para gimnasios y wellness', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
-      { label: 'Cumbre', detail: '/desarrollo-de-software-argentina/cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
-      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-argentina/estudio-dental-mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
-      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-argentina/tornos-del-sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
-      { label: 'Punto Cero', detail: '/desarrollo-de-software-argentina/punto-cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
-      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-argentina/vertice-seguridad-industrial', category: 'ERP comercial y de inventario', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
+      { label: 'Pulso', detail: '/desarrollo-de-software-argentina/pulso', category: 'Sistema de gestión para gimnasios y wellness', videoSrc: '/media/software/pulso.mp4', videoMobileSrc: '/media/software/pulso-mobile.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
+      { label: 'Cumbre', detail: '/desarrollo-de-software-argentina/cumbre', category: 'Sistema de gestión de RRHH', videoSrc: '/media/software/cumbre.mp4', videoMobileSrc: '/media/software/cumbre-mobile.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
+      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-argentina/estudio-dental-mendieta', category: 'Software de gestión clínica', videoSrc: '/media/software/dental.mp4', videoMobileSrc: '/media/software/dental-mobile.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-argentina/tornos-del-sur', category: 'ERP industrial', videoSrc: '/media/software/tornos.mp4', videoMobileSrc: '/media/software/tornos-mobile.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', detail: '/desarrollo-de-software-argentina/punto-cero', category: 'Sistema de mantenimiento por suscripción', videoSrc: '/media/software/puntocero.mp4', videoMobileSrc: '/media/software/puntocero-mobile.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
+      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-argentina/vertice-seguridad-industrial', category: 'ERP comercial y de inventario', videoSrc: '/media/software/vertice.mp4', videoMobileSrc: '/media/software/vertice-mobile.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {
@@ -363,21 +363,21 @@ const softwarePageEn: LandingData = {
       lead: 'Organize',
       body:
         'the operation you already have without changing how your team works. Visibility, cost control and real alerts.',
-      videoSrc: '/media/software/ordena.mp4',
+      videoSrc: '/media/software/ordena.mp4', videoMobileSrc: '/media/software/ordena-mobile.mp4',
       poster: '/media/software/ordena.jpg'
     },
     {
       lead: 'Centralize',
       body:
         'records, flows and data in one system. Clear information for you and your team.',
-      videoSrc: '/media/software/centraliza.mp4',
+      videoSrc: '/media/software/centraliza.mp4', videoMobileSrc: '/media/software/centraliza-mobile.mp4',
       poster: '/media/software/centraliza.jpg'
     },
     {
       lead: 'Automate',
       body:
         'repetitive tasks and data-driven decisions. AI with operational judgment, not tech decoration.',
-      videoSrc: '/media/software/automatiza.mp4',
+      videoSrc: '/media/software/automatiza.mp4', videoMobileSrc: '/media/software/automatiza-mobile.mp4',
       poster: '/media/software/automatiza.jpg'
     }
   ],
@@ -525,12 +525,12 @@ const softwarePageEn: LandingData = {
       ', not a mock-up.'
     ],
     items: [
-      { label: 'Pulso', detail: '/desarrollo-de-software-argentina/pulso', category: 'Gym & wellness management system', videoSrc: '/media/software/pulso.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
-      { label: 'Cumbre', detail: '/desarrollo-de-software-argentina/cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
-      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-argentina/estudio-dental-mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
-      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-argentina/tornos-del-sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
-      { label: 'Punto Cero', detail: '/desarrollo-de-software-argentina/punto-cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
-      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-argentina/vertice-seguridad-industrial', category: 'Commercial & inventory ERP', videoSrc: '/media/software/vertice.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
+      { label: 'Pulso', detail: '/desarrollo-de-software-argentina/pulso', category: 'Gym & wellness management system', videoSrc: '/media/software/pulso.mp4', videoMobileSrc: '/media/software/pulso-mobile.mp4', poster: '/media/software/pulso.jpg', link: 'https://jolly-stone-0869f530f.7.azurestaticapps.net' },
+      { label: 'Cumbre', detail: '/desarrollo-de-software-argentina/cumbre', category: 'HR management system', videoSrc: '/media/software/cumbre.mp4', videoMobileSrc: '/media/software/cumbre-mobile.mp4', poster: '/media/software/cumbre.jpg', link: 'https://orange-forest-0713c560f.7.azurestaticapps.net' },
+      { label: 'Estudio Dental Mendieta', detail: '/desarrollo-de-software-argentina/estudio-dental-mendieta', category: 'Clinic management software', videoSrc: '/media/software/dental.mp4', videoMobileSrc: '/media/software/dental-mobile.mp4', poster: '/media/software/dental.jpg', link: 'https://happy-coast-044ea7e0f.7.azurestaticapps.net/agenda' },
+      { label: 'Tornos del Sur', detail: '/desarrollo-de-software-argentina/tornos-del-sur', category: 'Industrial ERP', videoSrc: '/media/software/tornos.mp4', videoMobileSrc: '/media/software/tornos-mobile.mp4', poster: '/media/software/tornos.jpg', link: 'https://app-tornosops.azurewebsites.net/dashboard' },
+      { label: 'Punto Cero', detail: '/desarrollo-de-software-argentina/punto-cero', category: 'Subscription-based maintenance system', videoSrc: '/media/software/puntocero.mp4', videoMobileSrc: '/media/software/puntocero-mobile.mp4', poster: '/media/software/puntocero.jpg', link: 'https://victorious-desert-032f8750f.1.azurestaticapps.net/acceso' },
+      { label: 'Vértice Seguridad Industrial', detail: '/desarrollo-de-software-argentina/vertice-seguridad-industrial', category: 'Commercial & inventory ERP', videoSrc: '/media/software/vertice.mp4', videoMobileSrc: '/media/software/vertice-mobile.mp4', poster: '/media/software/vertice.jpg', link: 'https://icy-meadow-07f007e0f.6.azurestaticapps.net/dashboard/home' }
     ]
   },
   faq: {

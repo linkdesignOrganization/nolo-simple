@@ -49,4 +49,33 @@ describe('WebHeroComponent', () => {
 
     fixture.destroy();
   });
+  // Videos del carrusel: en celular el navegador debe elegir el clip de 720 px antes de descargar
+  // nada, así que la elección va declarada en <source media>, no en JS tras hidratar.
+  it('declares the mobile clip as a media-conditioned source and the hero as fallback', () => {
+    const fixture = TestBed.createComponent(WebHeroComponent);
+    fixture.componentRef.setInput('title', 't');
+    fixture.componentRef.setInput('lead', 'l');
+    fixture.componentRef.setInput('actions', actions);
+    fixture.componentRef.setInput('slides', [
+      { src: '/media/hero/hesa.mp4', poster: '/media/portfolio/hesa-poster.jpg', mobileSrc: '/media/portfolio/hesa-web.mp4' },
+      { src: '/media/hero/solo-hero.mp4', poster: '/media/portfolio/solo-hero-poster.jpg' }
+    ]);
+    fixture.componentRef.setInput('marquee', { label: 'x', items: ['a'] });
+    fixture.detectChanges();
+
+    const videos = [...(fixture.nativeElement as HTMLElement).querySelectorAll('video')];
+    expect(videos.length).toBe(2);
+    expect(videos.every((v) => !v.getAttribute('src'))).toBe(true);
+
+    const withMobile = [...videos[0].querySelectorAll('source')];
+    expect(withMobile.map((s) => [s.getAttribute('media'), s.getAttribute('src')])).toEqual([
+      ['(max-width: 760px)', '/media/portfolio/hesa-web.mp4'],
+      [null, '/media/hero/hesa.mp4']
+    ]);
+
+    const heroOnly = [...videos[1].querySelectorAll('source')];
+    expect(heroOnly.map((s) => [s.getAttribute('media'), s.getAttribute('src')])).toEqual([[null, '/media/hero/solo-hero.mp4']]);
+
+    fixture.destroy();
+  });
 });

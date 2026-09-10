@@ -1542,7 +1542,10 @@ export class LandingPageComponent {
     return rows
       .filter((row): row is PortfolioRow & { heroSrc: string } => typeof row.heroSrc === 'string')
       .slice(0, 10)
-      .map((row) => ({ src: row.heroSrc, poster: row.poster }));
+      // mobileSrc: el clip de 720 px de la tabla (videoSrc), que el CRM genera para todos los
+      // proyectos con video. En celular reemplaza al hero de 1280 (mismo contenido, un tercio del
+      // peso); si faltara, el hero sirve para todas las pantallas.
+      .map((row) => ({ src: row.heroSrc, poster: row.poster, mobileSrc: row.videoSrc || undefined }));
   });
 
   protected isHrefLink(link?: string): boolean {

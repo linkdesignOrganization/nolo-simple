@@ -93,4 +93,21 @@ describe('ViewcasesComponent', () => {
 
     fixture.destroy();
   });
+  it('declares the mobile clip as a media-conditioned source and the full clip as fallback', () => {
+    const fixture = TestBed.createComponent(ViewcasesComponent);
+    fixture.componentRef.setInput('title', 't');
+    fixture.componentRef.setInput('intro', 'i');
+    fixture.componentRef.setInput('items', [
+      { ...items[0], videoMobileSrc: '/media/software-demo-mobile.mp4' },
+      items[1]
+    ]);
+    fixture.detectChanges();
+    const videos = [...(fixture.nativeElement as HTMLElement).querySelectorAll('video')];
+    expect(videos.length).toBe(2);
+    expect(videos.every((v) => !v.getAttribute('src'))).toBe(true);
+    const sources = (v: HTMLVideoElement) => [...v.querySelectorAll('source')].map((s) => [s.getAttribute('media'), s.getAttribute('src')]);
+    expect(sources(videos[0])).toEqual([['(max-width: 760px)', '/media/software-demo-mobile.mp4'], [null, items[0].videoSrc]]);
+    expect(sources(videos[1])).toEqual([[null, items[1].videoSrc]]);
+    fixture.destroy();
+  });
 });

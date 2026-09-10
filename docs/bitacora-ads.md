@@ -1631,3 +1631,21 @@ páginas muestra, debajo de la ubicación: «L-V, 9 a 18», «NOLO CAAR» y «CU
 `legalName` y `taxID`. Fuente única en `src/app/company-info.ts`; `/contacto` usa el horario largo de
 la misma constante. Apunta a la nota de página de destino, que se lee el 5 oct 2026 junto con la de
 Costa Rica; los videos móviles (acción 3) quedan pendientes en los dos sitios.
+
+### 10 sep 2026 · videos livianos para celular en /web y /software
+
+Espejo de la acción 3 de Link Design (plan `docs/plan-nota-pagina-destino.md` de ese repo). El
+navegador elige el archivo por tamaño de pantalla con `<source media="(max-width: 760px)">`, así que
+decide antes de descargar; en escritorio no cambia nada, y el encuadre y la proporción del video son
+los mismos (720×384 contra 1280×682, ambos 1,875).
+
+- **`/web`, carrusel:** usa la pieza de 720 px que el CRM ya genera por proyecto para la tabla del
+  portafolio (mismo contenido que el render de hero). Los tres primeros pasan de 6,4 MB a 1,6 MB.
+- **`/software`:** no existía versión chica; se generaron los nueve clips con la receta del CRM
+  (`scale=720:-2`, 30 fps, CRF 28, faststart, sin audio) y viven versionados en
+  `public/media/software/<nombre>-mobile.mp4`. Pestañas de 4,5 MB a 1,5 MB y viewcases de 12,3 MB a
+  3,9 MB.
+
+Verificado con Chrome real: a 390 px pide los clips de 720 y a 1280 los originales, en carrusel,
+pestañas y viewcases. Tres pruebas nuevas fijan la regla (mutación comprobada). Apunta a la nota de
+página de destino, que se lee el 5 oct 2026 junto con la de Costa Rica.

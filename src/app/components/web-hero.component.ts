@@ -29,9 +29,15 @@ export type HeroMarquee = {
   label: string;
 };
 
-export type HeroSlide = { src: string; poster: string };
+/**
+ * Diapositiva del carrusel. `src` es el render de hero (1280 px); `mobileSrc`, opcional, es el
+ * clip de 720 px que el CRM ya genera para la tabla del portafolio: mismo contenido, un tercio del
+ * peso. En pantallas de celular el navegador elige `mobileSrc` antes de descargar nada (regla
+ * `media` en `<source>`), así que la decisión no depende de la hidratación.
+ */
+export type HeroSlide = { src: string; poster: string; mobileSrc?: string };
 
-type Slide = { label: string; src: string; poster: string };
+type Slide = { label: string; src: string; poster: string; mobileSrc?: string };
 
 @Component({
   selector: 'app-web-hero',
@@ -89,14 +95,20 @@ type Slide = { label: string; src: string; poster: string };
                 <video
                   class="wh-video wh-video--media"
                   [class.is-ready]="readyIndices().has($index)"
-                  [src]="slide.src"
                   [poster]="slide.poster"
                   [muted]="true"
                   loop
                   playsinline
                   [attr.preload]="preloadIndices().has($index) ? 'auto' : 'none'"
                   (canplay)="onVideoReady($index)"
-                ></video>
+                >
+                  <!-- En celular, el clip de 720 px (mismo contenido, un tercio del peso); si no
+                       existe, el hero de 1280 sirve para todas las pantallas. -->
+                  @if (slide.mobileSrc && slide.mobileSrc !== slide.src) {
+                    <source media="(max-width: 760px)" [src]="slide.mobileSrc" type="video/mp4" />
+                  }
+                  <source [src]="slide.src" type="video/mp4" />
+                </video>
               } @else if (slide.poster) {
                 <img class="wh-video" [src]="slide.poster" alt="" />
               } @else {
@@ -472,7 +484,7 @@ export class WebHeroComponent implements AfterViewInit, OnDestroy {
   protected readonly stageSlides = computed<Slide[]>(() => {
     const sources = this.slides();
     if (sources.length) {
-      return sources.map((s) => ({ src: s.src, poster: s.poster, label: '' }));
+      return sources.map((s) => ({ src: s.src, poster: s.poster, mobileSrc: s.mobileSrc, label: '' }));
     }
     return [
       { src: '', poster: '', label: '01' },

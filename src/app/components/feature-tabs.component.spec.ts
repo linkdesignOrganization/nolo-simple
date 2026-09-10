@@ -74,4 +74,20 @@ describe('FeatureTabsComponent', () => {
 
     fixture.destroy();
   });
+  // En celular el navegador elige el clip de 720 px antes de descargar; en escritorio, el de 1280.
+  it('declares the mobile clip as a media-conditioned source and the full clip as fallback', () => {
+    const fixture = TestBed.createComponent(FeatureTabsComponent);
+    fixture.componentRef.setInput('tabs', [
+      { lead: 'a', body: 'b', videoSrc: '/media/software/ordena.mp4', videoMobileSrc: '/media/software/ordena-mobile.mp4', poster: '/media/software/ordena.jpg' },
+      { lead: 'c', body: 'd', videoSrc: '/media/software/solo.mp4', poster: '/media/software/solo.jpg' }
+    ]);
+    fixture.detectChanges();
+    const videos = [...(fixture.nativeElement as HTMLElement).querySelectorAll('video')];
+    expect(videos.length).toBe(2);
+    expect(videos.every((v) => !v.getAttribute('src'))).toBe(true);
+    const sources = (v: HTMLVideoElement) => [...v.querySelectorAll('source')].map((s) => [s.getAttribute('media'), s.getAttribute('src')]);
+    expect(sources(videos[0])).toEqual([['(max-width: 760px)', '/media/software/ordena-mobile.mp4'], [null, '/media/software/ordena.mp4']]);
+    expect(sources(videos[1])).toEqual([[null, '/media/software/solo.mp4']]);
+    fixture.destroy();
+  });
 });

@@ -28,6 +28,8 @@ export type Viewcase = {
   label: string;
   category: string;
   videoSrc: string;
+  /** Clip de 720 px para celular (mismo encuadre, un tercio del peso). Opcional. */
+  videoMobileSrc?: string;
   poster: string;
   /** Demo navegable (externo): es el destino del clic en toda la tarjeta. */
   link: string;
@@ -84,14 +86,18 @@ const DETAIL_LABELS = {
             <div class="vc-tile" (mouseenter)="play($event)" (mouseleave)="stop($event)">
               <video
                 class="vc-video"
-                [src]="item.videoSrc"
                 [muted]="true"
                 loop
                 playsinline
                 preload="none"
                 [poster]="item.poster"
                 aria-hidden="true"
-              ></video>
+              >
+                @if (item.videoMobileSrc) {
+                  <source media="(max-width: 760px)" [src]="item.videoMobileSrc" type="video/mp4" />
+                }
+                <source [src]="item.videoSrc" type="video/mp4" />
+              </video>
               <a
                 class="vc-tile__demo"
                 [href]="item.link"

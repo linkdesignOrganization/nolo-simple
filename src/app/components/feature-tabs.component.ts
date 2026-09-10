@@ -16,6 +16,9 @@ export type FeatureTab = {
   body: string;
   lead: string;
   videoSrc: string;
+  /** Clip de 720 px para pantallas de celular: mismo encuadre y proporción, un tercio del peso.
+      Opcional; si falta, videoSrc sirve para todas las pantallas. */
+  videoMobileSrc?: string;
   /** Primer frame del propio video. El bloque está sobre el fold: sin poster queda un hueco
       vacío hasta que el video tiene datos (~3.5 s en 4G). */
   poster: string;
@@ -34,14 +37,19 @@ export type FeatureTab = {
         <video
           class="feature-video"
           [class.is-active]="$index === activeIndex()"
-          [src]="tab.videoSrc"
           [poster]="tab.poster"
           [muted]="true"
           loop
           playsinline
           preload="metadata"
           aria-hidden="true"
-        ></video>
+        >
+          <!-- El navegador elige el clip por tamaño de pantalla antes de descargar nada. -->
+          @if (tab.videoMobileSrc) {
+            <source media="(max-width: 760px)" [src]="tab.videoMobileSrc" type="video/mp4" />
+          }
+          <source [src]="tab.videoSrc" type="video/mp4" />
+        </video>
       }
     </div>
 
