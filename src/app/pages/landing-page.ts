@@ -196,7 +196,9 @@ export type LandingData = {
               @if (page().eyebrow) {
                 <span class="eyebrow">{{ page().eyebrow }}</span>
               }
-              <h1>{{ page().title }}<img class="hero-flag" src="/flag.svg" alt="Argentina" /></h1>
+              <!-- La última palabra y la bandera van juntas en un bloque que no se parte: si no,
+                   en ciertos anchos la bandera caía sola a una línea nueva. -->
+              <h1>{{ titleHead() }}<span class="hero-title__tail">{{ titleTail() }}<img class="hero-flag" src="/flag.svg" alt="Argentina" /></span></h1>
             </div>
 
             @if (page().description || page().ctaPrimary || page().ctaSecondary) {
@@ -804,7 +806,9 @@ export type LandingData = {
     }
 
     .hero--software {
-      --software-hero-top-pad: clamp(3rem, 5.5vw, 5rem);
+      /* El tope sube de 5rem a 7.5rem: hasta 1454 px no cambia nada, y de ahí en adelante
+         el aire sobre el título crece con la pantalla en vez de quedarse fijo en 80 px. */
+      --software-hero-top-pad: clamp(3rem, 5.5vw, 7.5rem);
       grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
       min-height: auto;
       align-items: start;
@@ -821,6 +825,10 @@ export type LandingData = {
     }
 
     /* Banderita argentina al final del título, como parte del texto (refuerza el origen AR). */
+    .hero-title__tail {
+      white-space: nowrap;
+    }
+
     .hero-flag {
       display: inline-block;
       width: auto;
@@ -851,7 +859,9 @@ export type LandingData = {
     }
 
     .hero--software .hero-copy p {
-      max-width: none;
+      /* Medida de lectura: la columna crece con la pantalla, la línea no. Debajo de ~1450 px
+         la columna ya mide menos que esto, así que no cambia nada. */
+      max-width: 34rem;
       color: var(--ink);
       font-size: var(--hero-lead-size);
       font-weight: 400;
@@ -1529,6 +1539,19 @@ export class LandingPageComponent {
   protected readonly page = computed(
     () => (this.routeData() as { es: LandingData; en: LandingData })[this.i18n.lang()],
   );
+
+  /** Título sin su última palabra, y la última palabra aparte: la bandera viaja pegada a ella. */
+  protected readonly titleHead = computed(() => {
+    const t = this.page().title ?? '';
+    const i = t.trimEnd().lastIndexOf(' ');
+    return i === -1 ? '' : t.slice(0, i + 1);
+  });
+
+  protected readonly titleTail = computed(() => {
+    const t = this.page().title ?? '';
+    const i = t.trimEnd().lastIndexOf(' ');
+    return i === -1 ? t : t.slice(i + 1);
+  });
 
   // El hero (carrusel de /web) muestra los primeros 10 del portafolio, automáticamente, según el
   // heroSrc que el prebuild (scripts/generate-portfolio.mjs) resuelve desde el CRM por proyecto:

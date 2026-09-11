@@ -1,6 +1,11 @@
 :host {
   display: block;
   min-height: 100dvh;
+  /* Ancho máximo del sitio. Sin esto, en pantallas muy anchas (1920+) el contenido se
+     estira sin freno: el título del hero llega a 1500 px y el párrafo de al lado a casi
+     1000, muy por encima de una medida legible. La barra, el contenido y el par de
+     contacto fijo comparten este tope para que todo quede alineado. */
+  --shell-max: 1600px;
 }
 
 .shell {
@@ -59,6 +64,9 @@
   min-height: 5.25rem;
   gap: clamp(0.85rem, 1.8vw, 1.6rem);
   padding: 0.8rem clamp(1rem, 3vw, 2.5rem) 0;
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
   background: transparent;
   backdrop-filter: none;
 }
@@ -451,7 +459,10 @@
 .topbar:not(.topbar--home) .cta-pair:not(.cta-pair--ghost) {
   position: fixed;
   top: 1.25rem;
-  right: clamp(1rem, 3vw, 2.5rem);
+  /* Se alinea con el borde derecho del contenido, no con el de la pantalla: en pantallas
+     más anchas que --shell-max hay que sumar el margen que queda a los lados. El 100% de
+     un elemento fijo es el ancho visible, sin la barra de scroll (100vw sí la incluye). */
+  right: calc(max(0px, (100% - var(--shell-max)) / 2) + clamp(1rem, 3vw, 2.5rem));
   z-index: 5;
 }
 
@@ -470,6 +481,9 @@
   flex: 1 1 auto;
   /* Sin padding-bottom: las páginas de contenido cierran con el contact-footer (full-bleed). */
   padding: 0 clamp(1rem, 3vw, 2.5rem) 0;
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
 }
 
 .content--software {
